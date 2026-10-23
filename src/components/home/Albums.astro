@@ -1,0 +1,23 @@
+---
+/** Homepage „Die Alben" (artboard section 4): both album cards on light. */
+import Section from '../Section.astro';
+import AlbumCard from '../AlbumCard.astro';
+import { albums } from '../../data/albums';
+---
+
+<Section tone="light" id="alben" aria-labelledby="alben-title">
+  <h2 id="alben-title">Die Alben</h2>
+  <div class="albums">
+    {albums.map((album) => <AlbumCard album={album} />)}
+  </div>
+</Section>
+
+<style>
+  .albums {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+    gap: 32px;
+    align-items: start;
+    margin-top: 40px;
+  }
+</style>

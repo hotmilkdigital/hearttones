@@ -1,0 +1,174 @@
+---
+/**
+ * Homepage „Produktion" (artboard section 8, paper): intro, services, CTA; references (text
+ * only, no videos – they are on Über Philipp per the Seitenplan) and the Hot Milk Studio
+ * partnership card with the piano photo. Studio wording per §5.7.
+ */
+import { Image } from 'astro:assets';
+import Section from '../Section.astro';
+import pianoPhoto from '../../assets/photos/philipp-fluegel-hot-milk-studio.webp';
+import { path } from '../../data/routes';
+import { productionIntro, services } from '../../data/production';
+import { site } from '../../data/site';
+import { works } from '../../data/works';
+---
+
+<Section tone="paper" id="produktion" class="production" aria-labelledby="produktion-home-title">
+  <div class="production__grid">
+    <div class="production__main">
+      <h2 id="produktion-home-title">Produktion</h2>
+      <p class="production__intro">{productionIntro}</p>
+      <ul class="production__services">
+        {services.map((s) => <li>{s}</li>)}
+      </ul>
+      <div class="production__actions">
+        <a class="btn btn--primary" href={path('contact')}>Produktion anfragen</a>
+        <a class="btn btn--outline" href={path('production')}>Mehr zur Produktion</a>
+      </div>
+    </div>
+
+    <div class="production__side">
+      <div class="production__refs">
+        <h3>Referenzen</h3>
+        <ul>
+          {
+            works.map((w) => (
+              <li>
+                <strong>{w.artist}</strong> – „{w.title}“{w.year ? ` (${w.year})` : ''}, {w.shortRole}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="production__refs-more"><a href={`${path('about')}#arbeiten-title`}>Videos und Credits</a></p>
+      </div>
+
+      <div class="production__partner" data-tone="taupe">
+        <Image
+          src={pianoPhoto}
+          alt="Philipp v. Rothkirch am Flügel im Hot Milk Studio, Mikrofone über den Saiten"
+          widths={[520, 800, 1040]}
+          sizes="(max-width: 760px) 100vw, 520px"
+          class="production__img"
+        />
+        <div class="production__partner-body">
+          <h3>In Partnerschaft mit Hot Milk Studio</h3>
+          <p>
+            Vorproduktion in Kreuzberg, Aufnahme und Postproduktion im Hot Milk Studio in Berlin – dort wurden beide Alben zum
+            größten Teil aufgenommen sowie gemischt und gemastert.
+          </p>
+          <p class="production__link"><a href={site.partner.url}>hotmilkstudio.de</a></p>
+          <p class="production__credit">Foto: Robert Cummings</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .section.production {
+    border-top: 1px solid var(--sand);
+  }
+
+  .production__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+  }
+
+  .production__main {
+    flex: 1 1 420px;
+    min-width: 0;
+  }
+
+  .production__intro {
+    margin-top: 16px;
+  }
+
+  .production__services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px 24px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .production__services li {
+    padding-left: 18px;
+    border-left: 3px solid var(--globe-ochre);
+  }
+
+  .production__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .production__side {
+    display: flex;
+    flex: 1 1 360px;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  .production__refs {
+    padding: 24px;
+    border-radius: var(--radius-card);
+    background: var(--cream);
+  }
+
+  .production__refs h3,
+  .production__partner h3 {
+    font-size: 22px;
+  }
+
+  .production__refs ul {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .production__refs li + li {
+    margin-top: 8px;
+  }
+
+  .production__refs-more,
+  .production__link {
+    margin-top: 8px;
+    font-weight: 700;
+  }
+
+  .production__refs-more a,
+  .production__link a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+
+  .production__partner {
+    overflow: hidden;
+    border-radius: var(--radius-card);
+  }
+
+  .production__partner :global(.production__img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .production__partner-body {
+    padding: 20px 24px 24px;
+  }
+
+  .production__partner-body p {
+    margin-top: 10px;
+  }
+
+  .production__credit {
+    font-size: var(--fs-small);
+  }
+</style>

@@ -34,12 +34,6 @@ const countryCount = new Set(album.tracks.map((t) => t.countries[0])).size;
 const performers = albumPerformers(album);
 const released = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(new Date(album.releaseDate));
 
-// Approved artboard copy for each album card.
-const intro: Record<Album['id'], string> = {
-  'vol-1': '13 Lieder aus Haiti, Senegal, Georgien, Indien und neun weiteren Ländern.',
-  'vol-2': '13 Lieder von Südafrika über Iran und die Mongolei bis Brasilien.',
-};
-
 const facts = [
   { term: 'Künstler', detail: album.artist },
   { term: 'Label', detail: album.label },
@@ -97,7 +91,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
         <h1 id="album-title">
           {seriesTitle} <span class="album-head__vol">{nb(album.shortTitle)}</span>
         </h1>
-        <p class="lead album-head__intro">{intro[album.id]}</p>
+        <p class="lead album-head__intro">{album.teaser}</p>
         <p class="album-head__more">
           <Placeholder text={`Albumtext ${album.shortTitle}: Idee und Entstehung (Philipp/Robert)`} />
         </p>

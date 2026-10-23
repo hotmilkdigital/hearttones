@@ -1,0 +1,90 @@
+---
+/**
+ * Homepage „Wie alles begann" (artboard section 7): family photo 2011 with the required credit
+ * „Foto: Benedikt Stehle" (§5.11), artboard text, placeholder for the rest of Philipp's story,
+ * link to Über Philipp.
+ */
+import { Image } from 'astro:assets';
+import Section from '../Section.astro';
+import Placeholder from '../Placeholder.astro';
+import familyPhoto from '../../assets/photos/philipp-robert-kinder-2011.webp';
+import { path } from '../../data/routes';
+---
+
+<Section tone="light" id="geschichte" aria-labelledby="geschichte-home-title">
+  <div class="story">
+    <figure class="story__photo">
+      <Image
+        src={familyPhoto}
+        alt="Philipp v. Rothkirch und Robert Cummings mit ihren Kindern, 2011"
+        widths={[420, 840, 1280]}
+        sizes="(max-width: 760px) 100vw, 420px"
+        class="story__img"
+      />
+      <figcaption>Philipp v. Rothkirch und Robert Cummings mit ihren Kindern, 2011 · Foto: Benedikt Stehle</figcaption>
+    </figure>
+    <div class="story__text">
+      <p class="eyebrow story__eyebrow">Wie alles begann</p>
+      <h2 id="geschichte-home-title">Zwei Kinder, ein Tag Abstand</h2>
+      <p class="story__p">
+        Die Idee zu den Schlafliedern kam mit der Geburt von Philipps Sohn. Nur einen Tag zuvor war die Tochter von Robert
+        Cummings zur Welt gekommen – dem Toningenieur, mit dem Philipp beide Alben produziert hat.
+      </p>
+      <p class="story__p">
+        Daraus wurde ein Projekt: eine Einschlaf-CD für Kinder, die auch Eltern gerne hören, und eine Reise durch die Vielfalt
+        der Musik der Welt.
+      </p>
+      <p class="story__p"><Placeholder text="Fortsetzung aus Philipps Geschichte" /></p>
+      <a class="btn btn--outline story__btn" href={path('about')}>Über Philipp v. Rothkirch</a>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .story {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .story__photo {
+    flex: 1 1 320px;
+    max-width: 420px;
+    margin: 0;
+  }
+
+  .story__photo :global(.story__img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-photo);
+  }
+
+  .story__photo figcaption {
+    margin-top: 10px;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  .story__text {
+    flex: 1 1 440px;
+    min-width: 0;
+  }
+
+  .story__eyebrow {
+    margin-bottom: 10px;
+    color: var(--taupe);
+  }
+
+  .story__p {
+    margin-top: 16px;
+  }
+
+  .story__btn {
+    margin-top: 24px;
+  }
+</style>

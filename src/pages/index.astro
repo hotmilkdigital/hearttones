@@ -1,7 +1,14 @@
 ---
+// Homepage in the order of the approved artboard (Startseite-Artboard_v6).
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/home/Hero.astro';
 import AudioPlayer from '../components/AudioPlayer.astro';
+import Albums from '../components/home/Albums.astro';
+import NewMusic from '../components/home/NewMusic.astro';
+import JourneyTeaser from '../components/home/JourneyTeaser.astro';
+import Story from '../components/home/Story.astro';
+import Production from '../components/home/Production.astro';
+import PressStrip from '../components/home/PressStrip.astro';
 import { site } from '../data/site';
 ---
 
@@ -12,4 +19,10 @@ import { site } from '../data/site';
 >
   <Hero />
   <AudioPlayer />
+  <Albums />
+  <NewMusic />
+  <JourneyTeaser />
+  <Story />
+  <Production />
+  <PressStrip />
 </BaseLayout>

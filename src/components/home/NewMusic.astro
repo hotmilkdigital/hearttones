@@ -1,0 +1,55 @@
+---
+/**
+ * Homepage „Neue Musik" (artboard section 5, night): Berlin Peace Collective, „Demnächst",
+ * both singles as cards without credits (those are on the singles page). id="neu" is the
+ * target of the hero pill. Restrictions §5.8 apply.
+ */
+import Section from '../Section.astro';
+import SingleCard from '../SingleCard.astro';
+import { path } from '../../data/routes';
+import { singles, singlesArtist } from '../../data/singles';
+import { site } from '../../data/site';
+---
+
+<Section tone="night" id="neu" aria-labelledby="neu-title">
+  <p class="badge-soon">Demnächst</p>
+  <h2 id="neu-title" class="new__title">Neue Musik</h2>
+  <p class="new__intro">
+    Zwei neue Stücke des {singlesArtist} – Komposition und Keyboards: {site.owner.shortName}, gemischt und gemastert im Hot
+    Milk Studio. Die Veröffentlichung folgt.
+  </p>
+  <div class="new__grid">
+    {singles.map((single) => <SingleCard single={single} showCredits={false} />)}
+  </div>
+  <p class="new__more"><a href={path('singles')}>Alle Mitwirkenden der beiden Singles</a></p>
+</Section>
+
+<style>
+  .new__title {
+    margin-top: 10px;
+  }
+
+  .new__intro {
+    max-width: 640px;
+    margin-top: 12px;
+    color: var(--text-muted);
+  }
+
+  .new__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 28px;
+    margin-top: 40px;
+  }
+
+  .new__more {
+    margin-top: 24px;
+    font-weight: 700;
+  }
+
+  .new__more a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+</style>

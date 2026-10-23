@@ -1,0 +1,175 @@
+---
+/**
+ * Album card (homepage „Die Alben", Musik hub) per the artboard: cover, title, meta, teaser,
+ * then Vol. 1 „CD vergriffen – als Stream erhältlich" + streaming links, or Vol. 2 order
+ * button, Bandcamp, Asphalt Tango (condition of the streaming permission), price line and the
+ * funding notice (§8.3, §11).
+ */
+import Cover from './Cover.astro';
+import FundingNotice from './FundingNotice.astro';
+import type { Album } from '../data/albums';
+import { path } from '../data/routes';
+import { order } from '../data/site';
+
+interface Props {
+  album: Album;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { album, headingLevel: Heading = 'h3' } = Astro.props;
+
+const url = path(album.id === 'vol-1' ? 'vol1' : 'vol2');
+const nb = (s: string) => s.replace(/(Vol\.|HTR|§) /g, '$1 ');
+const eur = (v: number) =>
+  new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: Number.isInteger(v) ? 0 : 2 }).format(v);
+const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${album.catalogueNo}`);
+---
+
+<article class="album-card" aria-labelledby={`card-${album.id}`}>
+  <div class="album-card__top">
+    <a href={url} class="album-card__cover" tabindex="-1" aria-hidden="true">
+      <Cover album={album} width={160} sizes="160px" shadow="light" />
+    </a>
+    <div class="album-card__body">
+      <Heading id={`card-${album.id}`} class="album-card__title">
+        <a href={url}>Lullabies From Around The World <span class="nowrap">{nb(album.shortTitle)}</span></a>
+      </Heading>
+      <p class="album-card__meta">{meta}</p>
+      <p class="album-card__teaser">{album.teaser}</p>
+
+      {
+        album.status === 'outOfPrint' ? (
+          <>
+            <p class="album-card__status">CD vergriffen – als Stream erhältlich</p>
+            <p class="album-card__links">
+              {album.links.map((l) => (
+                <a href={l.href}>{l.label}</a>
+              ))}
+            </p>
+          </>
+        ) : (
+          <>
+            <div class="album-card__actions">
+              <a class="btn btn--primary" href={`${url}#bestellen`}>
+                CD per E-Mail bestellen
+              </a>
+              {album.links.map((l) => (
+                <a class="btn btn--outline" href={l.href}>
+                  {l.label === 'Asphalt Tango Records' ? 'Asphalt Tango' : l.label}
+                </a>
+              ))}
+            </div>
+            <p class="album-card__price">
+              {eur(order.priceEur)} zzgl. Versand ({eur(order.shippingDeEur)} Deutschland, {eur(order.shippingIntlEur)}{' '}
+              international) · {nb(order.taxNote)}
+            </p>
+          </>
+        )
+      }
+    </div>
+  </div>
+  {album.status === 'available' && <FundingNotice class="album-card__funding" />}
+</article>
+
+<style>
+  .album-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 28px;
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    color: var(--cocoa);
+  }
+
+  .album-card__top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .album-card__cover {
+    flex: 0 0 160px;
+    width: 160px;
+  }
+
+  .album-card__body {
+    flex: 1 1 220px;
+    min-width: 0;
+  }
+
+  .album-card__title {
+    font-size: 24px;
+    line-height: 1.25;
+  }
+
+  .album-card__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .album-card__title a:hover {
+    color: var(--heart-red);
+    text-decoration: underline;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .album-card__meta {
+    margin-top: 6px;
+    font-size: var(--fs-meta);
+    color: var(--ink-muted);
+  }
+
+  .album-card__teaser {
+    margin-top: 14px;
+  }
+
+  .album-card__status {
+    margin-top: 14px;
+    font-weight: 700;
+  }
+
+  .album-card__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  .album-card__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+
+  .album-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .album-card__price {
+    margin-top: 12px;
+    font-size: var(--fs-small);
+    color: var(--ink-muted);
+  }
+
+  .album-card :global(.album-card__funding) {
+    padding: 20px 0 0;
+    border: 0;
+    border-top: 1px solid var(--sand);
+    border-radius: 0;
+  }
+
+  @media (max-width: 640px) {
+    .album-card {
+      padding: 20px;
+    }
+  }
+</style>

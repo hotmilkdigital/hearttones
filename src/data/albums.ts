@@ -73,6 +73,8 @@ export interface Album {
   copyright?: string;
   status: 'outOfPrint' | 'available';
   coverAlt: string;
+  /** One-line teaser (approved artboard copy). */
+  teaser: string;
   credits: Credit[];
   /** Studio statement (§5.7): almost entirely recorded, entirely mixed and mastered there. */
   studio: string;
@@ -96,6 +98,7 @@ export const vol1: Album = {
   status: 'outOfPrint',
   coverAlt:
     'Cover von Heart Tones Vol. 1: Lullabies From Around The World, eine lächelnde schwangere Frau mit einem als Erdkugel bemalten Bauch',
+  teaser: '13 Lieder aus Haiti, Senegal, Georgien, Indien und neun weiteren Ländern.',
   credits: [
     { role: 'production', names: ['Philipp v. Rothkirch'] },
     { role: 'coProduction', names: ['Robert Cummings'] },
@@ -299,6 +302,7 @@ export const vol2: Album = {
   status: 'available',
   coverAlt:
     'Cover von Heart Tones Vol. 2: Lullabies From Around The World, vier schlafende Kinder unter einer bunten Decke',
+  teaser: '13 Lieder von Südafrika über Iran und die Mongolei bis Brasilien.',
   credits: [
     { role: 'production', names: ['Robert Cummings', 'Philipp v. Rothkirch'] },
     { role: 'recording', names: ['Robert Cummings'] },
