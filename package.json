@@ -12,7 +12,9 @@
     "preview": "astro preview",
     "check": "astro check",
     "check:data": "node scripts/check-data.ts",
-    "astro": "astro"
+    "astro": "astro",
+    "qa:dist": "node scripts/check-dist.ts",
+    "qa:contrast": "node scripts/contrast.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
