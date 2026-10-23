@@ -1,0 +1,54 @@
+---
+/**
+ * Berlin Peace Collective page (CLAUDE.md §8.4): both unreleased singles as cards with credits,
+ * clearly separate from the lullabies. No player, artwork or date until released (§5.8).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import SingleCard from '../components/SingleCard.astro';
+import { path } from '../data/routes';
+import { singles, singlesArtist } from '../data/singles';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title={`${singlesArtist} – neue Singles | ${site.brand}`}
+  description={`${singlesArtist}: die neuen Singles „World Peace Now!“ und „Bombs Away!“ – Komposition und Keyboards: ${site.owner.shortName}. Die Veröffentlichung folgt.`}
+>
+  <Section tone="light" aria-labelledby="singles-title">
+    <Breadcrumb
+      items={[{ label: 'Start', href: path('home') }, { label: 'Musik', href: path('music') }, { label: singlesArtist }]}
+    />
+    <p class="badge-soon">Demnächst</p>
+    <h1 id="singles-title" class="singles__title">{singlesArtist}</h1>
+    <p class="lead singles__intro">
+      Zwei neue Stücke des {singlesArtist} – Komposition und Keyboards: {site.owner.shortName}, gemischt und gemastert im
+      Hot Milk Studio. Die Veröffentlichung folgt.
+    </p>
+  </Section>
+
+  <Section tone="night" aria-label="Singles">
+    <div class="singles__grid">
+      {singles.map((single) => <SingleCard single={single} headingLevel="h2" />)}
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .singles__title {
+    margin-top: 16px;
+  }
+
+  .singles__intro {
+    max-width: 640px;
+    margin-top: 20px;
+  }
+
+  .singles__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 28px;
+    align-items: start;
+  }
+</style>

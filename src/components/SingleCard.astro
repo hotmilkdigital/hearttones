@@ -1,0 +1,115 @@
+---
+/**
+ * Unreleased single as a card (CLAUDE.md §8.4): title, meta, teaser, credits, dashed
+ * "Erscheint demnächst". No player, no artwork, no date until released (§5.8).
+ * Used on the singles page and in the homepage "Neue Musik" section.
+ */
+import type { Single } from '../data/singles';
+import { roleLabel } from '../data/roles';
+
+interface Props {
+  single: Single;
+  headingLevel?: 'h2' | 'h3';
+  showCredits?: boolean;
+}
+
+const { single, headingLevel: Heading = 'h3', showCredits = true } = Astro.props;
+
+const credits = single.credits.map((c) => ({
+  name: c.members ? `${c.name} (${c.members.join(', ')})` : c.name,
+  roles: [c.roles.map((r) => roleLabel(r)).join(', '), c.note?.de].filter(Boolean).join(' · '),
+}));
+---
+
+<article class="single" id={single.slug} aria-labelledby={`${single.slug}-title`}>
+  <Heading id={`${single.slug}-title`} class="single__title">{single.title}</Heading>
+  <p class="single__meta">{single.artist} · Single · Veröffentlichung folgt</p>
+  {single.teaser.de && <p class="single__teaser">{single.teaser.de}</p>}
+
+  {
+    showCredits && (
+      <dl class="single__credits">
+        {credits.map((c) => (
+          <div class="single__credit">
+            <dt>{c.name}</dt>
+            <dd>{c.roles}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+
+  <p class="single__soon">Erscheint demnächst</p>
+</article>
+
+<style>
+  .single {
+    display: flex;
+    flex-direction: column;
+    padding: 28px;
+    border: 1px solid var(--cocoa-line);
+    border-radius: var(--radius-card);
+    background: var(--cocoa-2);
+    color: var(--cream);
+  }
+
+  .single__title {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .single__meta {
+    margin-top: 6px;
+    font-size: var(--fs-meta);
+    color: var(--cream-faint);
+  }
+
+  .single__teaser {
+    margin-top: 16px;
+  }
+
+  .single__credits {
+    margin: 20px 0 0;
+    font-size: var(--fs-small);
+  }
+
+  .single__credit {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2px 16px;
+    padding: 6px 0;
+    border-top: 1px solid var(--cocoa-line);
+  }
+
+  .single__credit dt {
+    font-weight: 700;
+  }
+
+  .single__credit dd {
+    margin: 0;
+    color: var(--cream-muted);
+  }
+
+  .single__soon {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    min-height: var(--touch-min);
+    margin-top: 24px;
+    padding: 10px 20px;
+    border: 2px dashed var(--cocoa-outline);
+    border-radius: var(--radius-button);
+    color: var(--cream-muted);
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .single {
+      padding: 20px;
+    }
+
+    .single__credit {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
