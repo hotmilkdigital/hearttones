@@ -1,0 +1,284 @@
+---
+/**
+ * Static world map with one marker per country of origin (CLAUDE.md §8.5).
+ * Generated at build time (src/lib/world-map.ts): seas globe-blue, land globe-ochre, markers
+ * heart-red with a cream ring. No map library, tiles or requests at runtime.
+ *
+ * interactive: each marker is a link (one song → the track on its album page, several →
+ * the country in the list below) with a tooltip on hover/focus. The list is the content;
+ * the map is an enhancement (and the equivalent control for WCAG 2.5.8 where markers sit close).
+ * Not interactive: decorative teaser (homepage).
+ */
+import { lineupText, trackAnchor, type Album } from '../data/albums';
+import { countries, countryName, tracksForCountry, type CountryCode } from '../data/countries';
+import { path } from '../data/routes';
+import { MAP_HEIGHT, MAP_WIDTH, countryPath, landPath, project } from '../lib/world-map';
+
+interface Props {
+  interactive?: boolean;
+  /** Id of the list the "skip map" link and multi-song markers point to. */
+  listId?: string;
+  label?: string;
+}
+
+const {
+  interactive = true,
+  listId = 'laender',
+  label = `Weltkarte mit den ${Object.keys(countries).length} Herkunftsländern der Lieder`,
+} = Astro.props;
+
+const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2');
+
+const markers = (Object.keys(countries) as CountryCode[]).map((code) => {
+  const country = countries[code];
+  const refs = tracksForCountry(code).filter((r) => r.primary);
+  const [x, y] = project(country.lon, country.lat);
+  const name = countryName(code);
+  const songs = refs.map(({ album, track }) => ({
+    title: track.title,
+    titleAlt: track.titleAlt,
+    lang: track.lang,
+    album: album.shortTitle,
+    lineup: lineupText(track),
+    origin: track.countries.length > 1 ? track.countries.map((c) => countryName(c)).join(' / ') : null,
+  }));
+  const href =
+    refs.length === 1
+      ? `${albumUrl(refs[0]!.album)}#${trackAnchor(refs[0]!.album, refs[0]!.track)}`
+      : `#${listId}-${code.toLowerCase()}`;
+  const ariaLabel = `${name}: ${songs.map((s) => `„${s.title}“ (${s.album.replace(' ', ' ')})`).join(', ')}`;
+  return { code, x, y, name, songs, href, ariaLabel, tipId: `map-tip-${code.toLowerCase()}` };
+});
+
+const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) => countryPath(c.isoNumeric));
+---
+
+<div class:list={['map', { 'map--interactive': interactive }]} data-world-map={interactive ? '' : undefined}>
+  {
+    interactive && (
+      <a class="map__skip" href={`#${listId}`}>
+        Karte überspringen – zur Länderliste
+      </a>
+    )
+  }
+  <svg
+    class="map__svg"
+    viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
+    role={interactive ? 'group' : 'img'}
+    aria-label={label}
+  >
+    <path class="map__land" d={landPath} aria-hidden="true"></path>
+    <g class="map__featured" aria-hidden="true">
+      {featured.map((d) => <path d={d} />)}
+    </g>
+    <g class="map__markers">
+      {
+        markers.map((m) =>
+          interactive ? (
+            <a href={m.href} class="marker" aria-label={m.ariaLabel} data-tip={m.tipId}>
+              <circle class="marker__hit" cx={m.x} cy={m.y} r="14" />
+              <circle class="marker__focus-outer" cx={m.x} cy={m.y} r="14" />
+              <circle class="marker__focus-inner" cx={m.x} cy={m.y} r="11" />
+              <circle class="marker__dot" cx={m.x} cy={m.y} r="6.5" />
+            </a>
+          ) : (
+            <circle class="marker__dot" cx={m.x} cy={m.y} r="6.5" aria-hidden="true" />
+          ),
+        )
+      }
+    </g>
+  </svg>
+
+  {
+    interactive &&
+      markers.map((m) => (
+        <div class="map__tip" id={m.tipId} role="tooltip" aria-hidden="true" hidden>
+          <p class="map__tip-country">{m.name}</p>
+          <ul>
+            {m.songs.map((s) => (
+              <li>
+                <span class="map__tip-title">
+                  „<span lang={s.lang}>{s.title}</span>“
+                  {s.titleAlt && <span lang="mn"> / {s.titleAlt}</span>}
+                </span>{' '}
+                <span class="map__tip-album">{s.album}</span>
+                {s.origin && <span class="map__tip-origin">{s.origin}</span>}
+                <span class="map__tip-lineup">{s.lineup}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="map__tip-hint">{m.songs.length === 1 ? 'Zum Lied →' : 'Zu den Liedern →'}</p>
+        </div>
+      ))
+  }
+</div>
+
+{
+  interactive && (
+    <script>
+      import { initWorldMap } from '../scripts/world-map';
+
+      document.querySelectorAll<HTMLElement>('[data-world-map]').forEach(initWorldMap);
+    </script>
+  )
+}
+
+<style>
+  .map {
+    position: relative;
+  }
+
+  .map__skip {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    margin-bottom: 8px;
+    font-size: var(--fs-meta);
+    font-weight: 600;
+  }
+
+  .map__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-card);
+    background: var(--globe-blue);
+  }
+
+  .map__land {
+    fill: var(--globe-ochre);
+  }
+
+  .map__featured path {
+    fill: none;
+    stroke: var(--cocoa);
+    stroke-opacity: 0.35;
+    stroke-width: 0.8;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .marker {
+    outline: none;
+    cursor: pointer;
+  }
+
+  .marker__hit {
+    fill: transparent;
+  }
+
+  .marker__dot {
+    fill: var(--heart-red);
+    stroke: var(--cream);
+    stroke-width: 2.5;
+    transition: r 0.15s ease;
+  }
+
+  .marker__focus-outer,
+  .marker__focus-inner {
+    fill: none;
+    stroke-width: 3;
+    opacity: 0;
+  }
+
+  .marker__focus-outer {
+    stroke: var(--cream);
+  }
+
+  .marker__focus-inner {
+    stroke: var(--cocoa);
+  }
+
+  .marker:hover .marker__dot,
+  .marker:focus-visible .marker__dot {
+    r: 8.5;
+  }
+
+  .marker:focus-visible .marker__focus-outer,
+  .marker:focus-visible .marker__focus-inner {
+    opacity: 1;
+  }
+
+  /* Tooltip (§6.7): dismissible with Esc, stays while hovered. Positioned by the script. */
+  .map__tip {
+    position: absolute;
+    z-index: 5;
+    width: max-content;
+    max-width: min(320px, calc(100% - 16px));
+    padding: 12px 14px;
+    border: 1px solid var(--cocoa-line);
+    border-radius: var(--radius-card);
+    background: var(--cocoa);
+    color: var(--cream);
+    box-shadow: 0 10px 24px rgb(0 0 0 / 0.35);
+    font-size: var(--fs-small);
+    line-height: 1.45;
+  }
+
+  .map__tip[hidden] {
+    display: none;
+  }
+
+  .map__tip ul {
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .map__tip li + li {
+    margin-top: 8px;
+  }
+
+  .map__tip-country {
+    font-weight: 700;
+  }
+
+  .map__tip-title {
+    font-family: var(--font-serif);
+    font-size: 16px;
+  }
+
+  .map__tip-album {
+    color: var(--cream-faint);
+  }
+
+  .map__tip-origin,
+  .map__tip-lineup {
+    display: block;
+    color: var(--cream-muted);
+  }
+
+  .map__tip-hint {
+    margin-top: 8px;
+    color: var(--globe-ochre);
+    font-weight: 700;
+  }
+
+  /* Phones: the map shrinks to a third, so markers grow to stay visible (the list is the content). */
+  @media (max-width: 640px) {
+    .marker__dot {
+      r: 11;
+      stroke-width: 4;
+    }
+
+    .marker:hover .marker__dot,
+    .marker:focus-visible .marker__dot {
+      r: 13;
+    }
+
+    .marker__focus-inner {
+      r: 17;
+      stroke-width: 5;
+    }
+
+    .marker__focus-outer {
+      r: 22;
+      stroke-width: 5;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marker__dot {
+      transition: none;
+    }
+  }
+</style>

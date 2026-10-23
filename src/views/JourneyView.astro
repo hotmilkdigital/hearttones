@@ -1,0 +1,236 @@
+---
+/**
+ * Die Reise (CLAUDE.md §8.5): intro, build-time world map, and below it the same
+ * information as an accessible list grouped by continent – the list is the content.
+ * Two-country credits: listed under the first-named country, the second is named in the
+ * entry and cross-referenced under that country.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import WorldMap from '../components/WorldMap.astro';
+import { formatDuration, lineupText, trackAnchor, type Album } from '../data/albums';
+import {
+  continentLabels,
+  countries,
+  countryName,
+  tracksForCountry,
+  type Continent,
+  type CountryCode,
+} from '../data/countries';
+import { path } from '../data/routes';
+import { site } from '../data/site';
+import { anyAudioPlayable } from '../lib/audio';
+
+const LIST_ID = 'laender';
+const countryCount = Object.keys(countries).length;
+const continentOrder: Continent[] = ['africa', 'americas', 'asia', 'europe', 'oceania'];
+
+const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2');
+const trackUrl = (album: Album, track: Album['tracks'][number]) => `${albumUrl(album)}#${trackAnchor(album, track)}`;
+const nb = (s: string) => s.replace('Vol. ', 'Vol. ');
+
+const groups = continentOrder.map((continent) => {
+  const codes = (Object.keys(countries) as CountryCode[])
+    .filter((code) => countries[code].continent === continent)
+    .sort((a, b) => countryName(a).localeCompare(countryName(b), 'de'));
+  return {
+    continent,
+    label: continentLabels[continent].de,
+    countries: codes.map((code) => {
+      const refs = tracksForCountry(code);
+      return {
+        code,
+        name: countryName(code),
+        primary: refs.filter((r) => r.primary),
+        secondary: refs.filter((r) => !r.primary),
+      };
+    }),
+  };
+});
+
+const audio = anyAudioPlayable();
+---
+
+<BaseLayout
+  title={`Die Reise: Schlaflieder aus ${countryCount} Ländern – ${site.brand}`}
+  description={`Eine Weltkarte mit allen ${countryCount} Herkunftsländern der Lieder von Lullabies From Around The World Vol. 1 und Vol. 2 – mit Lied, Album und Musiker:innen.`}
+>
+  <Section tone="light" aria-labelledby="reise-title">
+    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Die Reise' }]} />
+    <h1 id="reise-title">Die Reise</h1>
+    <div class="reise__intro">
+      <p class="lead">
+        Von Haiti bis in die Mongolei, von Dänemark bis Südafrika: Die Lieder kommen aus {countryCount}&nbsp;Ländern –
+        gesungen und gespielt von Menschen, die sie von dort mitgebracht haben.
+      </p>
+      <p>
+        Auf der Karte finden Sie alle {countryCount}&nbsp;Länder – mit Lied, Musiker:innen{audio ? ' und einer Hörprobe' : ''}.
+      </p>
+    </div>
+  </Section>
+
+  <Section tone="night" class="reise__map-section" aria-labelledby="karte-title">
+    <h2 id="karte-title" class="visually-hidden">Weltkarte</h2>
+    <WorldMap listId={LIST_ID} />
+    <p class="reise__map-note">
+      Zeigen Sie auf einen Punkt oder wählen Sie ihn mit der Tastatur aus, um Lied und Musiker:innen zu sehen. Alle Angaben
+      finden Sie auch in der Liste unten.
+    </p>
+  </Section>
+
+  <Section tone="light" id={LIST_ID} aria-labelledby="laender-title" tabindex="-1">
+    <h2 id="laender-title">Alle {countryCount} Länder</h2>
+    {
+      groups.map((group) => (
+        <section class="continent" aria-labelledby={`kontinent-${group.continent}`}>
+          <h3 id={`kontinent-${group.continent}`} class="continent__title">
+            {group.label} <span class="continent__count">({group.countries.length})</span>
+          </h3>
+          <div class="continent__grid">
+            {group.countries.map((c) => (
+              <article class="country" id={`${LIST_ID}-${c.code.toLowerCase()}`} aria-labelledby={`${LIST_ID}-${c.code.toLowerCase()}-title`} tabindex="-1">
+                <h4 id={`${LIST_ID}-${c.code.toLowerCase()}-title`} class="country__name">
+                  {c.name}
+                </h4>
+                <ul class="country__songs">
+                  {c.primary.map(({ album, track }) => (
+                    <li>
+                      <a class="country__song" href={trackUrl(album, track)}>
+                        „<span lang={track.lang}>{track.title}</span>
+                        {track.titleAlt && (
+                          <>
+                            {' / '}
+                            <span lang={track.titleAltLang}>{track.titleAlt}</span>
+                          </>
+                        )}
+                        “
+                      </a>
+                      <span class="country__meta">
+                        {nb(album.shortTitle)} · Nr.&nbsp;{track.no} · {formatDuration(track.durationSec)}
+                        {track.countries.length > 1 && <> · {track.countries.map((cc) => countryName(cc)).join(' / ')}</>}
+                      </span>
+                      <span class="country__lineup">{lineupText(track)}</span>
+                    </li>
+                  ))}
+                </ul>
+                {c.secondary.length > 0 && (
+                  <p class="country__also">
+                    Außerdem:{' '}
+                    {c.secondary.map(({ album, track }, i) => (
+                      <>
+                        {i > 0 && ', '}
+                        <a href={trackUrl(album, track)}>„{track.title}“</a> ({track.countries.map((cc) => countryName(cc)).join(' / ')}, {nb(album.shortTitle)})
+                      </>
+                    ))}
+                  </p>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </Section>
+</BaseLayout>
+
+<style>
+  .reise__intro {
+    max-width: 680px;
+    margin-top: 20px;
+  }
+
+  .reise__intro p + p {
+    margin-top: 16px;
+  }
+
+  .reise__map-note {
+    max-width: 680px;
+    margin-top: 16px;
+    font-size: var(--fs-meta);
+    color: var(--text-muted);
+  }
+
+  .continent {
+    margin-top: 48px;
+  }
+
+  .continent__title {
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--sand);
+  }
+
+  .continent__count {
+    font-family: var(--font-sans);
+    font-size: var(--fs-meta);
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .continent__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .country {
+    padding: 20px 22px;
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    scroll-margin-top: 24px;
+  }
+
+  .country:target,
+  .country:focus {
+    outline: 3px solid var(--heart-red);
+    outline-offset: 3px;
+  }
+
+  .country__name {
+    font-size: 22px;
+  }
+
+  .country__songs {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .country__songs li + li {
+    margin-top: 14px;
+  }
+
+  .country__song {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .country__meta,
+  .country__lineup {
+    display: block;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  .country__lineup {
+    margin-top: 2px;
+  }
+
+  .country__also {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--sand);
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  #laender:focus {
+    outline: none;
+  }
+</style>

@@ -6,13 +6,14 @@
 import type { GetStaticPaths } from 'astro';
 import AlbumView from '../views/AlbumView.astro';
 import SinglesView from '../views/SinglesView.astro';
+import JourneyView from '../views/JourneyView.astro';
 import { vol1, vol2 } from '../data/albums';
 import { routes, type RouteKey } from '../data/routes';
 
-type View = { key: 'vol1' | 'vol2' | 'singles' };
+type View = { key: 'vol1' | 'vol2' | 'singles' | 'journey' };
 
 export const getStaticPaths = (() => {
-  const keys: View['key'][] = ['vol1', 'vol2', 'singles'];
+  const keys: View['key'][] = ['vol1', 'vol2', 'singles', 'journey'];
   return keys.map((key) => ({
     params: { page: routes[key as RouteKey].de.replace(/^\/|\/$/g, '') },
     props: { key },
@@ -25,3 +26,4 @@ const { key } = Astro.props as View;
 {key === 'vol1' && <AlbumView album={vol1} />}
 {key === 'vol2' && <AlbumView album={vol2} />}
 {key === 'singles' && <SinglesView />}
+{key === 'journey' && <JourneyView />}
