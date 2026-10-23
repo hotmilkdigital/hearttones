@@ -14,14 +14,45 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import Section from './Section.astro';
 import Cover from './Cover.astro';
-import { albums, albumDuration, audioSrc, formatDuration, lineupText, trackAnchor, type Album } from '../data/albums';
+import {
+  albums,
+  albumDuration,
+  audioSrc,
+  formatDuration,
+  lineupText,
+  trackAnchor,
+  writingText,
+  type Album,
+} from '../data/albums';
 import { countryName } from '../data/countries';
 import { isCleared } from '../data/site';
+
+interface Props {
+  /** Albums to show; more than one renders tabs (homepage), one renders a plain list (album pages). */
+  albumIds?: Album['id'][];
+  id?: string;
+  heading?: string;
+  /** Album pages show composer/lyricist per track (§8.3). */
+  showWriting?: boolean;
+  /** Album pages already show cover and facts in their header. */
+  showAside?: boolean;
+}
+
+const {
+  albumIds = ['vol-1', 'vol-2'],
+  id = 'player',
+  heading = 'Reinhören',
+  showWriting = false,
+  showAside = true,
+} = Astro.props;
 
 const audioCleared = isCleared('audioCleared');
 const fileExists = (src: string) => existsSync(join(process.cwd(), 'public', src));
 
-const panels = albums.map((album, i) => {
+const selectedAlbums = albums.filter((a) => albumIds.includes(a.id));
+const tabbed = selectedAlbums.length > 1;
+
+const panels = selectedAlbums.map((album, i) => {
   const tracks = album.tracks.map((track) => {
     const src = audioSrc(album, track);
     return {
@@ -31,6 +62,7 @@ const panels = albums.map((album, i) => {
       playable: audioCleared && fileExists(src),
       countries: track.countries.map((c) => countryName(c)).join(' / '),
       lineup: lineupText(track),
+      writing: showWriting ? writingText(track.writing) : null,
       time: formatDuration(track.durationSec),
     };
   });
@@ -52,19 +84,26 @@ const showLinks = (album: Album) => album.id === 'vol-2';
 const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
 ---
 
-<Section tone="night" id="player" aria-labelledby="player-title">
+<Section tone="night" id={id} aria-labelledby={`${id}-title`}>
   <div
-    class="player"
+    class:list={['player', { 'player--single': !tabbed }]}
     data-player
     data-playable={String(anyPlayable)}
     data-label-play="„{title}“ abspielen"
     data-label-pause="„{title}“ pausieren"
   >
-    <h2 id="player-title">Reinhören</h2>
+    <h2 id={`${id}-title`}>{heading}</h2>
     <p class="player__intro">
-      {anyPlayable ? 'Wählen Sie ein Album und hören Sie alle Lieder direkt hier.' : 'Hörproben folgen in Kürze.'}
+      {
+        anyPlayable
+          ? tabbed
+            ? 'Wählen Sie ein Album und hören Sie alle Lieder direkt hier.'
+            : 'Hören Sie alle Lieder direkt hier.'
+          : 'Hörproben folgen in Kürze.'
+      }
     </p>
 
+    {tabbed && (
     <div class="tabs" role="tablist" aria-label="Album wählen" data-tablist hidden>
       {
         panels.map(({ album, selected }) => (
@@ -82,25 +121,28 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
         ))
       }
     </div>
+    )}
 
     {
       panels.map(({ album, tracks }) => {
         const first = tracks[0]!;
+        const tabAttrs = tabbed
+          ? ({ role: 'tabpanel', tabindex: 0, 'aria-labelledby': `tab-${album.id}` } as const)
+          : {};
         return (
-          <div
-            class="panel"
-            id={`panel-${album.id}`}
-            role="tabpanel"
-            tabindex="0"
-            aria-labelledby={`tab-${album.id}`}
-            data-panel={album.id}
-          >
-            <h3 class="visually-hidden">
-              {album.shortTitle}: {album.title} ({album.year})
-            </h3>
+          <div class:list={['panel', { 'panel--compact': !showAside }]} id={`panel-${album.id}`} data-panel={album.id} {...tabAttrs}>
+            {tabbed && (
+              <h3 class="visually-hidden">
+                {album.shortTitle}: {album.title} ({album.year})
+              </h3>
+            )}
             <div class="panel__aside">
-              <Cover album={album} width={420} sizes="(max-width: 760px) 100vw, 420px" />
-              <p class="panel__meta">{meta[album.id].replace(/(HTR|Vol\.) /g, '$1 ')}</p>
+              {showAside && (
+                <>
+                  <Cover album={album} width={420} sizes="(max-width: 760px) 100vw, 420px" />
+                  <p class="panel__meta">{meta[album.id].replace(/(HTR|Vol\.) /g, '$1 ')}</p>
+                </>
+              )}
 
               <div class="bar" data-bar>
                 <button
@@ -188,6 +230,7 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
                       )}
                     </span>
                     <span class="track__lineup">{t.lineup}</span>
+                    {t.writing && <span class="track__writing">{t.writing}</span>}
                   </div>
                   <span class="track__country">{t.countries}</span>
                   <span class="track__time">
@@ -450,11 +493,35 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
     line-height: 1.35;
   }
 
-  .track__lineup {
+  .track__lineup,
+  .track__writing {
     margin-top: 2px;
     font-size: var(--fs-small);
     line-height: 1.45;
     color: var(--text-muted);
+  }
+
+  .track__writing {
+    color: var(--cream-faint);
+  }
+
+  /* Album pages: cover and facts sit in the page header, so the bar spans the top. */
+  .panel--compact {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .panel--compact .panel__aside {
+    flex: none;
+    max-width: none;
+  }
+
+  .panel--compact .bar {
+    margin-top: 0;
+  }
+
+  .panel--compact .tracks {
+    flex: none;
   }
 
   .track__country {

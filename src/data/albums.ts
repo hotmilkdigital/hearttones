@@ -522,6 +522,42 @@ export function lineupText(track: Track, locale: Locale = 'de'): string {
   return track.ensemble ? `${track.ensemble}: ${list}` : list;
 }
 
+/** Writer credit line, e.g. "Musik: Yoni Rechter · Text: Yehonatan Geffen". */
+export function writingText(writing: Writing, locale: Locale = 'de'): string {
+  const de = locale === 'de';
+  switch (writing.type) {
+    case 'traditional':
+      return de ? 'Traditionell' : 'Traditional';
+    case 'music':
+      if (!writing.lyrics) return `${de ? 'Musik' : 'Music'}: ${writing.music}`;
+      if (writing.lyrics === writing.music) return `${de ? 'Musik & Text' : 'Music & lyrics'}: ${writing.music}`;
+      return `${de ? 'Musik' : 'Music'}: ${writing.music} · ${de ? 'Text' : 'Lyrics'}: ${writing.lyrics}`;
+    case 'unspecified':
+      // Vol. 2 prints names without saying who wrote music or lyrics – don't assign roles.
+      return `${de ? 'Geschrieben von' : 'Written by'}: ${writing.names}`;
+  }
+}
+
+export interface AlbumPerformer {
+  name: string;
+  roles: Role[];
+  tracks: number[];
+}
+
+/** Everyone on an album in order of first appearance, with all their roles and track numbers. */
+export function albumPerformers(album: Album): AlbumPerformer[] {
+  const byPerson = new Map<PersonId, AlbumPerformer>();
+  for (const track of album.tracks) {
+    for (const p of track.lineup) {
+      const entry = byPerson.get(p.person) ?? { name: performerName(p), roles: [], tracks: [] };
+      for (const role of p.roles) if (!entry.roles.includes(role)) entry.roles.push(role);
+      entry.tracks.push(track.no);
+      byPerson.set(p.person, entry);
+    }
+  }
+  return [...byPerson.values()];
+}
+
 /** Anchor id of a track, used by the player list and deep links from the map. */
 export function trackAnchor(album: Album, track: Track): string {
   return `${album.id}-${track.slug}`;
