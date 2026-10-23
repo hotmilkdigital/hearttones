@@ -11,10 +11,12 @@ interface Props {
   title: string;
   description: string;
   locale?: Locale;
+  /** Always noindex, no canonical (404). */
+  noindex?: boolean;
 }
 
-const { title, description, locale = 'de' } = Astro.props;
-const canonical = new URL(Astro.url.pathname, site.url).href;
+const { title, description, locale = 'de', noindex = false } = Astro.props;
+const canonical = noindex ? null : new URL(Astro.url.pathname, site.url).href;
 const skipLabel = locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content';
 ---
 
@@ -25,8 +27,8 @@ const skipLabel = locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    {!isIndexable && <meta name="robots" content="noindex, nofollow" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    {(noindex || !isIndexable) && <meta name="robots" content="noindex, nofollow" />}
     <meta name="generator" content={Astro.generator} />
   </head>
   <body>

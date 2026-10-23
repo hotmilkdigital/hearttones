@@ -1,0 +1,54 @@
+---
+/** 404 – always noindex, no canonical. Links to the main sections (CLAUDE.md §4). */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import { mainNav, path } from '../data/routes';
+import { site } from '../data/site';
+---
+
+<BaseLayout title={`Seite nicht gefunden – ${site.brand}`} description="Diese Seite gibt es nicht (mehr)." noindex>
+  <Section tone="light" class="notfound" aria-labelledby="notfound-title">
+    <p class="eyebrow notfound__eyebrow">Fehler 404</p>
+    <h1 id="notfound-title">Seite nicht gefunden</h1>
+    <p class="lead notfound__text">
+      Diese Seite gibt es nicht oder nicht mehr. Vielleicht finden Sie hier, was Sie suchen:
+    </p>
+    <ul class="notfound__links">
+      <li><a class="btn btn--primary" href={path('home')}>Zur Startseite</a></li>
+      {
+        mainNav.map((item) => (
+          <li>
+            <a class="btn btn--outline" href={path(item.key)}>
+              {item.label.de}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</BaseLayout>
+
+<style>
+  .section.notfound {
+    min-height: 60vh;
+  }
+
+  .notfound__eyebrow {
+    margin-bottom: 12px;
+    color: var(--taupe);
+  }
+
+  .notfound__text {
+    max-width: 560px;
+    margin-top: 20px;
+  }
+
+  .notfound__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 32px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>
