@@ -47,6 +47,14 @@ export const order = {
   taxNote: 'Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.',
 } as const;
 
+/** Image credits for captions and the Impressum (§5.11). */
+export const imageCredits = [
+  { image: 'Familienfoto 2011 (Philipp v. Rothkirch und Robert Cummings mit ihren Kindern)', credit: 'Benedikt Stehle' },
+  { image: 'Philipp v. Rothkirch am Flügel im Hot Milk Studio', credit: 'Robert Cummings' },
+  { image: 'Cover Vol. 1', credit: 'Andre Wagner (Foto), Sylvia Puta (Bodypainting)' },
+  { image: 'Cover Vol. 2', credit: 'Benedikt Stehle (Foto)' },
+] as const;
+
 /**
  * Förderhinweis for Vol. 2 – verbatim from the Initiative Musik guidelines (§11, 18.10.2026).
  * Shown with both logos on a light background. Layout needs Initiative Musik's approval before launch.

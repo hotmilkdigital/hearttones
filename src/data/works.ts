@@ -3,10 +3,10 @@
  * Videos load only after consent (ConsentVideo, CLAUDE.md §8.6). No YouTube thumbnails:
  * until an own 16:9 poster exists, the card shows a cocoa surface with the title.
  *
- * Credits: Robert's wording ("songwriter and producer; recorded, mixed and mastered by Robert
- * Cummings at Hot Milk Studio") is used where it matches Philipp's own answers. For
- * „Escape from Baltimore" Philipp only named composition plus mix/master – production and
- * recording are unconfirmed, so the site states only what both sources agree on.
+ * Credits confirmed by Robert, 24.10.2026: „Escape from Baltimore" composed by Philipp von
+ * Rothkirch, Benedikt Stehle & Henry Ernst, produced by Henry Ernst, mixed and mastered at
+ * Hot Milk Studio. „This Is My Body" composed and produced by Philipp, recorded, mixed and
+ * mastered by Robert Cummings at Hot Milk Studio.
  */
 
 export interface Work {
@@ -27,17 +27,18 @@ export const works: Work[] = [
     id: 'escape-from-baltimore',
     title: 'Escape from Baltimore',
     artist: 'Fanfare Ciocărlia',
-    year: null,
+    year: 2021,
     youtubeId: 'G4tORyVfDb8',
-    credit: 'Komposition: Philipp v. Rothkirch. Gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
-    creditConfirmed: false,
+    credit:
+      'Komposition: Philipp v. Rothkirch, Benedikt Stehle und Henry Ernst. Produktion: Henry Ernst. Gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
+    creditConfirmed: true,
     artistLink: { label: 'Fanfare Ciocărlia bei Asphalt Tango', href: 'https://asphalt-tango.de/' },
   },
   {
     id: 'this-is-my-body',
     title: 'This Is My Body',
     artist: 'Ingrid Arthur',
-    year: null,
+    year: 2014,
     youtubeId: 'IVkwNzdCu88',
     credit:
       'Komposition und Produktion: Philipp v. Rothkirch. Aufgenommen, gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
