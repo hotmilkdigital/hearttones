@@ -1,0 +1,71 @@
+---
+/**
+ * Heart Tones logo (CLAUDE.md §6.4) – Robert's final Quicksand wordmark, inlined from
+ * src/assets/logo/heart-tones-logo.svg (SVGO-optimised, all text outlined, fills replaced by
+ * the classes logo__word / logo__glyph). Colours come from tokens per variant:
+ *   cream  → wordmark cocoa, glyph heart-red
+ *   cocoa  → wordmark cream, glyph heart-light
+ *   taupe  → wordmark cream, glyph heart-light
+ * The heart glyph is never part of the accessible name (§5.2): the name is "Heart Tones".
+ */
+import LogoSvg from '../assets/logo/heart-tones-logo.svg';
+
+interface Props {
+  variant?: 'cream' | 'cocoa' | 'taupe';
+  /** Rendered height in px; width follows the viewBox (≈ 2.49 : 1). */
+  height?: number;
+  /** Wraps the logo in a link (e.g. "/" in the header). */
+  href?: string;
+  /** Accessible name of the link or image. */
+  label?: string;
+  class?: string;
+}
+
+const { variant = 'cream', height = 48, href, label = 'Heart Tones', class: className } = Astro.props;
+const style = `--logo-h: ${height}px`;
+---
+
+{
+  href ? (
+    <a class:list={['logo', `logo--${variant}`, className]} href={href} aria-label={label} style={style}>
+      <LogoSvg class="logo__svg" aria-hidden="true" focusable="false" />
+    </a>
+  ) : (
+    <span class:list={['logo', `logo--${variant}`, className]} style={style}>
+      <LogoSvg class="logo__svg" role="img" aria-label={label} />
+    </span>
+  )
+}
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    line-height: 0;
+  }
+
+  .logo__svg {
+    display: block;
+    width: auto;
+    height: var(--logo-h);
+  }
+
+  .logo--cream :global(.logo__word) {
+    fill: var(--cocoa);
+  }
+
+  .logo--cream :global(.logo__glyph) {
+    fill: var(--heart-red);
+  }
+
+  .logo--cocoa :global(.logo__word),
+  .logo--taupe :global(.logo__word) {
+    fill: var(--cream);
+  }
+
+  .logo--cocoa :global(.logo__glyph),
+  .logo--taupe :global(.logo__glyph) {
+    fill: var(--heart-light);
+  }
+</style>

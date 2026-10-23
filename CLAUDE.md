@@ -138,7 +138,7 @@ Cards radius 12px, buttons 8px, pills 999px. Covers always square with a soft sh
 
 ### 6.4 Logo
 
-Wordmark "heart" + glyph (heart with note stem) + "tones". Variants: on cream (wordmark cocoa, glyph heart-red); on cocoa (wordmark cream, glyph heart-light); on taupe (wordmark all cream, glyph heart-light). Robert will deliver final SVGs (Quicksand and Nunito versions). Until then build `Logo.astro` from the artboard's inline glyph SVG + text, with a `variant` prop, so swapping in the SVGs touches one file. PNG references are in `../02_Assets/logos/`.
+Wordmark "heart" + glyph (heart with note stem) + "tones". Variants: on cream (wordmark cocoa, glyph heart-red); on cocoa (wordmark cream, glyph heart-light); on taupe (wordmark all cream, glyph heart-light). Final SVGs delivered 24.10.2026 (Quicksand; light/dark artwork identical): `src/assets/logo/heart-tones-logo.svg` is the SVGO-optimised master with fills replaced by the classes `logo__word` / `logo__glyph`; `Logo.astro` inlines it and colours it from tokens via the `variant` prop. Favicons (`public/favicon.svg|.ico`, `apple-touch-icon.png`) are generated from the glyph. Originals and PNG references in `../02_Assets/logos/`.
 
 ### 6.5 Hero
 
@@ -159,7 +159,7 @@ The artboard is a Claude Design file with inline styles and `{{…}}` template b
 ## 7. Assets
 
 - Originals stay in `../02_Assets/`. Copy only used files into `src/assets/<folder>/` with kebab-case names. Check file size after copying.
-- Current files are **interim**: covers are 1200px WebP (Robert will deliver JPEG 95 masters: Vol. 1 ~1470px, Vol. 2 ~2400px); family photo 1280×1599 WebP; piano photo 1600×1200 WebP; funding logos as raster (vector versions to be fetched from Initiative Musik). Build so masters can be swapped by replacing the file.
+- Covers are the final JPEG masters (24.10.2026: Vol. 1 1468 px, Vol. 2 2400 px, sRGB, no metadata) in `src/assets/covers/`. Still **interim**: family photo 1280×1599 WebP; piano photo 1600×1200 WebP; funding logos as raster (vector versions to be fetched from Initiative Musik). Build so masters can be swapped by replacing the file.
 - `vol-2-kinder-ohne-schrift.jpg`: Vol. 2 cover photo with the logo/lettering retouched out (23.10.). Not for the hero. Possible later use as a wide section image (e.g. Vol. 2 page). **Same consent condition as the Vol. 2 cover (§9).**
 - Audio: all 26 MP3s are delivered in `../02_Assets/audio/` (192 kbps, ~111 MB). Copy to `public/audio/vol-1/01-dodo.mp3` etc. (kebab-case, ASCII) and **commit them to git** (decided 23.10.2026). **Track durations come from the MP3s, not the booklets** (e.g. Vol. 1 "Sov sødt barnlille" 3:43, "Dream of Mikael" 4:20, "Dans les étoiles" 2:28); album totals are the sum of the MP3 durations.
 - Strip metadata (EXIF/GPS) from any new image before committing.
@@ -229,6 +229,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 24.10.2026 | Über Philipp: no street name for Philipp („wohnt in Berlin-Kreuzberg"). „Escape from Baltimore" (Fanfare Ciocărlia, 2021): composed by Philipp von Rothkirch, Benedikt Stehle & Henry Ernst, produced by Henry Ernst, mixed and mastered at Hot Milk Studio. „This Is My Body" (Ingrid Arthur, 2014). Artist link https://www.ingridarthur.com/. Piano photo: „Foto: Robert Cummings" (caption and Impressum). |
 | 24.10.2026 | Datenschutz names every domain contacted after „Video laden" (youtube-nocookie.com, googlevideo.com, ytimg.com, google.com, googleapis.com, gstatic.com – `src/data/privacy.ts`); re-check when the embed changes. Legal wording still from Robert. |
 | 24.10.2026 | SEO/QA: CSS inlined per page (`build.inlineStylesheets: 'always'`), Literata latin preloaded, interim favicon from the artboard glyph, robots.txt `Disallow: /` on staging. Default OG image `src/assets/og/og-default.png` generated from the hero – `[PLATZHALTER]` until approved (`ogDefaultApproved`). QA reports in `docs/` (`npm run qa:dist`, `npm run qa:contrast`). |
+| 24.10.2026 | Final logo SVGs and cover masters in place (§6.4, §7). Logo inline from one master with token fills; favicon from the glyph (heart-light in dark browser UI); covers as `<Picture>` AVIF/WebP 420/630/840 px, OG/schema image 1200 px JPEG on album pages (still behind the §9 cover gates in production). |
 | 24.10.2026 | World Peace Now! line-up confirmed, incl. the „BÄM" drumline members Ramon Buntebart, Leander Winkler, Rafael Nussbaumer. All three are adults (Robert) – names may be published; no guardian consent needed. |
 
 ## 12. Open items (build around them with placeholders)
@@ -239,7 +240,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 - Press sources (magazine/issue/year).
 - Singles artwork, date, distribution.
 - Widerrufsbelehrung, Impressum/Datenschutz final texts.
-- Logo SVGs; vector funding logos; cover masters.
+- Vector funding logos.
 - Rights: Vol. 1 and Vol. 2 cover consents, GEMA question for audio, Initiative Musik layout approval.
 - Domain/DNS (IONOS vs ALL-INKL) and info@hearttones.net mailbox.
 

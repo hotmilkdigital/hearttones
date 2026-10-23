@@ -30,6 +30,8 @@ const widths = image ? [width, Math.round(width * 1.5), width * 2].filter((w) =>
       src={image}
       alt={album.coverAlt}
       widths={widths}
+      width={widths.at(-1)}
+      height={widths.at(-1)}
       sizes={sizes}
       formats={['avif', 'webp']}
       fallbackFormat="webp"
