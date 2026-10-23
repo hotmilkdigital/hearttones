@@ -1,0 +1,292 @@
+/*
+ * Heart Tones – global styles.
+ * Design tokens per CLAUDE.md §6. Hex values live only in this file; components use the custom properties.
+ */
+
+@import './fonts.css';
+
+:root {
+  /* Colour – core palette (§6.1) */
+  --cream: #F6F0E8;
+  --sand: #D9CCBD;
+  --taupe: #7E6650;
+  --cocoa: #2E2420;
+  --heart-red: #9A0000;
+  --heart-light: #D94A4A;
+  --globe-blue: #6A87A8;
+  --globe-ochre: #D6A462;
+  --cocoa-2: #3A2E29;
+  --cocoa-line: #5A4A40;
+  --cream-muted: #E2D6C6;
+
+  /* Colour – additional artboard tokens (§6.1, added 23.10.2026) */
+  --paper: #FFFFFF;
+  --heart-red-dark: #6E0000;
+  --ink-muted: #5E4E42;
+  --ink-muted-sand: #4A3C33;
+  --ink-faint: #6B5A4C;
+  --cream-faint: #CDBFAE;
+  --cocoa-outline: #8A786A;
+  --taupe-line: #9C8571;
+
+  /* Staging-only highlight for [PLATZHALTER: …] (§5.1). Never used for real content. */
+  --placeholder-bg: #FFE27A;
+
+  /* Contextual colours – overridden per section tone (see [data-tone] below) */
+  --bg: var(--cream);
+  --text: var(--cocoa);
+  --text-muted: var(--ink-muted);
+  --link: var(--heart-red);
+  --link-hover: var(--heart-red-dark);
+  --focus-ring: var(--heart-red);
+
+  /* Type (§6.2) */
+  --font-serif: 'Literata', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fs-body: 18px;
+  --lh-body: 1.65;
+  --fs-h1: clamp(40px, 5vw, 64px);
+  --lh-h1: 1.08;
+  --tracking-h1: -0.015em;
+  --fs-h2: clamp(32px, 3.6vw, 44px);
+  --lh-h2: 1.15;
+  --fs-h3: 24px;
+  --lh-h3: 1.25;
+  --fs-lead: 20px;
+  --fs-eyebrow: 15px;
+  --tracking-eyebrow: 0.08em;
+  --fs-meta: 15px;
+  --fs-small: 14px;
+
+  /* Shape (§6.3) */
+  --radius-card: 12px;
+  --radius-button: 8px;
+  --radius-pill: 999px;
+  --shadow-cover: 0 18px 40px rgb(0 0 0 / 0.35);
+  --shadow-cover-light: 0 10px 24px rgb(46 36 32 / 0.25);
+  --shadow-photo: 0 14px 32px rgb(46 36 32 / 0.22);
+
+  /* Layout (§6.3) */
+  --content-max: 1200px;
+  --gutter: 24px;
+  --section-pad: 88px;
+  --touch-min: 44px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 16px;
+    --section-pad: 56px;
+  }
+}
+
+/* Section tones (§6.1 day/night rhythm). Used by Section.astro via data-tone. */
+[data-tone='light'] {
+  --bg: var(--cream);
+  --text: var(--cocoa);
+  --text-muted: var(--ink-muted);
+  --link: var(--heart-red);
+  --link-hover: var(--heart-red-dark);
+  --focus-ring: var(--heart-red);
+}
+
+[data-tone='paper'] {
+  --bg: var(--paper);
+  --text: var(--cocoa);
+  --text-muted: var(--ink-muted);
+  --link: var(--heart-red);
+  --link-hover: var(--heart-red-dark);
+  --focus-ring: var(--heart-red);
+}
+
+[data-tone='sand'] {
+  --bg: var(--sand);
+  --text: var(--cocoa);
+  --text-muted: var(--ink-muted-sand);
+  --link: var(--heart-red);
+  --link-hover: var(--heart-red-dark);
+  --focus-ring: var(--heart-red);
+}
+
+[data-tone='night'] {
+  --bg: var(--cocoa);
+  --text: var(--cream);
+  --text-muted: var(--cream-muted);
+  --link: var(--cream);
+  --link-hover: var(--cream-muted);
+  --focus-ring: var(--globe-ochre);
+}
+
+[data-tone='taupe'] {
+  --bg: var(--taupe);
+  --text: var(--cream);
+  --text-muted: var(--cream);
+  --link: var(--cream);
+  --link-hover: var(--cream-muted);
+  --focus-ring: var(--cream);
+}
+
+[data-tone] {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--cocoa);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--tracking-h1);
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+}
+
+p {
+  margin: 0;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--link);
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Utilities */
+.container {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+}
+
+.stats {
+  font-family: var(--font-serif);
+  font-size: var(--fs-lead);
+}
+
+.meta {
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 12px 18px;
+  border-radius: var(--radius-button);
+  background: var(--cocoa);
+  color: var(--cream);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+  color: var(--cream);
+}
+
+/* [PLATZHALTER: …] – must stand out on staging (§5.1) */
+.placeholder {
+  display: inline;
+  padding: 0 0.25em;
+  border-radius: 4px;
+  outline: 2px dashed var(--heart-red);
+  background: var(--placeholder-bg);
+  color: var(--cocoa);
+  font-family: var(--font-sans);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
