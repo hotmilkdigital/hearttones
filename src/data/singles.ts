@@ -40,7 +40,7 @@ export const singles: Single[] = [
     artist: 'Berlin Peace Collective',
     status: 'upcoming',
     teaser: { de: 'Ein Stück für den Frieden.', en: null },
-    // Line-up confirmed by Robert, 24.10.2026.
+    // Line-up confirmed by Robert, 24.10.2026; the drumline members on the recording are adults, names cleared.
     creditsConfirmed: true,
     credits: [
       { name: 'Philipp v. Rothkirch', roles: ['composition', 'keys'] },

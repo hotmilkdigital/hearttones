@@ -224,7 +224,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 23.10.2026 | "Demnächst" pills cocoa on globe-ochre; artboard colours added as tokens (§6.1). |
 | 23.10.2026 | Press strip and the two approved quotes shown; funding block on homepage Vol. 2 card and Vol. 2 page, no footer note. Initiative Musik reviews the staging site. |
 | 24.10.2026 | Correct native spelling for „Kołysanka dla słoneczka" and „Бүүвэйн дуу" (§5.5). Kgomotso Tsatsi = vocals. „Bishek jyri": backing vocals and arrangement for all three. Serkan Kaynarcali = Serkan Ky (artist name since Vol. 2; Vol. 1 credit as printed). Brune = Ruby Brune. Russland marker near Kazan. German role labels approved. |
-| 24.10.2026 | World Peace Now! line-up confirmed, incl. the „BÄM" drumline members Ramon Buntebart, Leander Winkler, Rafael Nussbaumer. |
+| 24.10.2026 | World Peace Now! line-up confirmed, incl. the „BÄM" drumline members Ramon Buntebart, Leander Winkler, Rafael Nussbaumer. All three are adults (Robert) – names may be published; no guardian consent needed. |
 
 ## 12. Open items (build around them with placeholders)
 
