@@ -1,0 +1,71 @@
+/**
+ * Site-wide business data (CLAUDE.md §5.12, §5.13, §10) and rights gates (§9).
+ * Payment details (bank account, PayPal) never go here or anywhere on the site (§5.14).
+ */
+
+export const site = {
+  url: 'https://hearttones.net',
+  brand: 'Heart Tones',
+  label: 'Heart Tones Records',
+  labelCode: 'LC-27925',
+  claim: 'Music from around the world',
+  owner: {
+    /** Impressum, schema, titles/meta (§5.3) */
+    fullName: 'Philipp von Rothkirch',
+    /** Running text (§5.3) */
+    shortName: 'Philipp v. Rothkirch',
+  },
+  contact: {
+    email: 'info@hearttones.net',
+    phone: '+4917661233929',
+    phoneDisplay: '0176 61233929',
+    /** No opening hours (§5.12). */
+    availability: 'Erstgespräch nach Vereinbarung',
+    /** Shown in header/footer instead of the address. */
+    area: 'Berlin-Kreuzberg',
+  },
+  /** Impressum only – never in header/footer (§5.12). */
+  address: {
+    street: 'Obentrautstraße 51',
+    postalCode: '10963',
+    city: 'Berlin',
+    country: 'DE',
+  },
+  /** Production partner (§5.13). Never present as owner; never use its address for Philipp. */
+  partner: {
+    name: 'Hot Milk Studio',
+    url: 'https://www.hotmilkstudio.de/',
+  },
+} as const;
+
+/** Vol. 2 order by email (§10). */
+export const order = {
+  subject: 'Bestellung Heart Tones Vol. 2',
+  priceEur: 15,
+  shippingDeEur: 3.5,
+  shippingIntlEur: 7,
+  taxNote: 'Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.',
+} as const;
+
+/**
+ * Rights gates (§9). Robert flips a flag only after the consent/licence is on file in writing.
+ * Cover consents were given verbally on 23.10.2026 – still false until filed.
+ */
+export const rights = {
+  vol1CoverCleared: false,
+  vol2CoverCleared: false,
+  audioCleared: false,
+} as const;
+
+export type RightsKey = keyof typeof rights;
+
+/** Production build (PUBLIC_INDEXABLE=true). Staging and local dev are not indexable. */
+export const isIndexable = import.meta.env.PUBLIC_INDEXABLE === 'true';
+
+/**
+ * Whether a rights-gated item may render. Staging shows everything for review;
+ * production shows it only once the flag is cleared.
+ */
+export function isCleared(key: RightsKey): boolean {
+  return !isIndexable || rights[key];
+}
