@@ -1,0 +1,138 @@
+---
+/**
+ * Datenschutzerklärung – scaffold (CLAUDE.md §10). States what the site technically does;
+ * all legal wording (legal bases, retention, rights, processor details) stays [PLATZHALTER]
+ * until Robert supplies the final text. The controller's address lives in the Impressum only.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { externalLinkTargets, youtubeHosts, youtubeHostsCheckedOn } from '../data/privacy';
+import { path } from '../data/routes';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title={`Datenschutz – ${site.brand}`}
+  description={`Datenschutzerklärung von ${site.url.replace('https://', '')}: keine Cookies, keine Analyse, YouTube-Videos erst nach Klick.`}
+>
+  <Section tone="light" aria-labelledby="datenschutz-title">
+    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Datenschutz' }]} />
+    <div class="legal">
+      <h1 id="datenschutz-title">Datenschutz</h1>
+      <p class="legal__status"><Placeholder text="Endgültiger Text der Datenschutzerklärung – von Robert" /></p>
+
+      <h2>1. Verantwortlicher</h2>
+      <p>
+        Verantwortlich für die Datenverarbeitung auf dieser Website ist {site.owner.fullName}. Die Kontaktdaten finden Sie
+        im{' '}<a href={path('imprint')}>Impressum</a>. E-Mail: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+      </p>
+
+      <h2>2. Das Wichtigste in Kürze</h2>
+      <ul>
+        <li>Diese Website setzt keine Cookies und verwendet keine Analyse- oder Tracking-Dienste.</li>
+        <li>Schriften und Hörproben liegen auf unserem eigenen Server; beim Laden werden keine Daten an Dritte übertragen.</li>
+        <li>YouTube-Videos werden erst geladen, wenn Sie auf „Video laden“ klicken.</li>
+      </ul>
+
+      <h2>3. Hosting und Server-Logfiles</h2>
+      <p>Die Website wird bei der Hetzner Online GmbH gehostet.</p>
+      <p><Placeholder text="Serverstandort (Deutschland/Finnland), Angaben zu Server-Logfiles (erfasste Daten, Zweck, Rechtsgrundlage, Speicherdauer) und Auftragsverarbeitung mit Hetzner" /></p>
+
+      <h2>4. Schriftarten</h2>
+      <p>
+        Die Schriften (Literata, Nunito) werden von unserem eigenen Server geladen. Es besteht keine Verbindung zu Google Fonts
+        oder anderen Schriftanbietern.
+      </p>
+
+      <h2>5. Hörproben</h2>
+      <p>
+        Die Hörproben sind MP3-Dateien auf unserem eigenen Server. Beim Abspielen werden keine Daten an Dritte übertragen.
+      </p>
+
+      <h2>6. YouTube-Videos (Zwei-Klick-Lösung)</h2>
+      <p>
+        Auf der Seite <a href={path('about')}>Über Philipp</a> sind Videos von YouTube eingebunden. Solange Sie nicht auf
+        „Video laden“ klicken, stellt Ihr Browser keine Verbindung zu YouTube oder Google her; angezeigt wird nur eine Vorschau
+        von unserem Server.
+      </p>
+      <p>
+        Erst nach dem Klick wird der Player im erweiterten Datenschutzmodus von youtube-nocookie.com geladen. Anbieter ist die
+        Google Ireland Limited. Dabei ruft Ihr Browser Inhalte von folgenden Domains ab (geprüft am {youtubeHostsCheckedOn}):
+      </p>
+      <ul class="legal__hosts">
+        {
+          youtubeHosts.map((h) => (
+            <li>
+              <code>{h.host}</code> – {h.purpose}
+            </li>
+          ))
+        }
+      </ul>
+      <p>
+        Dabei werden mindestens Ihre IP-Adresse und technische Angaben zu Ihrem Browser an Google übertragen; eine Übermittlung
+        in die USA ist möglich.
+      </p>
+      <p><Placeholder text="Rechtsgrundlage (Einwilligung), Widerruf der Einwilligung, Speicherung durch Google, Datenübermittlung in Drittländer, Link zur Datenschutzerklärung von Google" /></p>
+      <p>
+        Der Link „Auf YouTube ansehen“ führt direkt zu youtube.com; dort gelten die Datenschutzbestimmungen von YouTube.
+      </p>
+
+      <h2>7. Links zu anderen Websites</h2>
+      <p>
+        Diese Website enthält einfache Links, unter anderem zu {externalLinkTargets.join(', ')}. Daten werden erst übertragen,
+        wenn Sie einen solchen Link anklicken; dann gelten die Datenschutzbestimmungen der jeweiligen Website.
+      </p>
+
+      <h2>8. Kontakt per E-Mail oder Telefon</h2>
+      <p>
+        Wenn Sie uns per E-Mail oder Telefon kontaktieren oder eine CD bestellen, verarbeiten wir Ihre Angaben, um Ihre Anfrage
+        zu bearbeiten.
+      </p>
+      <p><Placeholder text="Rechtsgrundlage, Speicherdauer, E-Mail-Anbieter (ALL-INKL?), Bestelldaten und Aufbewahrungspflichten" /></p>
+
+      <h2>9. Ihre Rechte</h2>
+      <p><Placeholder text="Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerspruch, Beschwerde bei einer Aufsichtsbehörde" /></p>
+
+      <p class="legal__date"><Placeholder text="Stand der Datenschutzerklärung (Datum)" /></p>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 760px;
+  }
+
+  .legal__status {
+    margin-top: 16px;
+  }
+
+  .legal h2 {
+    margin-top: 48px;
+    font-size: 26px;
+  }
+
+  .legal p,
+  .legal ul {
+    margin-top: 14px;
+  }
+
+  .legal ul {
+    padding-left: 1.2em;
+  }
+
+  .legal li + li {
+    margin-top: 6px;
+  }
+
+  .legal code {
+    font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    font-size: 0.9em;
+  }
+
+  .legal__date {
+    margin-top: 48px;
+  }
+</style>
