@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 440" role="img" aria-label="Illustrierter Globus, der warm wie ein Nachtlicht leuchtet">
+<defs>
+<radialGradient id="hero-glow" cx="50%" cy="50%" r="50%"><stop offset="55%" stop-color="#F3D9A8" stop-opacity="0.55"></stop><stop offset="100%" stop-color="#F3D9A8" stop-opacity="0"></stop></radialGradient>
+<radialGradient id="hero-sea" cx="38%" cy="34%" r="72%"><stop offset="0%" stop-color="#8FA8C2"></stop><stop offset="100%" stop-color="#4F6B8C"></stop></radialGradient>
+<clipPath id="hero-ball"><circle cx="220" cy="220" r="140"></circle></clipPath>
+</defs>
+<circle cx="220" cy="220" r="210" fill="url(#hero-glow)"></circle>
+<circle cx="220" cy="220" r="140" fill="url(#hero-sea)"></circle>
+<g clip-path="url(#hero-ball)" fill="#D6A462">
+<path d="M120 120 C 150 96 196 104 206 128 C 214 150 190 160 176 182 C 166 200 140 196 128 178 C 112 160 104 136 120 120 Z"></path>
+<path d="M168 214 C 188 206 204 222 200 248 C 196 276 182 308 168 330 C 158 312 154 280 150 256 C 146 232 152 220 168 214 Z"></path>
+<path d="M236 112 C 262 100 300 106 330 124 C 352 140 350 166 326 172 C 304 178 290 166 270 170 C 250 174 236 160 232 144 C 228 128 228 118 236 112 Z"></path>
+<path d="M244 186 C 268 178 292 190 298 214 C 304 244 290 280 268 300 C 254 286 250 262 240 240 C 230 218 228 194 244 186 Z"></path>
+<path d="M318 252 C 336 244 356 252 358 268 C 360 284 342 292 326 288 C 312 284 306 260 318 252 Z"></path>
+</g>
+<circle cx="220" cy="220" r="140" fill="none" stroke="#F6F0E8" stroke-opacity="0.35" stroke-width="2"></circle>
+<g fill="#F6F0E8">
+<circle cx="62" cy="88" r="2.5"></circle><circle cx="390" cy="70" r="2"></circle><circle cx="404" cy="300" r="2.5"></circle><circle cx="46" cy="330" r="2"></circle><circle cx="352" cy="390" r="1.8"></circle><circle cx="110" cy="40" r="1.6"></circle>
+</g>
+<path d="M366 104 a 24 24 0 1 0 22 30 a 19 19 0 1 1 -22 -30 Z" fill="#F6F0E8" fill-opacity="0.9"></path>
+</svg>

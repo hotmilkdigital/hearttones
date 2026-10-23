@@ -1,0 +1,136 @@
+---
+/**
+ * Homepage hero (CLAUDE.md §6.5): taupe band, "Demnächst" pill to the singles teaser,
+ * eyebrow, H1, intro, stats line, two buttons, the approved globe illustration.
+ * Copy from the approved artboard (Startseite-Artboard_v6).
+ */
+import Section from '../Section.astro';
+import HeroGlobe from '../../assets/illustrations/hero-globus.svg';
+import { albums } from '../../data/albums';
+import { countries } from '../../data/countries';
+import { path } from '../../data/routes';
+import { singles, singlesArtist } from '../../data/singles';
+
+// Derived from the data so the line can never drift from §5.4 (26 · 24 · 46); check-data asserts the values.
+const trackCount = albums.reduce((n, a) => n + a.tracks.length, 0);
+const countryCount = Object.keys(countries).length;
+const performerCount = new Set(albums.flatMap((a) => a.tracks.flatMap((t) => t.lineup.map((p) => p.person)))).size;
+
+const nextSingle = singles[0]!;
+---
+
+<Section tone="taupe" class="hero" aria-labelledby="hero-title">
+  <div class="hero__grid">
+    <div class="hero__text">
+      <a class="hero__pill" href="#neu">
+        <span class="badge-soon">Demnächst</span>
+        <span>Neue Musik: {nextSingle.title} ({singlesArtist})&nbsp;<span aria-hidden="true">→</span></span>
+      </a>
+      <p class="eyebrow">Lullabies from around the world</p>
+      <h1 id="hero-title">Schlaflieder aus aller Welt</h1>
+      <p class="lead hero__intro">
+        Zwei Alben mit Wiegenliedern, gesungen und gespielt von Musiker:innen aus aller Welt. Zum Einschlafen für Kinder
+        – und zum Zuhören für Eltern.
+      </p>
+      <p class="stats hero__stats">
+        {trackCount}&nbsp;Lieder · {countryCount}&nbsp;Länder · {performerCount}&nbsp;Musiker:innen
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--light" href="#player">Reinhören</a>
+        <a class="btn btn--outline" href={path('journey')}>Die Reise entdecken</a>
+      </div>
+    </div>
+    <div class="hero__art">
+      <HeroGlobe class="hero__globe" />
+    </div>
+  </div>
+</Section>
+
+<style>
+  .section.hero {
+    padding-block: 72px var(--section-pad);
+  }
+
+  .hero__grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .hero__text {
+    flex: 1 1 480px;
+    min-width: 0;
+  }
+
+  .hero__pill {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    min-height: var(--touch-min);
+    margin-bottom: 28px;
+    padding: 8px 16px 8px 10px;
+    /* Half the single-line height: a pill on one line, soft corners when it wraps on phones. */
+    border-radius: 22px;
+    background: var(--cocoa);
+    color: var(--cream);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .hero__pill:hover {
+    color: var(--cream);
+    background: var(--cocoa-2);
+  }
+
+  .eyebrow {
+    margin-bottom: 12px;
+  }
+
+  .hero__intro {
+    max-width: 540px;
+    margin-top: 24px;
+  }
+
+  .hero__stats {
+    margin-top: 20px;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 36px;
+  }
+
+  .hero__art {
+    display: flex;
+    flex: 1 1 400px;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .hero__globe {
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+  }
+
+  @media (max-width: 640px) {
+    .section.hero {
+      padding-top: 40px;
+    }
+
+    .hero__text,
+    .hero__art {
+      flex-basis: 100%;
+    }
+
+    .hero__globe {
+      max-width: 300px;
+    }
+  }
+</style>
