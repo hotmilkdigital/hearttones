@@ -1,0 +1,183 @@
+---
+/**
+ * Two-click YouTube embed (CLAUDE.md §8.6, §10). Nothing is requested from YouTube/Google until
+ * the visitor clicks "Video laden"; then a youtube-nocookie.com iframe replaces the poster.
+ * Poster: own image only (never a YouTube thumbnail) – without one, a cocoa surface with the title.
+ * Without JS the button stays hidden and the "Auf YouTube ansehen" link still works.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { path } from '../data/routes';
+
+interface Props {
+  youtubeId: string;
+  /** Full title for the iframe, button and link labels (e.g. "Artist – „Song“"). */
+  title: string;
+  /** Shorter title on the placeholder poster; defaults to title. */
+  posterTitle?: string;
+  /** Shown on the placeholder poster under the title, e.g. the artist. */
+  subtitle?: string;
+  poster?: ImageMetadata;
+  posterAlt?: string;
+}
+
+const { youtubeId, title, posterTitle = title, subtitle, poster, posterAlt = '' } = Astro.props;
+
+const embed = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeId)}?autoplay=1&rel=0`;
+const watch = `https://www.youtube.com/watch?v=${encodeURIComponent(youtubeId)}`;
+const noteId = `video-note-${youtubeId}`;
+---
+
+<div class="video" data-consent-video data-embed={embed} data-title={`Video: ${title}`}>
+  <div class="video__frame" data-video-frame>
+    {
+      poster ? (
+        <Image src={poster} alt={posterAlt} widths={[640, 1280]} sizes="(max-width: 760px) 100vw, 560px" class="video__poster" />
+      ) : (
+        <div class="video__poster video__poster--plain" aria-hidden="true">
+          <span class="video__poster-title">{posterTitle}</span>
+          {subtitle && <span class="video__poster-sub">{subtitle}</span>}
+        </div>
+      )
+    }
+    <div class="video__overlay">
+      <button type="button" class="btn btn--light video__load" data-video-load aria-describedby={noteId} hidden>
+        <svg width="14" height="16" viewBox="0 0 16 18" aria-hidden="true"><path d="M2 1 L14 9 L2 17 Z" fill="currentColor"></path></svg>
+        Video laden<span class="visually-hidden">: {title}</span>
+      </button>
+      <p class="video__note" id={noteId}>
+        Beim Laden werden Daten an YouTube (Google) übertragen. <a href={path('privacy')}>Datenschutz</a>
+      </p>
+    </div>
+  </div>
+  <p class="video__link">
+    <a href={watch}>Auf YouTube ansehen<span class="visually-hidden">: {title}</span></a>
+  </p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-consent-video]').forEach((root) => {
+    const button = root.querySelector<HTMLButtonElement>('[data-video-load]');
+    const frame = root.querySelector<HTMLElement>('[data-video-frame]');
+    if (!button || !frame) return;
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = root.dataset.embed!;
+      iframe.title = root.dataset.title!;
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allowFullscreen = true;
+      iframe.className = 'video__iframe';
+      frame.replaceChildren(iframe);
+      iframe.focus();
+    });
+  });
+</script>
+
+<style>
+  .video__frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-card);
+    background: var(--cocoa);
+  }
+
+  .video__poster {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video__poster--plain {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 4px;
+    padding: 20px 24px;
+    border: 1px solid var(--cocoa-line);
+    border-radius: var(--radius-card);
+    color: var(--cream);
+  }
+
+  .video__poster-title {
+    font-family: var(--font-serif);
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .video__poster-sub {
+    color: var(--cream-muted);
+    font-size: var(--fs-meta);
+  }
+
+  .video__overlay {
+    position: absolute;
+    inset: auto 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    padding: 16px 20px;
+    background: linear-gradient(to top, rgb(46 36 32 / 0.92), rgb(46 36 32 / 0.6) 70%, transparent);
+    color: var(--cream);
+  }
+
+  .video__load[hidden] {
+    display: none;
+  }
+
+  .video__note {
+    flex: 1 1 200px;
+    font-size: var(--fs-small);
+    line-height: 1.45;
+    color: var(--cream-muted);
+  }
+
+  .video__note a {
+    color: var(--cream);
+  }
+
+  .video__link {
+    margin-top: 10px;
+    font-size: var(--fs-meta);
+    font-weight: 700;
+  }
+
+  .video__link a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+
+  .video__frame :global(.video__iframe) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  @media (max-width: 640px) {
+    .video__overlay {
+      position: static;
+      background: var(--cocoa-2);
+    }
+
+    .video__frame {
+      aspect-ratio: auto;
+    }
+
+    .video__poster--plain {
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-card) var(--radius-card) 0 0;
+    }
+
+    .video__frame :global(.video__iframe) {
+      aspect-ratio: 16 / 9;
+      height: auto;
+    }
+  }
+</style>
