@@ -1,0 +1,266 @@
+---
+/**
+ * Site header (CLAUDE.md §4, §8.1): logo, main navigation Musik · Die Reise · Produktion ·
+ * Über Philipp · Kontakt with active state, mobile menu as a disclosure button, language
+ * switch only once EN is published (§4 EN workflow).
+ *
+ * Active state: aria-current="page" on the exact page; aria-current="true" on the section
+ * (Musik covers the album, singles, Künstler:innen and Presse pages, which live under Musik).
+ * Without JS the menu is simply always open on phones.
+ */
+import Logo from './Logo.astro';
+import { enPublished, mainNav, path, routes, type Locale, type RouteKey } from '../data/routes';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
+const current = (Object.keys(routes) as RouteKey[]).find((k) => routes[k][locale] === Astro.url.pathname);
+
+const sections: Partial<Record<RouteKey, RouteKey[]>> = {
+  music: ['music', 'vol1', 'vol2', 'singles', 'artists', 'press'],
+};
+
+const items = mainNav.map((item) => {
+  const inSection = current !== undefined && (sections[item.key] ?? [item.key]).includes(current);
+  const ariaCurrent: 'page' | 'true' | undefined = current === item.key ? 'page' : inSection ? 'true' : undefined;
+  return { href: path(item.key, locale), label: item.label[locale], ariaCurrent };
+});
+
+const other: Locale = locale === 'de' ? 'en' : 'de';
+const switchHref = current ? path(current, other) : path('home', other);
+---
+
+<header class="header" data-tone="light" data-header>
+  <div class="container header__bar">
+    <Logo variant="cream" href={path('home', locale)} label="Heart Tones – Startseite" height={64} class="header__logo" />
+
+    <button
+      type="button"
+      class="header__toggle"
+      aria-expanded="false"
+      aria-controls="hauptmenue"
+      data-menu-toggle
+      hidden
+    >
+      <svg class="header__toggle-icon" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+        <path class="header__bars" d="M3 6h16M3 11h16M3 16h16" />
+        <path class="header__close" d="M5 5l12 12M17 5L5 17" />
+      </svg>
+      Menü
+    </button>
+
+    <nav class="header__nav" id="hauptmenue" aria-label="Hauptnavigation" data-menu>
+      <ul class="header__list">
+        {
+          items.map((item) => (
+            <li>
+              <a class="header__link" href={item.href} aria-current={item.ariaCurrent}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        enPublished && (
+          <p class="header__lang">
+            <a href={path('home', 'de')} lang="de" aria-current={locale === 'de' ? 'true' : undefined}>
+              DE
+            </a>
+            <span aria-hidden="true">/</span>
+            <a href={switchHref} lang={other} hreflang={other}>
+              {other.toUpperCase()}
+            </a>
+          </p>
+        )
+      }
+    </nav>
+  </div>
+</header>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-header]').forEach((header) => {
+    const toggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const menu = header.querySelector<HTMLElement>('[data-menu]');
+    if (!toggle || !menu) return;
+
+    const mobile = window.matchMedia('(max-width: 860px)');
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      header.dataset.menuOpen = String(open);
+    };
+
+    toggle.hidden = false;
+    header.classList.add('header--enhanced');
+    setOpen(false);
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    header.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && mobile.matches && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    mobile.addEventListener('change', () => setOpen(false));
+  });
+</script>
+
+<style>
+  .header {
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .header__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 24px;
+    padding-block: 14px;
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: 8px 24px;
+  }
+
+  .header__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .header__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    color: var(--cocoa);
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .header__link:hover {
+    color: var(--heart-red);
+  }
+
+  .header__link[aria-current] {
+    color: var(--heart-red);
+  }
+
+  .header__link[aria-current]::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 8px;
+    left: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+
+  .header__lang {
+    display: flex;
+    gap: 6px;
+    padding-left: 12px;
+    border-left: 1px solid var(--sand);
+    font-size: 14px;
+  }
+
+  .header__lang a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    color: var(--ink-faint);
+    text-decoration: none;
+  }
+
+  .header__lang a[aria-current] {
+    color: var(--cocoa);
+    font-weight: 700;
+  }
+
+  .header__toggle {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    min-height: var(--touch-min);
+    padding: 8px 14px;
+    border: 2px solid var(--cocoa);
+    border-radius: var(--radius-button);
+    background: transparent;
+    color: var(--cocoa);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .header__toggle-icon path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .header__close,
+  .header[data-menu-open='true'] .header__bars {
+    display: none;
+  }
+
+  .header[data-menu-open='true'] .header__close {
+    display: inline;
+  }
+
+  /* Phones and small tablets: menu behind the disclosure button */
+  @media (max-width: 860px) {
+    .header :global(.logo__svg) {
+      height: 52px;
+    }
+
+    .header--enhanced .header__toggle:not([hidden]) {
+      display: inline-flex;
+    }
+
+    .header__nav {
+      flex-basis: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .header--enhanced[data-menu-open='false'] .header__nav {
+      display: none;
+    }
+
+    .header__list {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .header__list li + li {
+      border-top: 1px solid var(--sand);
+    }
+
+    .header__link {
+      width: 100%;
+      font-size: 18px;
+    }
+
+    .header__link[aria-current]::after {
+      right: auto;
+      bottom: 10px;
+      width: 24px;
+    }
+
+    .header__lang {
+      padding: 8px 0 0;
+      border-left: 0;
+      border-top: 1px solid var(--sand);
+    }
+  }
+</style>

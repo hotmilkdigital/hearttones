@@ -1,7 +1,8 @@
 /**
  * QA on the built site (run after `npm run build`): npm run qa:dist [-- --write]
  * - SEO checks per page (CLAUDE.md §8.7): unique title and description, description length,
- *   canonical, og:image file exists, JSON-LD parses, exactly one <h1>, lang, alt on every <img>.
+ *   canonical, og:image file exists, JSON-LD parses, exactly one <h1>, lang, alt on every <img>,
+ *   every internal link resolves to a built page.
  * - Lists every [PLATZHALTER: …] per page (§5.1). With --write: docs/platzhalter.md.
  * Exits 1 on SEO errors; placeholders are reported, not failed (they are expected on staging).
  */
@@ -84,6 +85,14 @@ for (const { url, html } of pages) {
 
   for (const img of html.match(/<img\b[^>]*>/g) ?? [])
     if (!/\balt="/.test(img)) errors.push(`${url}: <img> without alt: ${img.slice(0, 80)}`);
+
+  // Internal links must resolve to a built page or file (no link into the 404).
+  for (const m of html.matchAll(/<a\b[^>]*\bhref="(\/[^"#?]*)/g)) {
+    const href = m[1]!;
+    const target = href.endsWith('/') ? join(DIST, href, 'index.html') : join(DIST, href);
+    if (!existsSync(target) && !existsSync(join(DIST, `${href}.html`)))
+      errors.push(`${url}: internal link to ${href} has no page`);
+  }
 
   // Placeholders in text and attributes
   const text = decode(html.replace(/<script[\s\S]*?<\/script>/g, (s) => (s.includes('PLATZHALTER') ? s : '')).replace(/<[^>]+>/g, ' '));

@@ -1,9 +1,10 @@
 ---
 /**
  * Document shell (CLAUDE.md §8.1, §8.7): head, meta, canonical, robots, Open Graph/Twitter,
- * hreflang (only once EN is published), JSON-LD, skip link.
- * Header and Footer are added in the layout-shell step.
+ * hreflang (only once EN is published), JSON-LD, skip link, Header and Footer on every page.
  */
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 // Same hashed file as in fonts.css – preloaded because every H1 (often the LCP) is set in Literata.
 import literataLatin from '@fontsource-variable/literata/files/literata-latin-opsz-normal.woff2?url';
@@ -104,9 +105,11 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...
   </head>
   <body>
     <a class="skip-link" href="#inhalt">{skipLabel}</a>
+    <Header locale={locale} />
     <main id="inhalt" tabindex="-1">
       <slot />
     </main>
+    <Footer locale={locale} />
   </body>
 </html>
 

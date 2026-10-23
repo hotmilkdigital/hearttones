@@ -1,0 +1,157 @@
+---
+/**
+ * Site footer (CLAUDE.md §8.1, artboard): taupe band with logo, claim and label line
+ * („Heart Tones Records · LC-27925"), contact (no postal address – Impressum only, §5.12),
+ * page links (Künstler:innen and Presse live here, not in the main nav), legal links and the
+ * language link once EN exists. No funding note in the footer (§11, 23.10.2026).
+ */
+import Logo from './Logo.astro';
+import { enPublished, path, type Locale, type RouteKey } from '../data/routes';
+import { site } from '../data/site';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
+
+const pages: { key: RouteKey; label: string }[] = [
+  { key: 'music', label: 'Musik' },
+  { key: 'journey', label: 'Die Reise' },
+  { key: 'artists', label: 'Künstler:innen' },
+  { key: 'press', label: 'Presse' },
+  { key: 'production', label: 'Produktion' },
+  { key: 'about', label: 'Über Philipp' },
+];
+
+const legal: { key: RouteKey; label: string }[] = [
+  { key: 'imprint', label: 'Impressum' },
+  { key: 'privacy', label: 'Datenschutz' },
+  { key: 'withdrawal', label: 'Widerruf' },
+];
+---
+
+<footer class="footer" data-tone="taupe">
+  <div class="container footer__main">
+    <div class="footer__brand">
+      <Logo variant="taupe" height={56} label="Heart Tones" />
+      <p class="footer__claim">{site.claim}</p>
+      <p class="footer__label">{site.label} · {site.labelCode}</p>
+    </div>
+
+    <div class="footer__col">
+      <h2 class="footer__title">Kontakt</h2>
+      <p>
+        {site.owner.fullName}<br />
+        {site.contact.area}
+      </p>
+      <p>
+        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a><br />
+        <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+      </p>
+      <p class="footer__note">{site.contact.availability}</p>
+    </div>
+
+    <nav class="footer__col" aria-labelledby="footer-pages">
+      <h2 class="footer__title" id="footer-pages">Seiten</h2>
+      <ul class="footer__links">
+        {
+          pages.map((p) => (
+            <li>
+              <a href={path(p.key, locale)}>{p.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer__bottom">
+    <ul class="footer__legal" aria-label="Rechtliches">
+      {
+        legal.map((p) => (
+          <li>
+            <a href={path(p.key, locale)}>{p.label}</a>
+          </li>
+        ))
+      }
+      {
+        enPublished && (
+          <li>
+            <a href={path('home', 'en')} lang="en" hreflang="en">
+              English
+            </a>
+          </li>
+        )
+      }
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .footer__main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+    padding-block: 72px 40px;
+  }
+
+  .footer__brand {
+    flex: 1 1 280px;
+  }
+
+  .footer__claim {
+    margin-top: 16px;
+  }
+
+  .footer__label {
+    margin-top: 6px;
+    font-size: var(--fs-meta);
+  }
+
+  .footer__col {
+    flex: 1 1 220px;
+  }
+
+  .footer__title {
+    font-size: 22px;
+  }
+
+  .footer__col p {
+    margin-top: 10px;
+  }
+
+  .footer__note {
+    font-size: var(--fs-meta);
+  }
+
+  .footer__links,
+  .footer__legal {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer__links {
+    margin-top: 6px;
+  }
+
+  .footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+
+  .footer__bottom {
+    padding-block: 12px 28px;
+    border-top: 1px solid var(--taupe-line);
+  }
+
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
+    font-size: var(--fs-meta);
+  }
+</style>

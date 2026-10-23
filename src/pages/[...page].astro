@@ -1,9 +1,11 @@
 ---
 /**
  * All DE pages except the homepage. URLs come from src/data/routes.ts only, so slugs can change
- * in one place (CLAUDE.md §4). Each route key renders its view from src/views/.
+ * in one place (CLAUDE.md §4). Every route key renders a view from src/views/; keys without a
+ * finished view render StubView, so no internal link ends in the 404.
  */
 import type { GetStaticPaths } from 'astro';
+import type { ComponentProps } from 'astro/types';
 import AlbumView from '../views/AlbumView.astro';
 import SinglesView from '../views/SinglesView.astro';
 import JourneyView from '../views/JourneyView.astro';
@@ -11,20 +13,74 @@ import AboutView from '../views/AboutView.astro';
 import PrivacyView from '../views/PrivacyView.astro';
 import ImprintView from '../views/ImprintView.astro';
 import WithdrawalView from '../views/WithdrawalView.astro';
+import StubView from '../views/StubView.astro';
 import { vol1, vol2 } from '../data/albums';
 import { routes, type RouteKey } from '../data/routes';
+import { site } from '../data/site';
 
-type View = { key: 'vol1' | 'vol2' | 'singles' | 'journey' | 'about' | 'privacy' | 'imprint' | 'withdrawal' };
+type PageKey = Exclude<RouteKey, 'home'>;
 
-export const getStaticPaths = (() => {
-  const keys: View['key'][] = ['vol1', 'vol2', 'singles', 'journey', 'about', 'privacy', 'imprint', 'withdrawal'];
-  return keys.map((key) => ({
-    params: { page: routes[key as RouteKey].de.replace(/^\/|\/$/g, '') },
-    props: { key },
-  }));
-}) satisfies GetStaticPaths;
+export const getStaticPaths = (() =>
+  (Object.keys(routes) as RouteKey[])
+    .filter((key): key is PageKey => key !== 'home')
+    .map((key) => ({
+      params: { page: routes[key].de.replace(/^\/|\/$/g, '') },
+      props: { key },
+    }))) satisfies GetStaticPaths;
 
-const { key } = Astro.props as View;
+const { key } = Astro.props as { key: PageKey };
+
+// Stubs until the pages are built (Musik hub: P7; Künstler:innen, Produktion, Presse, Kontakt: P10).
+const stubs: Partial<Record<PageKey, Omit<ComponentProps<typeof StubView>, 'routeKey'>>> = {
+  music: {
+    title: `Musik: Lullabies und Berlin Peace Collective | ${site.brand}`,
+    description: `Die Musik von ${site.brand}: Lullabies From Around The World Vol. 1 und Vol. 2 sowie die neuen Singles des Berlin Peace Collective.`,
+    heading: 'Musik',
+    placeholder: 'Musik-Übersicht mit Vol. 1, Vol. 2 und Berlin Peace Collective (P7)',
+    links: [
+      { label: 'Vol. 1 (2011)', key: 'vol1' },
+      { label: 'Vol. 2 (2023)', key: 'vol2' },
+      { label: 'Berlin Peace Collective', key: 'singles' },
+      { label: 'Künstler:innen', key: 'artists' },
+      { label: 'Presse', key: 'press' },
+    ],
+  },
+  artists: {
+    title: `Künstler:innen der Lullabies From Around The World | ${site.brand}`,
+    description: `Die 46 Musiker:innen und Ensembles auf Lullabies From Around The World Vol. 1 und Vol. 2 – mit Liedern, Instrumenten und Ländern.`,
+    heading: 'Künstler:innen',
+    placeholder: 'Alle 46 Musiker:innen beider Alben mit Links und Fotos (P10, Recherche Philipp)',
+    parent: { label: 'Musik', key: 'music' },
+    links: [
+      { label: 'Vol. 1 (2011)', key: 'vol1' },
+      { label: 'Vol. 2 (2023)', key: 'vol2' },
+    ],
+  },
+  production: {
+    title: `Produktion: Komposition, Arrangement und Aufnahme | ${site.brand}`,
+    description: `Musikproduktion mit ${site.owner.shortName} in Berlin-Kreuzberg, in Partnerschaft mit dem Hot Milk Studio. Erstgespräch nach Vereinbarung.`,
+    heading: 'Produktion',
+    placeholder: 'Produktionsseite mit Leistungen, Ablauf, Referenzen und Partnerschaft Hot Milk Studio (P10)',
+    links: [{ label: 'Über Philipp', key: 'about' }],
+  },
+  press: {
+    title: `Presse: Rezensionen und Berichte | ${site.brand}`,
+    description: `Presse zu ${site.brand} und Lullabies From Around The World: Rezensionen und Berichte über die Schlaflieder aus aller Welt.`,
+    heading: 'Presse',
+    placeholder: 'Pressezitate mit Quellen und Pressestimmen (P10)',
+    parent: { label: 'Musik', key: 'music' },
+    links: [{ label: 'Vol. 1 (2011)', key: 'vol1' }],
+  },
+  contact: {
+    title: `Kontakt | ${site.brand}`,
+    description: `Kontakt zu ${site.owner.fullName} und ${site.brand}: E-Mail und Telefon, Erstgespräch nach Vereinbarung, CD-Bestellung Vol. 2.`,
+    heading: 'Kontakt',
+    placeholder: 'Kontaktseite mit E-Mail, Telefon und Hinweis zur CD-Bestellung (P10)',
+    links: [{ label: 'CD Vol. 2 bestellen', key: 'vol2' }],
+  },
+};
+
+const stub = stubs[key];
 ---
 
 {key === 'vol1' && <AlbumView album={vol1} />}
@@ -35,3 +91,4 @@ const { key } = Astro.props as View;
 {key === 'privacy' && <PrivacyView />}
 {key === 'imprint' && <ImprintView />}
 {key === 'withdrawal' && <WithdrawalView />}
+{stub && <StubView routeKey={key} {...stub} />}
