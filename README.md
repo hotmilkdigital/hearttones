@@ -32,9 +32,12 @@ Rights flags live in `src/data/site.ts` (CLAUDE.md §9). Copy `.env.example` to 
 
 ```
 src/
-  data/      routes.ts (all URLs), site.ts (business data, rights flags)
+  data/      routes.ts (all URLs), site.ts (business data, rights flags, funding notice),
+             albums/people/countries/roles/singles/press.ts (content; checked by scripts/check-data.ts)
   styles/    global.css (design tokens, type scale), fonts.css (self-hosted Literata + Nunito)
-  pages/     one file per route; DE at the root, EN under /en/ later
+  pages/     index.astro (home) and [...page].astro, which builds every other URL from routes.ts
+  views/     one component per page (AlbumView, SinglesView, …)
+  components/ shared UI (Section, Cover, AudioPlayer, CreditList, Placeholder, …)
 public/      static files served as-is (audio goes to public/audio/)
 ```
 

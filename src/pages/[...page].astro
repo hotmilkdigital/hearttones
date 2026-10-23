@@ -1,0 +1,27 @@
+---
+/**
+ * All DE pages except the homepage. URLs come from src/data/routes.ts only, so slugs can change
+ * in one place (CLAUDE.md §4). Each route key renders its view from src/views/.
+ */
+import type { GetStaticPaths } from 'astro';
+import AlbumView from '../views/AlbumView.astro';
+import SinglesView from '../views/SinglesView.astro';
+import { vol1, vol2 } from '../data/albums';
+import { routes, type RouteKey } from '../data/routes';
+
+type View = { key: 'vol1' | 'vol2' | 'singles' };
+
+export const getStaticPaths = (() => {
+  const keys: View['key'][] = ['vol1', 'vol2', 'singles'];
+  return keys.map((key) => ({
+    params: { page: routes[key as RouteKey].de.replace(/^\/|\/$/g, '') },
+    props: { key },
+  }));
+}) satisfies GetStaticPaths;
+
+const { key } = Astro.props as View;
+---
+
+{key === 'vol1' && <AlbumView album={vol1} />}
+{key === 'vol2' && <AlbumView album={vol2} />}
+{key === 'singles' && <SinglesView />}

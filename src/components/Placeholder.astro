@@ -1,0 +1,14 @@
+---
+/**
+ * Visible marker for missing content (CLAUDE.md §5.1). Always renders "[PLATZHALTER: …]"
+ * so `grep PLATZHALTER` finds every gap before a release.
+ */
+interface Props {
+  /** What is missing, e.g. "Magazin, Ausgabe, Jahr". */
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<span class="placeholder">[PLATZHALTER: {text}]</span>

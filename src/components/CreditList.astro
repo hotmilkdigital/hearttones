@@ -1,0 +1,49 @@
+---
+/** Two-column credit list (term → detail), e.g. role → names or name → roles. */
+interface Props {
+  items: { term: string; detail: string }[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<dl class:list={['credits', className]}>
+  {
+    items.map((item) => (
+      <div class="credits__row">
+        <dt>{item.term}</dt>
+        <dd>{item.detail}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .credits {
+    margin: 0;
+  }
+
+  .credits__row {
+    display: grid;
+    grid-template-columns: minmax(0, 14em) minmax(0, 1fr);
+    gap: 4px 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule, var(--sand));
+  }
+
+  dt {
+    font-weight: 700;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 640px) {
+    .credits__row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

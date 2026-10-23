@@ -48,6 +48,15 @@ export const order = {
 } as const;
 
 /**
+ * Förderhinweis for Vol. 2 – verbatim from the Initiative Musik guidelines (§11, 18.10.2026).
+ * Shown with both logos on a light background. Layout needs Initiative Musik's approval before launch.
+ */
+export const fundingNotice = {
+  de: 'Gefördert durch die Initiative Musik gemeinnützige Projektgesellschaft mbH im Rahmen von Neustart Kultur mit Projektmitteln der Beauftragten der Bundesregierung für Kultur und Medien.',
+  en: 'Supported by Initiative Musik gGmbH with project funds from the Federal Government Commissioner for Culture and Media.',
+} as const;
+
+/**
  * Rights gates (§9). Robert flips a flag only after the consent/licence is on file in writing.
  * Cover consents were given verbally on 23.10.2026 – still false until filed.
  */

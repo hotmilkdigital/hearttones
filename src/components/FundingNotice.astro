@@ -1,0 +1,59 @@
+---
+/**
+ * Förderhinweis for Vol. 2 (CLAUDE.md §8.3, §11): Initiative Musik logo + NEUSTART KULTUR
+ * logo + the official notice, verbatim, always on a light background.
+ * Logos are interim rasters; vector versions from Initiative Musik replace the files later.
+ */
+import { Image } from 'astro:assets';
+import initiativeMusik from '../assets/funding/initiative-musik.jpg';
+import neustartKultur from '../assets/funding/neustart-kultur.png';
+import { fundingNotice } from '../data/site';
+import type { Locale } from '../data/routes';
+
+interface Props {
+  locale?: Locale;
+  class?: string;
+}
+
+const { locale = 'de', class: className } = Astro.props;
+---
+
+<div class:list={['funding', className]} lang={locale}>
+  <div class="funding__logos">
+    <Image src={initiativeMusik} alt="Logo Initiative Musik gGmbH" height={48} densities={[1, 2]} class="funding__logo" />
+    <Image src={neustartKultur} alt="Logo Neustart Kultur" height={56} densities={[1, 2]} class="funding__logo" />
+  </div>
+  <p class="funding__text">{fundingNotice[locale]}</p>
+</div>
+
+<style>
+  .funding {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 24px;
+    padding: 20px 24px;
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    color: var(--cocoa);
+  }
+
+  .funding__logos {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .funding__logo {
+    display: block;
+    width: auto;
+  }
+
+  .funding__text {
+    flex: 1 1 260px;
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--ink-muted);
+  }
+</style>

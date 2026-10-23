@@ -1,0 +1,97 @@
+---
+/**
+ * Vol. 2 order by email (CLAUDE.md §10): prefilled mailto, price, shipping, payment methods,
+ * § 19 UStG note. Bank account and PayPal address never appear here – they go in the
+ * confirmation email only (§5.14). Widerrufsbelehrung follows from Robert.
+ */
+import CreditList from '../CreditList.astro';
+import Placeholder from '../Placeholder.astro';
+import type { Album } from '../../data/albums';
+import { order, site } from '../../data/site';
+
+interface Props {
+  album: Album;
+}
+
+const { album } = Astro.props;
+
+const eur = (value: number) =>
+  new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
+  }).format(value);
+
+const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(order.subject)}`;
+
+const terms = [
+  { term: 'Preis', detail: `${eur(order.priceEur)} pro CD` },
+  {
+    term: 'Versand',
+    detail: `${eur(order.shippingDeEur)} innerhalb Deutschlands, ${eur(order.shippingIntlEur)} international`,
+  },
+  {
+    term: 'Zahlung',
+    detail: 'Per Überweisung oder PayPal – die Zahlungsdaten erhalten Sie mit der Bestellbestätigung per E-Mail.',
+  },
+];
+---
+
+<div class="order" id="bestellen">
+  <h2 id="bestellen-title">CD bestellen</h2>
+  <p class="order__intro">
+    Bestellen Sie {album.shortTitle.replace(' ', ' ')} per E-Mail direkt bei {site.owner.shortName}.
+  </p>
+  <CreditList items={terms} class="order__terms" />
+  <p class="order__tax">{order.taxNote.replace('§ ', '§ ')}</p>
+  <div class="order__actions">
+    <a class="btn btn--primary" href={mailto}>CD per E-Mail bestellen</a>
+    {
+      album.links.map((l) => (
+        <a class="btn btn--outline" href={l.href}>
+          {l.label}
+        </a>
+      ))
+    }
+  </div>
+  <p class="order__mail">
+    E-Mail: <a href={mailto}>{site.contact.email}</a>
+  </p>
+  <p class="order__legal">
+    <Placeholder text="Widerrufsbelehrung und Muster-Widerrufsformular – Text von Robert" />
+  </p>
+</div>
+
+<style>
+  .order {
+    max-width: 760px;
+  }
+
+  .order__intro {
+    margin-top: 16px;
+  }
+
+  .order :global(.order__terms) {
+    margin-top: 20px;
+    --rule: var(--taupe-line);
+  }
+
+  .order__tax {
+    margin-top: 14px;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  .order__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .order__mail,
+  .order__legal {
+    margin-top: 16px;
+    font-size: var(--fs-meta);
+  }
+</style>
