@@ -1,0 +1,499 @@
+---
+/**
+ * Self-hosted audio player (CLAUDE.md §8.2): album tabs, one shared <audio preload="none">,
+ * play/pause, seek, time, auto-advance within the album, keyboard operable.
+ *
+ * A track is playable only if audio is rights-cleared (§9, always true on staging) AND its
+ * MP3 exists in public/audio/. Otherwise the list renders with disabled play buttons and
+ * the note "Hörproben folgen in Kürze". Without JS both albums show one after the other.
+ *
+ * The Vol. 2 links to Asphalt Tango and Bandcamp are a condition of the streaming
+ * permission and must stay visible next to the Vol. 2 list.
+ */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import Section from './Section.astro';
+import Cover from './Cover.astro';
+import { albums, albumDuration, audioSrc, formatDuration, lineupText, trackAnchor, type Album } from '../data/albums';
+import { countryName } from '../data/countries';
+import { isCleared } from '../data/site';
+
+const audioCleared = isCleared('audioCleared');
+const fileExists = (src: string) => existsSync(join(process.cwd(), 'public', src));
+
+const panels = albums.map((album, i) => {
+  const tracks = album.tracks.map((track) => {
+    const src = audioSrc(album, track);
+    return {
+      track,
+      src,
+      anchor: trackAnchor(album, track),
+      playable: audioCleared && fileExists(src),
+      countries: track.countries.map((c) => countryName(c)).join(' / '),
+      lineup: lineupText(track),
+      time: formatDuration(track.durationSec),
+    };
+  });
+  return { album, tracks, selected: i === 0 };
+});
+
+const anyPlayable = panels.some((p) => p.tracks.some((t) => t.playable));
+
+// Meta lines and link labels as in the approved artboard.
+const meta: Record<Album['id'], string> = {
+  'vol-1': `Heart Tones Records · HTR 001 · ${formatDuration(albumDuration(albums[0]))}`,
+  'vol-2': 'Asphalt Tango Records · HTR 002 · gefördert von der Initiative Musik',
+};
+const linkLabels: Record<Album['id'], Record<string, string>> = {
+  'vol-1': {},
+  'vol-2': { 'Asphalt Tango Records': 'Vol. 2 bei Asphalt Tango Records', Bandcamp: 'Vol. 2 auf Bandcamp' },
+};
+const showLinks = (album: Album) => album.id === 'vol-2';
+const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
+---
+
+<Section tone="night" id="player" aria-labelledby="player-title">
+  <div
+    class="player"
+    data-player
+    data-playable={String(anyPlayable)}
+    data-label-play="„{title}“ abspielen"
+    data-label-pause="„{title}“ pausieren"
+  >
+    <h2 id="player-title">Reinhören</h2>
+    <p class="player__intro">
+      {anyPlayable ? 'Wählen Sie ein Album und hören Sie alle Lieder direkt hier.' : 'Hörproben folgen in Kürze.'}
+    </p>
+
+    <div class="tabs" role="tablist" aria-label="Album wählen" data-tablist hidden>
+      {
+        panels.map(({ album, selected }) => (
+          <button
+            type="button"
+            class="tabs__tab"
+            role="tab"
+            id={`tab-${album.id}`}
+            aria-controls={`panel-${album.id}`}
+            aria-selected={selected ? 'true' : 'false'}
+            tabindex={selected ? 0 : -1}
+          >
+            {tabLabel(album).replace('Vol. ', 'Vol. ')}
+          </button>
+        ))
+      }
+    </div>
+
+    {
+      panels.map(({ album, tracks }) => {
+        const first = tracks[0]!;
+        return (
+          <div
+            class="panel"
+            id={`panel-${album.id}`}
+            role="tabpanel"
+            tabindex="0"
+            aria-labelledby={`tab-${album.id}`}
+            data-panel={album.id}
+          >
+            <h3 class="visually-hidden">
+              {album.shortTitle}: {album.title} ({album.year})
+            </h3>
+            <div class="panel__aside">
+              <Cover album={album} width={420} sizes="(max-width: 760px) 100vw, 420px" />
+              <p class="panel__meta">{meta[album.id].replace(/(HTR|Vol\.) /g, '$1 ')}</p>
+
+              <div class="bar" data-bar>
+                <button
+                  type="button"
+                  class="play-btn play-btn--large"
+                  data-bar-toggle
+                  aria-label={`„${first.track.title}“ abspielen`}
+                  disabled={!first.playable}
+                >
+                  <svg class="icon-play" width="16" height="18" viewBox="0 0 16 18" aria-hidden="true">
+                    <path d="M2 1 L14 9 L2 17 Z" />
+                  </svg>
+                  <svg class="icon-pause" width="16" height="18" viewBox="0 0 16 18" aria-hidden="true">
+                    <rect x="2" y="1" width="4" height="16" />
+                    <rect x="10" y="1" width="4" height="16" />
+                  </svg>
+                </button>
+                <div class="bar__info">
+                  <p class="bar__title" data-bar-title>
+                    {first.track.title}
+                  </p>
+                  <input
+                    class="bar__seek"
+                    type="range"
+                    min="0"
+                    max={Math.round(first.track.durationSec)}
+                    step="1"
+                    value="0"
+                    aria-label="Position im Lied"
+                    data-bar-seek
+                    disabled
+                  />
+                </div>
+                <span class="bar__time">
+                  <span data-bar-current>0:00</span> / <span data-bar-duration>{first.time}</span>
+                </span>
+              </div>
+
+              {
+                showLinks(album) && (
+                  <p class="panel__links">
+                    {album.links.map((l) => (
+                      <a href={l.href}>{linkLabels[album.id][l.label] ?? l.label}</a>
+                    ))}
+                  </p>
+                )
+              }
+            </div>
+
+            <ol class="tracks">
+              {tracks.map((t, i) => (
+                <li
+                  class="track"
+                  id={t.anchor}
+                  data-track
+                  data-index={i}
+                  data-src={t.playable ? t.src : undefined}
+                  data-title={t.track.title}
+                  data-duration={Math.round(t.track.durationSec)}
+                >
+                  <button
+                    type="button"
+                    class="play-btn"
+                    data-track-toggle
+                    aria-label={`„${t.track.title}“ abspielen`}
+                    disabled={!t.playable}
+                  >
+                    <svg class="icon-play" width="12" height="14" viewBox="0 0 16 18" aria-hidden="true">
+                      <path d="M2 1 L14 9 L2 17 Z" />
+                    </svg>
+                    <svg class="icon-pause" width="12" height="14" viewBox="0 0 16 18" aria-hidden="true">
+                      <rect x="2" y="1" width="4" height="16" />
+                      <rect x="10" y="1" width="4" height="16" />
+                    </svg>
+                  </button>
+                  <span class="track__no">{t.track.no}</span>
+                  <div class="track__main">
+                    <span class="track__title">
+                      <span lang={t.track.lang}>{t.track.title}</span>
+                      {t.track.titleAlt && (
+                        <>
+                          {' / '}
+                          <span lang={t.track.titleAltLang}>{t.track.titleAlt}</span>
+                        </>
+                      )}
+                    </span>
+                    <span class="track__lineup">{t.lineup}</span>
+                  </div>
+                  <span class="track__country">{t.countries}</span>
+                  <span class="track__time">
+                    <span class="visually-hidden">Dauer </span>
+                    {t.time}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        );
+      })
+    }
+
+    <audio preload="none" data-audio></audio>
+  </div>
+</Section>
+
+<script>
+  import { initPlayer } from '../scripts/player';
+
+  document.querySelectorAll<HTMLElement>('[data-player]').forEach(initPlayer);
+</script>
+
+<style>
+  .player__intro {
+    max-width: 620px;
+    margin-top: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .tabs[hidden] {
+    display: none;
+  }
+
+  .tabs__tab {
+    min-height: var(--touch-min);
+    padding: 10px 22px;
+    border: 2px solid var(--cocoa-outline);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--cream);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .tabs__tab:hover {
+    border-color: var(--cream-muted);
+  }
+
+  .tabs__tab[aria-selected='true'] {
+    border-color: var(--cream);
+    background: var(--cream);
+    color: var(--cocoa);
+  }
+
+  /* Panels */
+  .panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 32px;
+  }
+
+  .panel[hidden] {
+    display: none;
+  }
+
+  .panel + .panel {
+    padding-top: 40px;
+    border-top: 1px solid var(--cocoa-line);
+  }
+
+  .player.is-enhanced .panel + .panel {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .panel__aside {
+    flex: 1 1 340px;
+    min-width: 0;
+    max-width: 420px;
+  }
+
+  .panel__meta {
+    margin-top: 14px;
+    font-size: var(--fs-meta);
+    color: var(--text-muted);
+  }
+
+  .panel__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 14px;
+    font-size: var(--fs-meta);
+    font-weight: 600;
+  }
+
+  .panel__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+
+  /* Now-playing bar */
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    border: 1px solid var(--cocoa-line);
+    border-radius: var(--radius-card);
+    background: var(--cocoa-2);
+  }
+
+  .bar__info {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .bar__title {
+    overflow: hidden;
+    font-family: var(--font-serif);
+    font-size: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .bar__seek {
+    display: block;
+    width: 100%;
+    height: 20px;
+    margin: 4px 0 0;
+    accent-color: var(--globe-ochre);
+    cursor: pointer;
+  }
+
+  .bar__seek:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .bar__time {
+    flex: none;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Play buttons */
+  .play-btn {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--touch-min);
+    height: var(--touch-min);
+    padding: 0;
+    border: 2px solid var(--cream);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--cream);
+    cursor: pointer;
+  }
+
+  .play-btn svg {
+    fill: currentColor;
+  }
+
+  .play-btn--large {
+    background: var(--cream);
+    color: var(--cocoa);
+  }
+
+  .play-btn:hover:not(:disabled) {
+    background: var(--cream-muted);
+    border-color: var(--cream-muted);
+    color: var(--cocoa);
+  }
+
+  .play-btn:disabled {
+    border-color: var(--cocoa-line);
+    background: transparent;
+    color: var(--cocoa-outline);
+    cursor: not-allowed;
+  }
+
+  .play-btn .icon-pause,
+  .play-btn.is-playing .icon-play {
+    display: none;
+  }
+
+  .play-btn.is-playing .icon-pause {
+    display: block;
+  }
+
+  /* Track list */
+  .tracks {
+    flex: 1 1 480px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--cocoa-line);
+  }
+
+  .track {
+    display: grid;
+    grid-template-columns: var(--touch-min) 24px minmax(0, 1fr) auto 44px;
+    grid-template-areas: 'play no main country time';
+    align-items: baseline;
+    gap: 4px 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--cocoa-line);
+    scroll-margin-top: 24px;
+  }
+
+  .track .play-btn {
+    grid-area: play;
+    align-self: center;
+  }
+
+  .track.is-current {
+    background: var(--cocoa-2);
+  }
+
+  .track:target {
+    outline: 2px solid var(--globe-ochre);
+    outline-offset: 2px;
+  }
+
+  .track__no {
+    grid-area: no;
+    font-size: var(--fs-small);
+    color: var(--cream-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .track__main {
+    display: flex;
+    grid-area: main;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .track__title {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.35;
+  }
+
+  .track__lineup {
+    margin-top: 2px;
+    font-size: var(--fs-small);
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+
+  .track__country {
+    grid-area: country;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+    text-align: right;
+  }
+
+  .track__time {
+    grid-area: time;
+    font-size: var(--fs-small);
+    color: var(--cream-faint);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 640px) {
+    .panel {
+      gap: 28px;
+    }
+
+    .panel__aside {
+      max-width: none;
+    }
+
+    .track {
+      grid-template-columns: var(--touch-min) minmax(0, 1fr) auto;
+      grid-template-areas:
+        'play main time'
+        'play country country';
+    }
+
+    .track__no {
+      display: none;
+    }
+
+    .track__country {
+      text-align: left;
+    }
+  }
+</style>

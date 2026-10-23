@@ -1,0 +1,94 @@
+---
+/**
+ * Album cover, always square with a soft shadow (§6.3). Rights-gated (§9): on production an
+ * uncleared cover renders a typographic placeholder (album title in Literata on sand).
+ * Swapping in the masters later = replacing the files in src/assets/covers/.
+ */
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Album } from '../data/albums';
+import { isCleared, type RightsKey } from '../data/site';
+import vol1Cover from '../assets/covers/vol-1-cover.webp';
+import vol2Cover from '../assets/covers/vol-2-cover.webp';
+
+interface Props {
+  album: Album;
+  /** Rendered width in CSS px at the largest layout; used for srcset widths. */
+  width: number;
+  sizes: string;
+  shadow?: 'dark' | 'light';
+  loading?: 'lazy' | 'eager';
+  class?: string;
+}
+
+const covers: Record<Album['id'], { image: ImageMetadata; gate: RightsKey }> = {
+  'vol-1': { image: vol1Cover, gate: 'vol1CoverCleared' },
+  'vol-2': { image: vol2Cover, gate: 'vol2CoverCleared' },
+};
+
+const { album, width, sizes, shadow = 'dark', loading = 'lazy', class: className } = Astro.props;
+const { image, gate } = covers[album.id];
+const cleared = isCleared(gate);
+const widths = [width, width * 2].filter((w) => w <= image.width);
+---
+
+{
+  cleared ? (
+    <Picture
+      src={image}
+      alt={album.coverAlt}
+      widths={widths}
+      sizes={sizes}
+      formats={['avif', 'webp']}
+      fallbackFormat="webp"
+      loading={loading}
+      class:list={['cover', `cover--${shadow}`, className]}
+    />
+  ) : (
+    <div class:list={['cover', 'cover--placeholder', `cover--${shadow}`, className]} role="img" aria-label={`Cover von ${album.artist} ${album.shortTitle}: ${album.title}`}>
+      <span class="cover__title">{album.title}</span>
+      <span class="cover__vol">{album.shortTitle}</span>
+    </div>
+  )
+}
+
+<style>
+  .cover {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: var(--radius-card);
+  }
+
+  .cover--dark {
+    box-shadow: var(--shadow-cover);
+  }
+
+  .cover--light {
+    box-shadow: var(--shadow-cover-light);
+  }
+
+  .cover--placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: 12%;
+    background: var(--sand);
+    color: var(--cocoa);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .cover__title {
+    font-size: clamp(18px, 2.4vw, 28px);
+    line-height: 1.2;
+  }
+
+  .cover__vol {
+    font-size: clamp(15px, 1.6vw, 20px);
+  }
+</style>

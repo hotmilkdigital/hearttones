@@ -7,8 +7,9 @@
  */
 
 import type { CountryCode } from './countries.ts';
-import type { PersonId } from './people.ts';
-import type { Role } from './roles.ts';
+import { people, type PersonId } from './people.ts';
+import type { Locale } from './routes.ts';
+import { roleLabel, type Role } from './roles.ts';
 
 /** How the song was written. Vol. 2 prints names without saying who wrote music or lyrics. */
 export type Writing =
@@ -501,4 +502,25 @@ export function isoDuration(seconds: number): string {
 
 export function albumDuration(album: Album): number {
   return album.tracks.reduce((sum, t) => sum + t.durationSec, 0);
+}
+
+/** Name as credited on this track (printed form), falling back to the canonical name. */
+export function performerName(performer: Performer): string {
+  return performer.creditedAs ?? people[performer.person].name;
+}
+
+/** One-line line-up, e.g. "Svøbsk: Jørgen Dickmeiss (Gesang, Gitarre, Glockenspiel), Maren Hallberg (Akkordeon)". */
+export function lineupText(track: Track, locale: Locale = 'de'): string {
+  const list = track.lineup
+    .map((p) => {
+      const roles = p.roles.map((r) => roleLabel(r, locale)).join(', ');
+      return roles ? `${performerName(p)} (${roles})` : performerName(p);
+    })
+    .join(', ');
+  return track.ensemble ? `${track.ensemble}: ${list}` : list;
+}
+
+/** Anchor id of a track, used by the player list and deep links from the map. */
+export function trackAnchor(album: Album, track: Track): string {
+  return `${album.id}-${track.slug}`;
 }
