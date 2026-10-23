@@ -10,8 +10,6 @@
  * The Vol. 2 links to Asphalt Tango and Bandcamp are a condition of the streaming
  * permission and must stay visible next to the Vol. 2 list.
  */
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import Section from './Section.astro';
 import Cover from './Cover.astro';
 import {
@@ -25,7 +23,7 @@ import {
   type Album,
 } from '../data/albums';
 import { countryName } from '../data/countries';
-import { isCleared } from '../data/site';
+import { isPlayable } from '../lib/audio';
 
 interface Props {
   /** Albums to show; more than one renders tabs (homepage), one renders a plain list (album pages). */
@@ -46,9 +44,6 @@ const {
   showAside = true,
 } = Astro.props;
 
-const audioCleared = isCleared('audioCleared');
-const fileExists = (src: string) => existsSync(join(process.cwd(), 'public', src));
-
 const selectedAlbums = albums.filter((a) => albumIds.includes(a.id));
 const tabbed = selectedAlbums.length > 1;
 
@@ -59,7 +54,7 @@ const panels = selectedAlbums.map((album, i) => {
       track,
       src,
       anchor: trackAnchor(album, track),
-      playable: audioCleared && fileExists(src),
+      playable: isPlayable(album, track),
       countries: track.countries.map((c) => countryName(c)).join(' / '),
       lineup: lineupText(track),
       writing: showWriting ? writingText(track.writing) : null,
