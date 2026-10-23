@@ -60,6 +60,7 @@ DE at the root, EN under `/en/`. Astro i18n routing: `defaultLocale: 'de'`, `loc
 | Kontakt | `/kontakt/` | `/en/contact/` |
 | Impressum | `/impressum/` | `/en/legal-notice/` |
 | Datenschutz | `/datenschutz/` | `/en/privacy/` |
+| Widerruf (Vol. 2 order, not in nav) | `/widerruf/` | `/en/withdrawal/` |
 | 404 | `/404` | – |
 
 Main navigation: **Musik · Die Reise · Produktion · Über Philipp · Kontakt** + language switch DE/EN. Künstler:innen and Presse live under Musik and in the footer, not top level. Trailing slashes on.

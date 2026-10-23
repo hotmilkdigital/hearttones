@@ -1,0 +1,76 @@
+---
+/**
+ * Shared frame for the legal pages (Impressum, Datenschutz, Widerruf): breadcrumb, H1,
+ * status placeholder and readable text styles for the slotted content (CLAUDE.md §10).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from './Section.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import Placeholder from './Placeholder.astro';
+import { path } from '../data/routes';
+
+interface Props {
+  title: string;
+  heading: string;
+  description: string;
+  /** What is still missing, shown as [PLATZHALTER: …] under the heading. */
+  status?: string;
+}
+
+const { title, heading, description, status } = Astro.props;
+const id = 'legal-title';
+---
+
+<BaseLayout title={title} description={description}>
+  <Section tone="light" aria-labelledby={id}>
+    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: heading }]} />
+    <div class="legal">
+      <h1 id={id}>{heading}</h1>
+      {status && <p class="legal__status"><Placeholder text={status} /></p>}
+      <slot />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 760px;
+  }
+
+  .legal__status {
+    margin-top: 16px;
+  }
+
+  .legal :global(h2) {
+    margin-top: 48px;
+    font-size: 26px;
+  }
+
+  .legal :global(h3) {
+    margin-top: 28px;
+    font-size: 20px;
+  }
+
+  .legal :global(p),
+  .legal :global(ul),
+  .legal :global(address) {
+    margin-top: 14px;
+  }
+
+  .legal :global(address) {
+    font-style: normal;
+  }
+
+  .legal :global(ul) {
+    padding-left: 1.2em;
+  }
+
+  .legal :global(li + li) {
+    margin-top: 6px;
+  }
+
+  .legal :global(code) {
+    font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    font-size: 0.9em;
+  }
+</style>

@@ -9,13 +9,15 @@ import SinglesView from '../views/SinglesView.astro';
 import JourneyView from '../views/JourneyView.astro';
 import AboutView from '../views/AboutView.astro';
 import PrivacyView from '../views/PrivacyView.astro';
+import ImprintView from '../views/ImprintView.astro';
+import WithdrawalView from '../views/WithdrawalView.astro';
 import { vol1, vol2 } from '../data/albums';
 import { routes, type RouteKey } from '../data/routes';
 
-type View = { key: 'vol1' | 'vol2' | 'singles' | 'journey' | 'about' | 'privacy' };
+type View = { key: 'vol1' | 'vol2' | 'singles' | 'journey' | 'about' | 'privacy' | 'imprint' | 'withdrawal' };
 
 export const getStaticPaths = (() => {
-  const keys: View['key'][] = ['vol1', 'vol2', 'singles', 'journey', 'about', 'privacy'];
+  const keys: View['key'][] = ['vol1', 'vol2', 'singles', 'journey', 'about', 'privacy', 'imprint', 'withdrawal'];
   return keys.map((key) => ({
     params: { page: routes[key as RouteKey].de.replace(/^\/|\/$/g, '') },
     props: { key },
@@ -31,3 +33,5 @@ const { key } = Astro.props as View;
 {key === 'journey' && <JourneyView />}
 {key === 'about' && <AboutView />}
 {key === 'privacy' && <PrivacyView />}
+{key === 'imprint' && <ImprintView />}
+{key === 'withdrawal' && <WithdrawalView />}

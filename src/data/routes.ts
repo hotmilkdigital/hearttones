@@ -22,6 +22,8 @@ export const routes = {
   contact: { de: '/kontakt/', en: '/en/contact/' },
   imprint: { de: '/impressum/', en: '/en/legal-notice/' },
   privacy: { de: '/datenschutz/', en: '/en/privacy/' },
+  /** Widerrufsbelehrung + Muster-Widerrufsformular for the Vol. 2 order (§10). Not in the nav. */
+  withdrawal: { de: '/widerruf/', en: '/en/withdrawal/' },
 } as const satisfies Record<string, Record<Locale, string>>;
 
 export type RouteKey = keyof typeof routes;

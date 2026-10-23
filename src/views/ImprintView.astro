@@ -1,0 +1,71 @@
+---
+/**
+ * Impressum – scaffold (CLAUDE.md §10). Angaben nach § 5 DDG from site.ts; the only page that
+ * shows Philipp's postal address (§5.12). Liability/copyright wording and the consumer
+ * dispute note stay [PLATZHALTER] until Robert supplies the final text.
+ */
+import LegalPage from '../components/LegalPage.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { path } from '../data/routes';
+import { imageCredits, site } from '../data/site';
+
+const { owner, address, contact } = site;
+---
+
+<LegalPage
+  title={`Impressum – ${site.brand}`}
+  heading="Impressum"
+  description={`Impressum von ${site.url.replace('https://', '')} – Angaben nach § 5 DDG.`}
+  status="Endgültiger Text des Impressums – von Robert"
+>
+  <h2>Angaben gemäß §&nbsp;5 DDG</h2>
+  <address>
+    {owner.fullName}<br />
+    {address.street}<br />
+    {address.postalCode} {address.city}<br />
+    Deutschland
+  </address>
+
+  <h2>Kontakt</h2>
+  <p>
+    Telefon: <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a><br />
+    E-Mail: <a href={`mailto:${contact.email}`}>{contact.email}</a>
+  </p>
+
+  <h2>Umsatzsteuer</h2>
+  <p>Kleinunternehmer gemäß §&nbsp;19 UStG; es wird keine Umsatzsteuer ausgewiesen.</p>
+
+  <h2>Verantwortlich für den Inhalt nach §&nbsp;18 Abs.&nbsp;2 MStV</h2>
+  <address>
+    {owner.fullName}<br />
+    {address.street}<br />
+    {address.postalCode} {address.city}
+  </address>
+
+  <h2>Label</h2>
+  <p>{site.label} · {site.labelCode}</p>
+
+  <h2>Bildnachweise</h2>
+  <ul>
+    {
+      imageCredits.map((c) => (
+        <li>
+          {c.image}: {c.credit}
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Verbraucherstreitbeilegung</h2>
+  <p><Placeholder text="Hinweis nach § 36 VSBG (Teilnahme an Streitbeilegungsverfahren)" /></p>
+
+  <h2>Haftung für Inhalte und Links</h2>
+  <p><Placeholder text="Haftungshinweise für eigene Inhalte und externe Links" /></p>
+
+  <h2>Urheberrecht</h2>
+  <p><Placeholder text="Hinweis zum Urheberrecht an Texten, Fotos, Covern und Aufnahmen" /></p>
+
+  <p>
+    Informationen zum Datenschutz finden Sie in der <a href={path('privacy')}>Datenschutzerklärung</a>.
+  </p>
+</LegalPage>

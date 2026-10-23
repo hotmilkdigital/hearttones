@@ -1,0 +1,32 @@
+---
+/**
+ * Widerrufsbelehrung + Muster-Widerrufsformular for the Vol. 2 CD order by email (CLAUDE.md §10).
+ * Scaffold only – no legal text is written here; Robert supplies it.
+ */
+import LegalPage from '../components/LegalPage.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { path } from '../data/routes';
+import { site } from '../data/site';
+---
+
+<LegalPage
+  title={`Widerrufsbelehrung – ${site.brand}`}
+  heading="Widerrufsbelehrung"
+  description="Widerrufsbelehrung und Muster-Widerrufsformular für die Bestellung der CD Lullabies From Around The World Vol. 2."
+  status="Endgültiger Text der Widerrufsbelehrung – von Robert"
+>
+  <p>
+    Gilt für die Bestellung der CD <a href={`${path('vol2')}#bestellen`}>Lullabies From Around The World Vol.&nbsp;2</a> per
+    E-Mail.
+  </p>
+
+  <h2>Widerrufsrecht</h2>
+  <p>
+    <Placeholder
+      text="Widerrufsbelehrung (Frist, Ausübung, Folgen, Rücksendekosten); prüfen: Ausnahme für versiegelte Ton- und Datenträger nach Entsiegelung (§ 312g Abs. 2 Nr. 6 BGB)"
+    />
+  </p>
+
+  <h2>Muster-Widerrufsformular</h2>
+  <p><Placeholder text="Muster-Widerrufsformular nach Anlage 2 zu Art. 246a § 1 Abs. 2 Satz 1 Nr. 1 EGBGB" /></p>
+</LegalPage>

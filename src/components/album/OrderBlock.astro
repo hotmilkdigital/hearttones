@@ -5,8 +5,8 @@
  * confirmation email only (§5.14). Widerrufsbelehrung follows from Robert.
  */
 import CreditList from '../CreditList.astro';
-import Placeholder from '../Placeholder.astro';
 import type { Album } from '../../data/albums';
+import { path } from '../../data/routes';
 import { order, site } from '../../data/site';
 
 interface Props {
@@ -58,7 +58,7 @@ const terms = [
     E-Mail: <a href={mailto}>{site.contact.email}</a>
   </p>
   <p class="order__legal">
-    <Placeholder text="Widerrufsbelehrung und Muster-Widerrufsformular – Text von Robert" />
+    <a href={path('withdrawal')}>Widerrufsbelehrung und Muster-Widerrufsformular</a>
   </p>
 </div>
 
