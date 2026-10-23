@@ -1,0 +1,20 @@
+/**
+ * Album covers and their rights gates (CLAUDE.md §9). Swapping in the masters later means
+ * replacing the files in src/assets/covers/.
+ */
+import type { ImageMetadata } from 'astro';
+import type { Album } from '../data/albums';
+import { isCleared, type RightsKey } from '../data/site';
+import vol1Cover from '../assets/covers/vol-1-cover.webp';
+import vol2Cover from '../assets/covers/vol-2-cover.webp';
+
+const covers: Record<Album['id'], { image: ImageMetadata; gate: RightsKey }> = {
+  'vol-1': { image: vol1Cover, gate: 'vol1CoverCleared' },
+  'vol-2': { image: vol2Cover, gate: 'vol2CoverCleared' },
+};
+
+/** The cover image if it may be shown in this build, otherwise null (→ typographic placeholder). */
+export function clearedCover(album: Album): ImageMetadata | null {
+  const { image, gate } = covers[album.id];
+  return isCleared(gate) ? image : null;
+}

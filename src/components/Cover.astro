@@ -5,11 +5,8 @@
  * Swapping in the masters later = replacing the files in src/assets/covers/.
  */
 import { Picture } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
 import type { Album } from '../data/albums';
-import { isCleared, type RightsKey } from '../data/site';
-import vol1Cover from '../assets/covers/vol-1-cover.webp';
-import vol2Cover from '../assets/covers/vol-2-cover.webp';
+import { clearedCover } from '../lib/covers';
 
 interface Props {
   album: Album;
@@ -21,19 +18,14 @@ interface Props {
   class?: string;
 }
 
-const covers: Record<Album['id'], { image: ImageMetadata; gate: RightsKey }> = {
-  'vol-1': { image: vol1Cover, gate: 'vol1CoverCleared' },
-  'vol-2': { image: vol2Cover, gate: 'vol2CoverCleared' },
-};
-
 const { album, width, sizes, shadow = 'dark', loading = 'lazy', class: className } = Astro.props;
-const { image, gate } = covers[album.id];
-const cleared = isCleared(gate);
-const widths = [width, width * 2].filter((w) => w <= image.width);
+const image = clearedCover(album);
+// 1×, ~1.5× and 2× of the layout width so phones (≈1.75 DPR) get a close match.
+const widths = image ? [width, Math.round(width * 1.5), width * 2].filter((w) => w <= image.width) : [];
 ---
 
 {
-  cleared ? (
+  image ? (
     <Picture
       src={image}
       alt={album.coverAlt}
@@ -42,6 +34,7 @@ const widths = [width, width * 2].filter((w) => w <= image.width);
       formats={['avif', 'webp']}
       fallbackFormat="webp"
       loading={loading}
+      fetchpriority={loading === 'eager' ? 'high' : 'auto'}
       class:list={['cover', `cover--${shadow}`, className]}
     />
   ) : (

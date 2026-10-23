@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-26 0 116 116">
+  <!-- Interim favicon: the Heart Tones glyph from the approved artboard (heart-red on cream). Replace with Robert's logo SVG. -->
+  <rect x="-26" y="0" width="116" height="116" rx="24" fill="#F6F0E8"/>
+  <g transform="translate(6 4) scale(0.92)">
+    <path d="M30 112 C 12 98 2 88 2 76 C 2 66 10 60 18 60 C 24 60 28 64 30 68 C 32 64 36 60 42 60 C 50 60 58 66 58 76 C 58 88 48 98 30 112 Z" fill="#9A0000"/>
+    <rect x="41" y="2" width="4" height="66" fill="#9A0000"/>
+    <path d="M45 2 C 47 14 63 24 62 44 C 62 52 58 58 54 64 C 58 54 58 46 55 40 C 52 32 48 30 45 28 Z" fill="#9A0000"/>
+  </g>
+</svg>

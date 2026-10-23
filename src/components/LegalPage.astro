@@ -7,7 +7,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from './Section.astro';
 import Breadcrumb from './Breadcrumb.astro';
 import Placeholder from './Placeholder.astro';
-import { path } from '../data/routes';
+import { path, type RouteKey } from '../data/routes';
 
 interface Props {
   title: string;
@@ -15,13 +15,14 @@ interface Props {
   description: string;
   /** What is still missing, shown as [PLATZHALTER: …] under the heading. */
   status?: string;
+  routeKey?: RouteKey;
 }
 
-const { title, heading, description, status } = Astro.props;
+const { title, heading, description, status, routeKey } = Astro.props;
 const id = 'legal-title';
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} routeKey={routeKey}>
   <Section tone="light" aria-labelledby={id}>
     <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: heading }]} />
     <div class="legal">

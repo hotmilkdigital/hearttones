@@ -47,6 +47,12 @@ export const order = {
   taxNote: 'Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.',
 } as const;
 
+/**
+ * Default social image src/assets/og/og-default.png (1200×630, built from the hero, §8.7).
+ * false → listed as [PLATZHALTER] until Robert approves it.
+ */
+export const ogDefaultApproved = false;
+
 /** Image credits for captions and the Impressum (§5.11). */
 export const imageCredits = [
   { image: 'Familienfoto 2011 (Philipp v. Rothkirch und Robert Cummings mit ihren Kindern)', credit: 'Benedikt Stehle' },

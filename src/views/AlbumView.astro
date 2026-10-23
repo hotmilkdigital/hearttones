@@ -4,7 +4,10 @@
  * track list with full credits (shared player), performers, production credits.
  * Vol. 1: out of print + streaming links + press quote. Vol. 2: order block + funding notice.
  */
+import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { clearedCover } from '../lib/covers';
+import { albumGraph } from '../lib/schema';
 import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import Cover from '../components/Cover.astro';
@@ -63,11 +66,23 @@ const performerItems = performers.map((p) => ({
 
 const quote = album.id === 'vol-1' ? pressQuotes.find((q) => q.id === 'schlaf-mein-kind') : undefined;
 
+// Social image and schema image: the cover only when it is cleared for this build (§9).
+const coverImage = clearedCover(album);
+const ogCover = coverImage ? await getImage({ src: coverImage, width: 1200, format: 'jpg', quality: 85 }) : null;
+
 const pageTitle = `${seriesTitle} ${album.shortTitle} (${album.year}) – ${site.brand}`;
 const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} Schlaflieder aus ${countryCount} Ländern mit ${performers.length} Musiker:innen. Titelliste, Mitwirkende und ${album.status === 'outOfPrint' ? 'Streaming-Links' : 'Bestellung der CD'}.`;
 ---
 
-<BaseLayout title={pageTitle} description={description}>
+<BaseLayout
+  title={pageTitle}
+  description={description}
+  routeKey={album.id === 'vol-1' ? 'vol1' : 'vol2'}
+  ogType="music.album"
+  image={coverImage ?? undefined}
+  imageAlt={album.coverAlt}
+  schema={albumGraph(album, ogCover ? new URL(ogCover.src, site.url).href : undefined)}
+>
   <Section tone="light" class="album-head" aria-labelledby="album-title">
     <Breadcrumb
       items={[

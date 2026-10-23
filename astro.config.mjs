@@ -16,6 +16,10 @@ export default defineConfig({
     },
   },
   integrations: [sitemap()],
+  // Inline all CSS (~8 KB gzipped per page): no render-blocking stylesheet requests (Lighthouse, mobile).
+  build: {
+    inlineStylesheets: 'always',
+  },
   // 4321/4322 belong to other client projects. strictPort makes dev fail instead of drifting to another port.
   server: {
     port: 4323,
