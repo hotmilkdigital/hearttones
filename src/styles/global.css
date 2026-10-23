@@ -268,6 +268,74 @@ button {
   color: var(--cream);
 }
 
+/*
+ * Buttons (§6.1, §6.3). Links styled as buttons share these classes.
+ * --primary: heart-red on light · --light: cream fill on cocoa/taupe · --outline: border in the current link colour.
+ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--touch-min);
+  padding: 12px 24px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-button);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: var(--heart-red);
+  border-color: var(--heart-red);
+  color: var(--paper);
+}
+
+.btn--primary:hover {
+  background: var(--heart-red-dark);
+  border-color: var(--heart-red-dark);
+  color: var(--paper);
+}
+
+.btn--light {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: var(--cocoa);
+}
+
+.btn--light:hover {
+  background: var(--cream-muted);
+  border-color: var(--cream-muted);
+  color: var(--cocoa);
+}
+
+.btn--outline {
+  background: transparent;
+  border-color: var(--link);
+  color: var(--link);
+}
+
+.btn--outline:hover {
+  border-color: var(--link-hover);
+  color: var(--link-hover);
+}
+
+/* "Demnächst" badge: cocoa on globe-ochre (≈6.7:1, §6.1 decision 23.10.2026) */
+.badge-soon {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--globe-ochre);
+  color: var(--cocoa);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
 /* [PLATZHALTER: …] – must stand out on staging (§5.1) */
 .placeholder {
   display: inline;

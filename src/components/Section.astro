@@ -1,0 +1,27 @@
+---
+/**
+ * Page section with a tone from the day/night rhythm (CLAUDE.md §6.1, §8.1).
+ * The tone sets background, text, link and focus-ring colours via [data-tone] in global.css.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Tone = 'light' | 'paper' | 'sand' | 'night' | 'taupe';
+
+interface Props extends HTMLAttributes<'section'> {
+  tone?: Tone;
+}
+
+const { tone = 'light', class: className, ...attrs } = Astro.props;
+---
+
+<section data-tone={tone} class:list={['section', className]} {...attrs}>
+  <div class="container">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--section-pad);
+  }
+</style>
