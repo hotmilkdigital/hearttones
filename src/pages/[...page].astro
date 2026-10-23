@@ -14,6 +14,7 @@ import PrivacyView from '../views/PrivacyView.astro';
 import ImprintView from '../views/ImprintView.astro';
 import WithdrawalView from '../views/WithdrawalView.astro';
 import StubView from '../views/StubView.astro';
+import MusicView from '../views/MusicView.astro';
 import { vol1, vol2 } from '../data/albums';
 import { routes, type RouteKey } from '../data/routes';
 import { site } from '../data/site';
@@ -30,21 +31,8 @@ export const getStaticPaths = (() =>
 
 const { key } = Astro.props as { key: PageKey };
 
-// Stubs until the pages are built (Musik hub: P7; Künstler:innen, Produktion, Presse, Kontakt: P10).
+// Stubs until the pages are built (Künstler:innen, Produktion, Presse, Kontakt: P10).
 const stubs: Partial<Record<PageKey, Omit<ComponentProps<typeof StubView>, 'routeKey'>>> = {
-  music: {
-    title: `Musik: Lullabies und Berlin Peace Collective | ${site.brand}`,
-    description: `Die Musik von ${site.brand}: Lullabies From Around The World Vol. 1 und Vol. 2 sowie die neuen Singles des Berlin Peace Collective.`,
-    heading: 'Musik',
-    placeholder: 'Musik-Übersicht mit Vol. 1, Vol. 2 und Berlin Peace Collective (P7)',
-    links: [
-      { label: 'Vol. 1 (2011)', key: 'vol1' },
-      { label: 'Vol. 2 (2023)', key: 'vol2' },
-      { label: 'Berlin Peace Collective', key: 'singles' },
-      { label: 'Künstler:innen', key: 'artists' },
-      { label: 'Presse', key: 'press' },
-    ],
-  },
   artists: {
     title: `Künstler:innen der Lullabies From Around The World | ${site.brand}`,
     description: `Die 46 Musiker:innen und Ensembles auf Lullabies From Around The World Vol. 1 und Vol. 2 – mit Liedern, Instrumenten und Ländern.`,
@@ -83,6 +71,7 @@ const stubs: Partial<Record<PageKey, Omit<ComponentProps<typeof StubView>, 'rout
 const stub = stubs[key];
 ---
 
+{key === 'music' && <MusicView />}
 {key === 'vol1' && <AlbumView album={vol1} />}
 {key === 'vol2' && <AlbumView album={vol2} />}
 {key === 'singles' && <SinglesView />}

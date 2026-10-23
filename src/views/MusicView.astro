@@ -1,0 +1,160 @@
+---
+/**
+ * Musik hub (CLAUDE.md §4): both albums (AlbumCard), the Berlin Peace Collective singles kept
+ * clearly separate (§5.8), and the pages that live under Musik (Künstler:innen, Presse) plus
+ * Die Reise.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import AlbumCard from '../components/AlbumCard.astro';
+import SingleCard from '../components/SingleCard.astro';
+import { albums } from '../data/albums';
+import { countries } from '../data/countries';
+import { path, type RouteKey } from '../data/routes';
+import { singles, singlesArtist } from '../data/singles';
+import { site } from '../data/site';
+
+const trackCount = albums.reduce((n, a) => n + a.tracks.length, 0);
+const countryCount = Object.keys(countries).length;
+const performerCount = new Set(albums.flatMap((a) => a.tracks.flatMap((t) => t.lineup.map((p) => p.person)))).size;
+
+const more: { key: RouteKey; title: string; text: string }[] = [
+  { key: 'journey', title: 'Die Reise', text: `Alle ${countryCount} Herkunftsländer der Lieder auf einer Weltkarte.` },
+  { key: 'artists', title: 'Künstler:innen', text: `Die ${performerCount} Musiker:innen und Ensembles beider Alben.` },
+  { key: 'press', title: 'Presse', text: 'Rezensionen und Berichte zu den Schlafliedern.' },
+];
+---
+
+<BaseLayout
+  routeKey="music"
+  title={`Musik: Lullabies und Berlin Peace Collective | ${site.brand}`}
+  description={`Die Musik von ${site.brand}: Lullabies From Around The World Vol. 1 und Vol. 2 sowie die neuen Singles des Berlin Peace Collective.`}
+>
+  <Section tone="light" aria-labelledby="musik-title">
+    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Musik' }]} />
+    <h1 id="musik-title">Musik</h1>
+    <p class="lead music__intro">
+      Zwei Alben mit Wiegenliedern aus aller Welt – und neue Musik des {singlesArtist}.
+    </p>
+    <p class="stats music__stats">
+      {trackCount}&nbsp;Lieder · {countryCount}&nbsp;Länder · {performerCount}&nbsp;Musiker:innen
+    </p>
+
+    <h2 class="music__h2">Lullabies From Around The World</h2>
+    <div class="music__albums">
+      {albums.map((album) => <AlbumCard album={album} />)}
+    </div>
+  </Section>
+
+  <Section tone="night" aria-labelledby="bpc-title">
+    <p class="badge-soon">Demnächst</p>
+    <h2 id="bpc-title" class="music__bpc-title">{singlesArtist}</h2>
+    <p class="music__bpc-intro">
+      Zwei neue Stücke – Komposition und Keyboards: {site.owner.shortName}, gemischt und gemastert im Hot Milk Studio. Die
+      Veröffentlichung folgt.
+    </p>
+    <div class="music__singles">
+      {singles.map((single) => <SingleCard single={single} showCredits={false} />)}
+    </div>
+    <p class="music__more-link"><a href={path('singles')}>Zu den Singles mit allen Mitwirkenden</a></p>
+  </Section>
+
+  <Section tone="sand" aria-labelledby="mehr-title">
+    <h2 id="mehr-title">Mehr entdecken</h2>
+    <ul class="music__more">
+      {
+        more.map((m) => (
+          <li>
+            <a class="music__tile" href={path(m.key)}>
+              <span class="music__tile-title">{m.title}</span>
+              <span class="music__tile-text">{m.text}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</BaseLayout>
+
+<style>
+  .music__intro {
+    max-width: 640px;
+    margin-top: 20px;
+  }
+
+  .music__stats {
+    margin-top: 16px;
+  }
+
+  .music__h2 {
+    margin-top: 56px;
+  }
+
+  .music__albums,
+  .music__singles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+    gap: 32px;
+    align-items: start;
+    margin-top: 32px;
+  }
+
+  .music__bpc-title {
+    margin-top: 10px;
+  }
+
+  .music__bpc-intro {
+    max-width: 640px;
+    margin-top: 12px;
+    color: var(--text-muted);
+  }
+
+  .music__more-link {
+    margin-top: 24px;
+    font-weight: 700;
+  }
+
+  .music__more-link a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+
+  .music__more {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 20px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .music__tile {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    height: 100%;
+    padding: 22px 24px;
+    border: 1px solid var(--taupe-line);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+    color: var(--cocoa);
+    text-decoration: none;
+  }
+
+  .music__tile:hover .music__tile-title {
+    color: var(--heart-red);
+    text-decoration: underline;
+  }
+
+  .music__tile-title {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .music__tile-text {
+    color: var(--ink-muted);
+  }
+</style>
