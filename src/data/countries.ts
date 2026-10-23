@@ -4,7 +4,7 @@
  * the text but get no extra marker.
  *
  * isoNumeric matches the feature ids in world-atlas (Natural Earth) for the build-time map.
- * lat/lon are approximate geographic centres, used only to place the marker.
+ * lat/lon are approximate geographic centres (exception: Russland), used only to place the marker.
  */
 
 import { albums, type Album, type Track } from './albums.ts';
@@ -49,7 +49,8 @@ export const countries = {
   IR: { name: { de: 'Iran', en: 'Iran' }, isoNumeric: '364', continent: 'asia', lat: 32.4, lon: 53.7 },
   UA: { name: { de: 'Ukraine', en: 'Ukraine' }, isoNumeric: '804', continent: 'europe', lat: 49.0, lon: 31.4 },
   AU: { name: { de: 'Australien', en: 'Australia' }, isoNumeric: '036', continent: 'oceania', lat: -25.7, lon: 134.5 },
-  RU: { name: { de: 'Russland', en: 'Russia' }, isoNumeric: '643', continent: 'europe', lat: 61.5, lon: 105.3 },
+  // Marker near Kazan (Tatarstan), where "Bishek jyri" comes from – not the country's centre in Siberia (24.10.2026).
+  RU: { name: { de: 'Russland', en: 'Russia' }, isoNumeric: '643', continent: 'europe', lat: 55.8, lon: 49.1 },
   PL: { name: { de: 'Polen', en: 'Poland' }, isoNumeric: '616', continent: 'europe', lat: 52.1, lon: 19.4 },
   MN: { name: { de: 'Mongolei', en: 'Mongolia' }, isoNumeric: '496', continent: 'asia', lat: 46.9, lon: 103.8 },
   ID: { name: { de: 'Indonesien', en: 'Indonesia' }, isoNumeric: '360', continent: 'asia', lat: -2.5, lon: 117.9 },

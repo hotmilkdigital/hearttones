@@ -324,8 +324,8 @@ export const vol2: Album = {
       writing: { type: 'traditional' },
       countries: ['ZA'],
       durationSec: 166.71,
-      // The CD prints no role for Kgomotso Tsatsi.
-      lineup: [{ person: 'kgomotso-tsatsi', roles: [] }],
+      // The CD prints no role; she is the vocalist (Robert, 24.10.2026).
+      lineup: [{ person: 'kgomotso-tsatsi', roles: ['vocals'] }],
     },
     {
       no: 2,
@@ -391,7 +391,7 @@ export const vol2: Album = {
       durationSec: 191.03,
       lineup: [
         { person: 'zulya-nazipovna-kamalova', roles: ['mainVocals'] },
-        // CD: "Nino Tsitsishvili, Joseph Jordania, Mal Webb (backing vocals, arr)" – read as applying to all three.
+        // CD: "Nino Tsitsishvili, Joseph Jordania, Mal Webb (backing vocals, arr)" – applies to all three (confirmed 24.10.2026).
         { person: 'nino-tsitsishvili', roles: ['backingVocals', 'arrangement'] },
         { person: 'joseph-jordania', roles: ['backingVocals', 'arrangement'] },
         { person: 'mal-webb', roles: ['backingVocals', 'arrangement'] },
@@ -400,7 +400,8 @@ export const vol2: Album = {
     {
       no: 8,
       slug: '08-kolysanka-dla-sloneczka',
-      title: 'Kolysanka dla sloneczka',
+      // Correct Polish letters, not the CD's ASCII spelling (Robert, 24.10.2026).
+      title: 'Kołysanka dla słoneczka',
       lang: 'pl',
       writing: { type: 'unspecified', names: 'Iza Höll / Christian Kreutzer' },
       countries: ['PL'],
@@ -416,7 +417,8 @@ export const vol2: Album = {
       no: 9,
       slug: '09-buuvein-duu',
       title: 'Buuvein duu',
-      titleAlt: 'Бүүвэйн Дуу',
+      // Correct Mongolian capitalisation, not the CD's "Бүүвэйн Дуу" (Robert, 24.10.2026).
+      titleAlt: 'Бүүвэйн дуу',
       titleAltLang: 'mn',
       writing: { type: 'unspecified', names: 'Hosso Dangaa Khosbayar' },
       countries: ['MN'],

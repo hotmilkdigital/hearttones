@@ -23,7 +23,8 @@ export const people = {
   'djefily-sako': { name: 'Djefily Sako', kind: 'person', printedLink: 'myspace.com/nakadiberlin' },
   'arcadius-didavi': { name: 'Arcadius Didavi', kind: 'person', printedLink: 'myspace.com/arcadiusdidavi' },
   'goekce-sayan': { name: 'Gökce Sayan', kind: 'person', printedLink: 'myspace.com/gokcesayan' },
-  // Printed as "Serkan Kaynarcali" on Vol. 1 and "Serkan Ky" on Vol. 2 – same person (confirmed 18.10.2026).
+  // Printed as "Serkan Kaynarcali" on Vol. 1 and "Serkan Ky" on Vol. 2 – same person; "Serkan Ky" is his
+  // artist name since then and is used outside the Vol. 1 credits (confirmed 24.10.2026).
   'serkan-ky': { name: 'Serkan Ky', kind: 'person', printedLink: 'myspace.com/serkanun' },
   'mesut-lekesiz': { name: 'Mesut Lekesiz', kind: 'person', printedLink: 'triomorgenland.com' },
   'eugenia-tapia': { name: 'Eugenia Tapia', kind: 'person', printedLink: 'myspace.com/quenatapia' },
@@ -33,6 +34,7 @@ export const people = {
   'maren-hallberg': { name: 'Maren Hallberg', kind: 'person' },
   'peter-sund': { name: 'Peter Sund', kind: 'person', printedLink: 'thefarm-music.com' },
   'aly-keita': { name: 'Aly Keita', kind: 'person', printedLink: 'myspace.com/alykeita' },
+  // Performs as "Brune"; credited as writer under her full name "Ruby Brune" – same person (confirmed 24.10.2026).
   brune: { name: 'Brune', kind: 'person', printedLink: 'myspace.com/lovelybrune' },
   'sabine-v-rothkirch': { name: 'Sabine v. Rothkirch', kind: 'person', printedLink: 'myspace.com/sabinevonrothkirch' },
   'isabelle-klemt': { name: 'Isabelle Klemt', kind: 'person', printedLink: 'andromedameo.com' },

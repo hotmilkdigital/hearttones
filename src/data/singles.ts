@@ -15,6 +15,8 @@ export interface SingleCredit {
   roles: Role[];
   /** Short qualifier as given by Philipp, e.g. the year of the original recording. */
   note?: Record<Locale, string>;
+  /** Members of a group credit, e.g. the drumline. */
+  members?: string[];
 }
 
 export interface Single {
@@ -38,8 +40,8 @@ export const singles: Single[] = [
     artist: 'Berlin Peace Collective',
     status: 'upcoming',
     teaser: { de: 'Ein Stück für den Frieden.', en: null },
-    // Philipp's list (questionnaire 2) does not say which single it belongs to; probably this one.
-    creditsConfirmed: false,
+    // Line-up confirmed by Robert, 24.10.2026.
+    creditsConfirmed: true,
     credits: [
       { name: 'Philipp v. Rothkirch', roles: ['composition', 'keys'] },
       { name: 'Robert Cummings', roles: ['production', 'mixing', 'mastering'] },
@@ -50,8 +52,7 @@ export const singles: Single[] = [
       { name: 'Sebastian Borkowsky', roles: ['flute'] },
       { name: 'Philipp Sindhy', roles: ['trumpet'] },
       { name: 'Friedrich Milz', roles: ['trombone'] },
-      // Member names withheld until it is clear whether they are minors (rights checklist).
-      { name: '„BÄM“ Drumline', roles: ['drumline'] },
+      { name: '„BÄM“ drumline', roles: ['drumline'], members: ['Ramon Buntebart', 'Leander Winkler', 'Rafael Nussbaumer'] },
     ],
   },
   {
