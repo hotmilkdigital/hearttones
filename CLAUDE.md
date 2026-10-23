@@ -2,7 +2,7 @@
 
 Client: Philipp von Rothkirch (sole owner of the brand "Heart Tones" and the label "Heart Tones Records").
 Agency: Hot Milk Digital (Robert Cummings). Robert builds and maintains the site; Philipp approves content.
-Repo root: `D:\HOT MILK DIGITAL\CLIENTS\Heart Tones\04_Website` · GitHub: `hotmilkstudio/hearttones` (private, https://github.com/hotmilkstudio/hearttones).
+Repo root: `D:\HOT MILK DIGITAL\CLIENTS\Heart Tones\04_Website` · GitHub: `hotmilkdigital/hearttones` (private, https://github.com/hotmilkdigital/hearttones).
 Status: first draft build, started 23.10.2026.
 
 Read this file completely at the start of every session. **§11 Decisions overrides everything in `docs/`, `../01_Brief/` and `../03_Design/`.** If a request from Robert conflicts with this file, say so and ask before building.
@@ -197,7 +197,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 
 ## 10. Environments, legal, privacy
 
-- GitHub `hotmilkstudio/hearttones` (private, HTTPS remote), deploy via Coolify on Hetzner. Staging: password-protected, `noindex` meta + `X-Robots-Tag`, `PUBLIC_INDEXABLE` unset. Production: `PUBLIC_INDEXABLE=true`. Domain/DNS move is still open – do not touch DNS.
+- GitHub `hotmilkdigital/hearttones` (private, HTTPS remote), deploy via Coolify on Hetzner. Staging: password-protected, `noindex` meta + `X-Robots-Tag`, `PUBLIC_INDEXABLE` unset. Production: `PUBLIC_INDEXABLE=true`. Domain/DNS move is still open – do not touch DNS.
 - **No cookies, no analytics, no external requests** in v1 → no consent banner. YouTube only via ConsentVideo. If Robert later adds Plausible, it goes through the proxy pattern used on hotmilkdigital.de.
 - **Kontakt:** mailto and tel links only, no form in v1.
 - **Vol. 2 order:** order by email (prefilled mailto subject „Bestellung Heart Tones Vol. 2"), price **15 € pro CD**, shipping **3,50 € Deutschland / 7 € international**, payment by bank transfer or PayPal (details in the confirmation email only), note „Gemäß § 19 UStG wird keine Umsatzsteuer berechnet." Widerrufsbelehrung + Muster-Widerrufsformular page or section: `[PLATZHALTER]` until Robert supplies the text.
@@ -217,7 +217,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 23.10.2026 | Hero keeps the **original globe illustration**. Alternatives (moon cradle, mobile, cover photo) rejected. |
 | 23.10.2026 | Vol. 2 cover photo without lettering is an asset for later use, not the hero; same consent condition as the cover. |
 | 23.10.2026 | Defaults for the first draft (Robert may overrule): Sie-form; no contact form; no analytics; slugs provisional; EN after DE approval. |
-| 23.10.2026 | GitHub repo is `hotmilkstudio/hearttones` (not hotmilkdigital). |
+| 23.10.2026 | GitHub repo is `hotmilkdigital/hearttones` (transferred from hotmilkstudio on 24.10.2026). |
 | 23.10.2026 | Track durations and album totals from the MP3s; booklet durations ignored. MP3s committed to git. |
 | 23.10.2026 | Song titles in proper capitalisation per language (§5.5), not all lower case. "Aly Keita" everywhere. |
 | 23.10.2026 | Vol. 1 streaming: Spotify and Deezer links (§8.3); "CD vergriffen – als Stream erhältlich" is allowed. |
