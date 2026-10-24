@@ -32,5 +32,18 @@ export const pressQuotes: PressQuote[] = [
   },
 ];
 
+/**
+ * Further press from Philipp's answers (00_Projektstatus) – named as text only, no links until
+ * the sources are checked (07_Presse-Rezensionen: „nur als Text nennen, Belege/Links prüfen“).
+ */
+export const pressMentions = [
+  { outlet: 'MDR Figaro', what: 'Interview', date: '19.01.2012' },
+  { outlet: 'sein.de', what: null, date: 'Januar 2012' },
+  { outlet: 'FolkWorld', what: 'Ausgabe #47', date: 'März 2012' },
+  { outlet: 'Eltern', what: 'Rezension', date: null },
+  { outlet: 'Sein', what: 'Rezension', date: null },
+  { outlet: 'Himbeere', what: 'Rezension', date: null },
+] as const;
+
 /** Press mentioned by name only (§5.10, artboard press strip). */
 export const pressOutlets = ['MDR Figaro', 'Eltern', 'Sein', 'Himbeere', 'FolkWorld'] as const;

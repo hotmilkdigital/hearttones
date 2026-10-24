@@ -1,0 +1,135 @@
+---
+/**
+ * Presse (CLAUDE.md §5.10): only the two approved short quotes, verbatim, with source
+ * (placeholder until confirmed); further press named as text only, no page images, no
+ * „Sitars" sentence, no sentence about the three-year-old son. Press contact by email.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { pressMentions, pressQuotes } from '../data/press';
+import { mailSubjects } from '../data/production';
+import { path } from '../data/routes';
+import { site } from '../data/site';
+
+const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSubjects.press)}`;
+---
+
+<BaseLayout
+  routeKey="press"
+  title={`Presse: Rezensionen und Berichte | ${site.brand}`}
+  description={`Presse zu ${site.brand} und Lullabies From Around The World: Rezensionen und Berichte über die Schlaflieder aus aller Welt.`}
+>
+  <Section tone="light" aria-labelledby="presse-title">
+    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Musik', href: path('music') }, { label: 'Presse' }]} />
+    <h1 id="presse-title">Presse</h1>
+    <p class="lead press__intro">
+      Stimmen zu <a href={path('vol1')}>Lullabies From Around The World Vol.&nbsp;1</a>.
+    </p>
+  </Section>
+
+  <Section tone="sand" aria-labelledby="stimmen-title">
+    <h2 id="stimmen-title" class="visually-hidden">Pressestimmen</h2>
+    <div class="press__quotes">
+      {
+        pressQuotes.map((q) => (
+          <figure class="press__quote">
+            <blockquote>
+              <p>„{q.quote}“</p>
+            </blockquote>
+            <figcaption>
+              „{q.headline}“, {q.source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />} · Rezension zu Vol.&nbsp;1
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section tone="light" aria-labelledby="weitere-title">
+    <div class="press__two">
+      <div>
+        <h2 id="weitere-title">Weitere Presse</h2>
+        <ul class="press__mentions">
+          {
+            pressMentions.map((m) => (
+              <li>
+                <strong>{m.outlet}</strong>
+                {[m.what, m.date].filter(Boolean).length > 0 && <span> – {[m.what, m.date].filter(Boolean).join(', ')}</span>}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="press__check"><Placeholder text="Belege und Links zu den Beiträgen prüfen" /></p>
+      </div>
+      <div>
+        <h2 id="pressekontakt-title">Pressekontakt</h2>
+        <p class="press__p">
+          Anfragen zu Interviews, Rezensionsexemplaren und Material richten Sie bitte per E-Mail an {site.owner.shortName}.
+        </p>
+        <p class="press__actions">
+          <a class="btn btn--primary" href={mailto}>{site.contact.email}</a>
+        </p>
+        <p class="press__check"><Placeholder text="Pressefotos (Porträts nach dem Fotoshooting)" /></p>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .press__intro {
+    max-width: 640px;
+    margin-top: 20px;
+  }
+
+  .press__quotes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 40px;
+  }
+
+  .press__quote {
+    margin: 0;
+  }
+
+  .press__quote blockquote {
+    margin: 0;
+  }
+
+  .press__quote blockquote p {
+    font-family: var(--font-serif);
+    font-size: clamp(24px, 2.6vw, 32px);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .press__quote figcaption {
+    margin-top: 14px;
+    font-size: var(--fs-meta);
+    color: var(--text-muted);
+  }
+
+  .press__two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 48px 64px;
+  }
+
+  .press__mentions {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .press__mentions li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--sand);
+  }
+
+  .press__check,
+  .press__p,
+  .press__actions {
+    margin-top: 16px;
+  }
+</style>
