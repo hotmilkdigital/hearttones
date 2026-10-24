@@ -10,6 +10,8 @@ export interface Person {
   name: string;
   kind: 'person' | 'ensemble';
   printedLink?: string;
+  /** Other name the person is credited under (shown on the Künstler:innen page). */
+  alsoCredited?: string;
 }
 
 export const people = {
@@ -25,7 +27,7 @@ export const people = {
   'goekce-sayan': { name: 'Gökce Sayan', kind: 'person', printedLink: 'myspace.com/gokcesayan' },
   // Printed as "Serkan Kaynarcali" on Vol. 1 and "Serkan Ky" on Vol. 2 – same person; "Serkan Ky" is his
   // artist name since then and is used outside the Vol. 1 credits (confirmed 24.10.2026).
-  'serkan-ky': { name: 'Serkan Ky', kind: 'person', printedLink: 'myspace.com/serkanun' },
+  'serkan-ky': { name: 'Serkan Ky', kind: 'person', printedLink: 'myspace.com/serkanun', alsoCredited: 'Serkan Kaynarcali' },
   'mesut-lekesiz': { name: 'Mesut Lekesiz', kind: 'person', printedLink: 'triomorgenland.com' },
   'eugenia-tapia': { name: 'Eugenia Tapia', kind: 'person', printedLink: 'myspace.com/quenatapia' },
   'rodrigo-santa-maria': { name: 'Rodrigo Santa Maria', kind: 'person', printedLink: 'myspace.com/rodrigosantamt' },
@@ -35,7 +37,7 @@ export const people = {
   'peter-sund': { name: 'Peter Sund', kind: 'person', printedLink: 'thefarm-music.com' },
   'aly-keita': { name: 'Aly Keita', kind: 'person', printedLink: 'myspace.com/alykeita' },
   // Performs as "Brune"; credited as writer under her full name "Ruby Brune" – same person (confirmed 24.10.2026).
-  brune: { name: 'Brune', kind: 'person', printedLink: 'myspace.com/lovelybrune' },
+  brune: { name: 'Brune', kind: 'person', printedLink: 'myspace.com/lovelybrune', alsoCredited: 'Ruby Brune' },
   'sabine-v-rothkirch': { name: 'Sabine v. Rothkirch', kind: 'person', printedLink: 'myspace.com/sabinevonrothkirch' },
   'isabelle-klemt': { name: 'Isabelle Klemt', kind: 'person', printedLink: 'andromedameo.com' },
   'kiko-king': { name: 'Kiko King', kind: 'person', printedLink: 'kikoking.bandcamp.com' },
