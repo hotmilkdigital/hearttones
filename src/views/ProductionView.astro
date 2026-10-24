@@ -1,0 +1,293 @@
+---
+/**
+ * Produktion (CLAUDE.md §1 priority 2, §5.13): services, process, references, the Hot Milk
+ * Studio partnership (own section per 00_Projektstatus decision 5) and contact.
+ * Never offer arrangements for school ensembles (§11). Studio wording per §5.7.
+ */
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import pianoPhoto from '../assets/photos/philipp-fluegel-hot-milk-studio.webp';
+import { path } from '../data/routes';
+import { mailSubjects, pricing, process, productionIntro, services } from '../data/production';
+import { site } from '../data/site';
+import { works } from '../data/works';
+
+const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSubjects.production)}`;
+---
+
+<BaseLayout
+  routeKey="production"
+  title={`Produktion: Komposition, Arrangement und Aufnahme | ${site.brand}`}
+  description={`Musikproduktion mit ${site.owner.shortName} in Berlin-Kreuzberg, in Partnerschaft mit dem Hot Milk Studio. Erstgespräch nach Vereinbarung.`}
+>
+  <Section tone="light" aria-labelledby="produktion-title">
+    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Produktion' }]} />
+    <h1 id="produktion-title">Produktion</h1>
+    <p class="lead prod__intro">{productionIntro}</p>
+    <div class="prod__actions">
+      <a class="btn btn--primary" href={mailto}>Produktion per E-Mail anfragen</a>
+      <a class="btn btn--outline" href={`tel:${site.contact.phone}`}>Anrufen: {site.contact.phoneDisplay}</a>
+    </div>
+    <p class="prod__note">{site.contact.availability}. {pricing}</p>
+  </Section>
+
+  <Section tone="paper" aria-labelledby="leistungen-title">
+    <div class="prod__two">
+      <div>
+        <h2 id="leistungen-title">Leistungen</h2>
+        <ul class="prod__services">
+          {services.map((s) => <li>{s}</li>)}
+        </ul>
+        <p class="prod__p">Genreübergreifend – für Sänger:innen, die ein Instrumental, ein Arrangement oder eine fertige Produktion brauchen.</p>
+      </div>
+      <div>
+        <h2 id="ablauf-title">So läuft eine Produktion ab</h2>
+        <ol class="prod__steps">
+          {
+            process.map((step) => (
+              <li>
+                <span class="prod__step-title">{step.title}</span>
+                <span class="prod__step-text">{step.text}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="night" aria-labelledby="referenzen-title">
+    <h2 id="referenzen-title">Referenzen</h2>
+    <p class="prod__muted">Kompositionen und Produktionen für andere Künstler:innen.</p>
+    <div class="prod__refs">
+      {
+        works.map((w) => (
+          <article class="prod__ref" aria-labelledby={`ref-${w.id}`}>
+            <h3 id={`ref-${w.id}`}>„{w.title}“</h3>
+            <p class="prod__ref-meta">
+              {w.artist} · {w.year}
+            </p>
+            <p class="prod__ref-credit">{w.credit}</p>
+            <p class="prod__ref-links">
+              <a href={`${path('about')}#arbeiten-title`}>Video ansehen</a>
+              <a href={w.artistLink.href}>{w.artistLink.label}</a>
+            </p>
+          </article>
+        ))
+      }
+    </div>
+    <p class="prod__muted prod__refs-note">
+      Außerdem: die beiden Alben <a href={path('vol1')}>Lullabies From Around The World Vol.&nbsp;1</a> und{' '}
+      <a href={path('vol2')}>Vol.&nbsp;2</a>, die Philipp v. Rothkirch mit Robert Cummings produziert hat.
+    </p>
+  </Section>
+
+  <Section tone="taupe" aria-labelledby="partner-title">
+    <div class="prod__partner">
+      <figure class="prod__photo">
+        <Image
+          src={pianoPhoto}
+          alt="Philipp v. Rothkirch am Flügel im Hot Milk Studio, Mikrofone über den Saiten"
+          widths={[560, 1120, 1600]}
+          sizes="(max-width: 760px) 100vw, 560px"
+          class="prod__img"
+        />
+        <figcaption>Foto: Robert Cummings</figcaption>
+      </figure>
+      <div class="prod__partner-text">
+        <h2 id="partner-title">In Partnerschaft mit Hot Milk Studio</h2>
+        <p>
+          Philipps Produktionen entstehen überwiegend im Hot Milk Studio in Berlin, dem Studio von Robert Cummings: Die
+          Vorproduktion findet in Kreuzberg statt, Aufnahme und Postproduktion im Hot Milk Studio.
+        </p>
+        <p>Dort wurden auch beide Alben zum größten Teil aufgenommen sowie gemischt und gemastert.</p>
+        <p class="prod__partner-link"><a href={site.partner.url}>hotmilkstudio.de</a></p>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="light" aria-labelledby="anfrage-title">
+    <h2 id="anfrage-title">Produktion anfragen</h2>
+    <p class="prod__p">
+      Schreiben Sie kurz, woran Sie arbeiten. {site.contact.availability} – telefonisch oder vor Ort.
+    </p>
+    <div class="prod__actions">
+      <a class="btn btn--primary" href={mailto}>{site.contact.email}</a>
+      <a class="btn btn--outline" href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .prod__intro {
+    max-width: 680px;
+    margin-top: 20px;
+  }
+
+  .prod__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .prod__note {
+    margin-top: 16px;
+    color: var(--text-muted);
+  }
+
+  .prod__two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 48px 64px;
+  }
+
+  .prod__services {
+    display: grid;
+    gap: 10px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .prod__services li {
+    padding-left: 18px;
+    border-left: 3px solid var(--globe-ochre);
+  }
+
+  .prod__p {
+    max-width: 640px;
+    margin-top: 20px;
+  }
+
+  .prod__steps {
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .prod__steps li {
+    position: relative;
+    padding: 0 0 20px 52px;
+    counter-increment: step;
+  }
+
+  .prod__steps li::before {
+    content: counter(step);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-pill);
+    background: var(--globe-ochre);
+    color: var(--cocoa);
+    font-weight: 700;
+  }
+
+  .prod__step-title {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .prod__step-text {
+    display: block;
+    color: var(--text-muted);
+  }
+
+  .prod__muted {
+    margin-top: 12px;
+    color: var(--text-muted);
+  }
+
+  .prod__refs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 28px;
+    margin-top: 32px;
+  }
+
+  .prod__ref {
+    padding: 28px;
+    border: 1px solid var(--cocoa-line);
+    border-radius: var(--radius-card);
+    background: var(--cocoa-2);
+  }
+
+  .prod__ref-meta {
+    margin-top: 4px;
+    font-size: var(--fs-meta);
+    color: var(--cream-faint);
+  }
+
+  .prod__ref-credit {
+    margin-top: 12px;
+  }
+
+  .prod__ref-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+    margin-top: 8px;
+    font-weight: 700;
+  }
+
+  .prod__ref-links a,
+  .prod__partner-link a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+
+  .prod__refs-note {
+    margin-top: 28px;
+  }
+
+  .prod__partner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .prod__photo {
+    flex: 1 1 360px;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .prod__photo :global(.prod__img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-card);
+  }
+
+  .prod__photo figcaption {
+    margin-top: 8px;
+    font-size: var(--fs-small);
+  }
+
+  .prod__partner-text {
+    flex: 1 1 380px;
+    min-width: 0;
+  }
+
+  .prod__partner-text p {
+    margin-top: 14px;
+  }
+
+  .prod__partner-link {
+    font-weight: 700;
+  }
+</style>
