@@ -14,7 +14,10 @@ export function initWorldMap(root: HTMLElement): void {
 
   const position = (marker: SVGAElement, tip: HTMLElement) => {
     const box = root.getBoundingClientRect();
-    const dot = marker.querySelector('.marker__dot')!.getBoundingClientRect();
+    // Country markers are dots, team pins are diamonds.
+    const shape = marker.querySelector('.marker__dot, .marker__diamond');
+    if (!shape) return;
+    const dot = shape.getBoundingClientRect();
     const cx = dot.left + dot.width / 2 - box.left;
     const top = dot.top - box.top;
     const bottom = dot.bottom - box.top;

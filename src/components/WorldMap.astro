@@ -8,10 +8,15 @@
  * the country in the list below) with a tooltip on hover/focus. The list is the content;
  * the map is an enhancement (and the equivalent control for WCAG 2.5.8 where markers sit close).
  * Not interactive: decorative teaser (homepage).
+ *
+ * Team pins (src/data/team-pins.ts, interactive map only): people behind the recordings, as a
+ * cocoa diamond with cream ring – visibly different from the country markers and not counted
+ * in the 24 countries. A legend explains both marker types.
  */
 import { lineupText, trackAnchor, type Album } from '../data/albums';
 import { countries, countryName, tracksForCountry, type CountryCode } from '../data/countries';
 import { path } from '../data/routes';
+import { teamPins } from '../data/team-pins';
 import { MAP_HEIGHT, MAP_WIDTH, countryPath, landPath, project } from '../lib/world-map';
 
 interface Props {
@@ -50,6 +55,15 @@ const markers = (Object.keys(countries) as CountryCode[]).map((code) => {
   return { code, x, y, name, songs, href, ariaLabel, tipId: `map-tip-${code.toLowerCase()}` };
 });
 
+// Diamond corners around the projected point (half-diagonal 9 units).
+const diamond = (x: number, y: number, r = 9) => `${x},${y - r} ${x + r},${y} ${x},${y + r} ${x - r},${y}`;
+const team = interactive
+  ? teamPins.map((p) => {
+      const [x, y] = project(p.lon, p.lat);
+      return { ...p, x, y, points: diamond(x, y), tipId: `map-tip-${p.id}`, ariaLabel: `${p.place}: ${p.name} – ${p.roles}` };
+    })
+  : [];
+
 const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) => countryPath(c.isoNumeric));
 ---
 
@@ -86,8 +100,37 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
           ),
         )
       }
+      {
+        team.map((t) => (
+          <a href={t.link.href} class="marker marker--team" aria-label={t.ariaLabel} data-tip={t.tipId}>
+            <circle class="marker__hit" cx={t.x} cy={t.y} r="14" />
+            <circle class="marker__focus-outer" cx={t.x} cy={t.y} r="15" />
+            <circle class="marker__focus-inner" cx={t.x} cy={t.y} r="12" />
+            <polygon class="marker__diamond" points={t.points} />
+          </a>
+        ))
+      }
     </g>
   </svg>
+
+  {
+    team.length > 0 && (
+      <ul class="map__legend" aria-label="Legende">
+        <li>
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+            <circle class="marker__dot" cx="8" cy="8" r="5.5" />
+          </svg>
+          Herkunftsland eines Liedes
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+            <polygon class="marker__diamond" points="8,1.5 14.5,8 8,14.5 1.5,8" />
+          </svg>
+          Hinter den Aufnahmen: Produktion, Mix und Mastering
+        </li>
+      </ul>
+    )
+  }
 
   {
     interactive &&
@@ -110,6 +153,17 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
           <p class="map__tip-hint">{m.songs.length === 1 ? 'Zum Lied →' : 'Zu den Liedern →'}</p>
         </div>
       ))
+  }
+  {
+    team.map((t) => (
+      <div class="map__tip" id={t.tipId} role="tooltip" aria-hidden="true" hidden>
+        <p class="map__tip-country">{t.place}</p>
+        <p class="map__tip-title">{t.name}</p>
+        <span class="map__tip-origin">{t.note}</span>
+        <span class="map__tip-lineup">{t.roles}</span>
+        <p class="map__tip-hint">{t.link.label} →</p>
+      </div>
+    ))
   }
 </div>
 
@@ -193,6 +247,46 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
     r: 8.5;
   }
 
+  /* Team pin: cocoa diamond, cream ring (cocoa on ochre land ≈6.7:1, cream on blue sea ≈3.3:1) */
+  .marker__diamond {
+    fill: var(--cocoa);
+    stroke: var(--cream);
+    stroke-width: 2.5;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.15s ease;
+  }
+
+  .marker--team:hover .marker__diamond,
+  .marker--team:focus-visible .marker__diamond {
+    transform: scale(1.25);
+  }
+
+  .map__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 24px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  .map__legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .map__legend .marker__dot {
+    stroke-width: 2;
+  }
+
+  .map__legend .marker__diamond {
+    stroke-width: 1.5;
+  }
+
   .marker:focus-visible .marker__focus-outer,
   .marker:focus-visible .marker__focus-inner {
     opacity: 1;
@@ -255,14 +349,24 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
 
   /* Phones: the map shrinks to a third, so markers grow to stay visible (the list is the content). */
   @media (max-width: 640px) {
-    .marker__dot {
+    .map__svg .marker__dot {
       r: 11;
       stroke-width: 4;
     }
 
-    .marker:hover .marker__dot,
-    .marker:focus-visible .marker__dot {
+    .map__svg .marker:hover .marker__dot,
+    .map__svg .marker:focus-visible .marker__dot {
       r: 13;
+    }
+
+    .map__svg .marker__diamond {
+      stroke-width: 4;
+      transform: scale(1.7);
+    }
+
+    .map__svg .marker--team:hover .marker__diamond,
+    .map__svg .marker--team:focus-visible .marker__diamond {
+      transform: scale(2);
     }
 
     .marker__focus-inner {
@@ -277,7 +381,8 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .marker__dot {
+    .marker__dot,
+    .marker__diamond {
       transition: none;
     }
   }

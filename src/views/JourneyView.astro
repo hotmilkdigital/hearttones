@@ -21,6 +21,7 @@ import {
 import { path } from '../data/routes';
 import { site } from '../data/site';
 import { anyAudioPlayable } from '../lib/audio';
+import { teamPins } from '../data/team-pins';
 
 const LIST_ID = 'laender';
 const countryCount = Object.keys(countries).length;
@@ -132,6 +133,27 @@ const audio = anyAudioPlayable();
         </section>
       ))
     }
+
+    <section class="continent" aria-labelledby="team-title">
+      <h3 id="team-title" class="continent__title">Hinter den Aufnahmen</h3>
+      <div class="continent__grid">
+        {
+          teamPins.map((t) => (
+            <article class="country country--team" id={`${LIST_ID}-${t.id}`} aria-labelledby={`${LIST_ID}-${t.id}-title`} tabindex="-1">
+              <h4 id={`${LIST_ID}-${t.id}-title`} class="country__name">
+                {t.place} ({t.country})
+              </h4>
+              <p class="country__team-name">{t.name}</p>
+              <span class="country__meta">{t.note}</span>
+              <span class="country__lineup">{t.roles}</span>
+              <a class="country__song" href={t.link.href}>
+                {t.link.label}
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
   </Section>
 </BaseLayout>
 
@@ -191,6 +213,17 @@ const audio = anyAudioPlayable();
 
   .country__name {
     font-size: 22px;
+  }
+
+  .country__team-name {
+    margin-top: 10px;
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .country--team .country__lineup {
+    margin-top: 6px;
   }
 
   .country__songs {
