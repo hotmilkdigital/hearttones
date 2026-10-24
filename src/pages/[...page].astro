@@ -1,23 +1,23 @@
 ---
 /**
  * All DE pages except the homepage. URLs come from src/data/routes.ts only, so slugs can change
- * in one place (CLAUDE.md §4). Every route key renders a view from src/views/; keys without a
- * finished view render StubView, so no internal link ends in the 404.
+ * in one place (CLAUDE.md §4). Every route key renders its view from src/views/.
  */
 import type { GetStaticPaths } from 'astro';
-import type { ComponentProps } from 'astro/types';
+import MusicView from '../views/MusicView.astro';
 import AlbumView from '../views/AlbumView.astro';
 import SinglesView from '../views/SinglesView.astro';
 import JourneyView from '../views/JourneyView.astro';
+import ArtistsView from '../views/ArtistsView.astro';
 import AboutView from '../views/AboutView.astro';
-import PrivacyView from '../views/PrivacyView.astro';
+import ProductionView from '../views/ProductionView.astro';
+import PressView from '../views/PressView.astro';
+import ContactView from '../views/ContactView.astro';
 import ImprintView from '../views/ImprintView.astro';
+import PrivacyView from '../views/PrivacyView.astro';
 import WithdrawalView from '../views/WithdrawalView.astro';
-import StubView from '../views/StubView.astro';
-import MusicView from '../views/MusicView.astro';
 import { vol1, vol2 } from '../data/albums';
 import { routes, type RouteKey } from '../data/routes';
-import { site } from '../data/site';
 
 type PageKey = Exclude<RouteKey, 'home'>;
 
@@ -30,45 +30,6 @@ export const getStaticPaths = (() =>
     }))) satisfies GetStaticPaths;
 
 const { key } = Astro.props as { key: PageKey };
-
-// Stubs until the pages are built (Künstler:innen, Produktion, Presse, Kontakt: P10).
-const stubs: Partial<Record<PageKey, Omit<ComponentProps<typeof StubView>, 'routeKey'>>> = {
-  artists: {
-    title: `Künstler:innen der Lullabies From Around The World | ${site.brand}`,
-    description: `Die 46 Musiker:innen und Ensembles auf Lullabies From Around The World Vol. 1 und Vol. 2 – mit Liedern, Instrumenten und Ländern.`,
-    heading: 'Künstler:innen',
-    placeholder: 'Alle 46 Musiker:innen beider Alben mit Links und Fotos (P10, Recherche Philipp)',
-    parent: { label: 'Musik', key: 'music' },
-    links: [
-      { label: 'Vol. 1 (2011)', key: 'vol1' },
-      { label: 'Vol. 2 (2023)', key: 'vol2' },
-    ],
-  },
-  production: {
-    title: `Produktion: Komposition, Arrangement und Aufnahme | ${site.brand}`,
-    description: `Musikproduktion mit ${site.owner.shortName} in Berlin-Kreuzberg, in Partnerschaft mit dem Hot Milk Studio. Erstgespräch nach Vereinbarung.`,
-    heading: 'Produktion',
-    placeholder: 'Produktionsseite mit Leistungen, Ablauf, Referenzen und Partnerschaft Hot Milk Studio (P10)',
-    links: [{ label: 'Über Philipp', key: 'about' }],
-  },
-  press: {
-    title: `Presse: Rezensionen und Berichte | ${site.brand}`,
-    description: `Presse zu ${site.brand} und Lullabies From Around The World: Rezensionen und Berichte über die Schlaflieder aus aller Welt.`,
-    heading: 'Presse',
-    placeholder: 'Pressezitate mit Quellen und Pressestimmen (P10)',
-    parent: { label: 'Musik', key: 'music' },
-    links: [{ label: 'Vol. 1 (2011)', key: 'vol1' }],
-  },
-  contact: {
-    title: `Kontakt | ${site.brand}`,
-    description: `Kontakt zu ${site.owner.fullName} und ${site.brand}: E-Mail und Telefon, Erstgespräch nach Vereinbarung, CD-Bestellung Vol. 2.`,
-    heading: 'Kontakt',
-    placeholder: 'Kontaktseite mit E-Mail, Telefon und Hinweis zur CD-Bestellung (P10)',
-    links: [{ label: 'CD Vol. 2 bestellen', key: 'vol2' }],
-  },
-};
-
-const stub = stubs[key];
 ---
 
 {key === 'music' && <MusicView />}
@@ -76,8 +37,11 @@ const stub = stubs[key];
 {key === 'vol2' && <AlbumView album={vol2} />}
 {key === 'singles' && <SinglesView />}
 {key === 'journey' && <JourneyView />}
+{key === 'artists' && <ArtistsView />}
 {key === 'about' && <AboutView />}
-{key === 'privacy' && <PrivacyView />}
+{key === 'production' && <ProductionView />}
+{key === 'press' && <PressView />}
+{key === 'contact' && <ContactView />}
 {key === 'imprint' && <ImprintView />}
+{key === 'privacy' && <PrivacyView />}
 {key === 'withdrawal' && <WithdrawalView />}
-{stub && <StubView routeKey={key} {...stub} />}
