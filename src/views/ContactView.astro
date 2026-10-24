@@ -1,0 +1,166 @@
+---
+/**
+ * Kontakt (CLAUDE.md §5.12, §10): mailto and tel only – no form, no opening hours
+ * („Erstgespräch nach Vereinbarung"), no postal address (Impressum only). Prefilled subjects
+ * per concern; the CD order points to the Vol. 2 order block (price, shipping, Widerruf).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { mailSubjects } from '../data/production';
+import { path } from '../data/routes';
+import { order, site } from '../data/site';
+
+const mail = (subject?: string) =>
+  `mailto:${site.contact.email}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
+
+const concerns = [
+  {
+    title: 'Produktion',
+    text: 'Instrumental, Arrangement oder fertige Produktion – erzählen Sie kurz von Ihrem Projekt.',
+    href: mail(mailSubjects.production),
+    action: 'Produktion anfragen',
+  },
+  {
+    title: 'CD Vol. 2 bestellen',
+    text: 'Bestellung per E-Mail – Preis, Versand und Zahlung stehen auf der Albumseite.',
+    href: `${path('vol2')}#bestellen`,
+    action: 'Zur Bestellung',
+  },
+  {
+    title: 'Presse',
+    text: 'Interviews, Rezensionsexemplare und Material.',
+    href: mail(mailSubjects.press),
+    action: 'Presseanfrage senden',
+  },
+];
+---
+
+<BaseLayout
+  routeKey="contact"
+  title={`Kontakt | ${site.brand}`}
+  description={`Kontakt zu ${site.owner.fullName} und ${site.brand}: E-Mail und Telefon, Erstgespräch nach Vereinbarung, CD-Bestellung Vol. 2.`}
+>
+  <Section tone="light" aria-labelledby="kontakt-title">
+    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Kontakt' }]} />
+    <div class="contact">
+      <div class="contact__text">
+        <h1 id="kontakt-title">Kontakt</h1>
+        <p class="lead contact__lead">Schreiben Sie eine E-Mail oder rufen Sie an. {site.contact.availability}.</p>
+      </div>
+      <div class="contact__card" data-tone="taupe">
+        <p class="contact__name">{site.owner.fullName}</p>
+        <p>{site.label} · {site.contact.area}</p>
+        <p class="contact__links">
+          <a href={mail()}>{site.contact.email}</a>
+          <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+        </p>
+        <p class="contact__small">{site.contact.availability}</p>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="sand" aria-labelledby="anliegen-title">
+    <h2 id="anliegen-title">Ihr Anliegen</h2>
+    <ul class="concerns">
+      {
+        concerns.map((c) => (
+          <li class="concern">
+            <h3>{c.title.replace('Vol. ', 'Vol. ')}</h3>
+            <p>{c.text}</p>
+            <a class="btn btn--outline" href={c.href}>
+              {c.action}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="contact__legal">
+      Die Postanschrift finden Sie im <a href={path('imprint')}>Impressum</a>. Vol.&nbsp;2 kostet{' '}
+      {order.priceEur}&nbsp;€ pro CD zzgl. Versand.
+    </p>
+  </Section>
+</BaseLayout>
+
+<style>
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .contact__text {
+    flex: 1 1 420px;
+    min-width: 0;
+  }
+
+  .contact__lead {
+    max-width: 560px;
+    margin-top: 20px;
+  }
+
+  .contact__card {
+    flex: 0 1 380px;
+    padding: 28px;
+    border-radius: var(--radius-card);
+  }
+
+  .contact__card p + p {
+    margin-top: 8px;
+  }
+
+  .contact__name {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .contact__links {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+  }
+
+  .contact__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+
+  .contact__small {
+    font-size: var(--fs-meta);
+  }
+
+  .concerns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 20px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .concern {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 24px;
+    border-radius: var(--radius-card);
+    background: var(--paper);
+  }
+
+  .concern h3 {
+    font-size: 22px;
+  }
+
+  .concern p {
+    flex: 1;
+  }
+
+  .contact__legal {
+    margin-top: 28px;
+    color: var(--text-muted);
+  }
+</style>
