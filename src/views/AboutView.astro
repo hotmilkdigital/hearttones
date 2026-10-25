@@ -32,7 +32,7 @@ const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavin
 const portrait: { image: ImageMetadata; alt: string; credit: string | null } | null = {
   image: portraitPhoto,
   alt: 'Philipp von Rothkirch spielt Klavier, sein kleiner Sohn liegt auf dem Klavier und lehnt den Kopf an seine Stirn',
-  credit: null,
+  credit: 'Michael von Rothkirch',
 };
 // Never wider than the column (340 px) or the source; 1×/2×/3× within the source's 1080 px.
 const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.image.width) : [];

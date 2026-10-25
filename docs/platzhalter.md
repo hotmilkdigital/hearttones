@@ -1,6 +1,6 @@
 # PLATZHALTER – offene Inhalte
 
-Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 24 verschiedene Platzhalter, 53 Vorkommen. Vor jedem Release: Liste muss leer sein.
+Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 23 verschiedene Platzhalter, 51 Vorkommen. Vor jedem Release: Liste muss leer sein.
 
 | Was fehlt | Seiten |
 |---|---|
@@ -14,7 +14,6 @@ Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 24 verschied
 | Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerspruch, Beschwerde bei einer Aufsichtsbehörde | `/datenschutz/` |
 | Stand der Datenschutzerklärung (Datum) | `/datenschutz/` |
 | Endgültiger Text des Impressums – von Robert | `/impressum/` |
-| Fotograf:in | `/impressum/`, `/philipp-von-rothkirch/` |
 | Hinweis nach § 36 VSBG (Teilnahme an Streitbeilegungsverfahren) | `/impressum/` |
 | Haftungshinweise für eigene Inhalte und externe Links | `/impressum/` |
 | Hinweis zum Urheberrecht an Texten, Fotos, Covern und Aufnahmen | `/impressum/` |
