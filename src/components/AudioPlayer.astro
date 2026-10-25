@@ -24,8 +24,10 @@ import {
 import { countryName } from '../data/countries';
 import { ids, panelId, tabId, titleId, trackId } from '../data/anchors';
 import { isPlayable } from '../lib/audio';
+import type { Locale } from '../data/routes';
 
 interface Props {
+  locale?: Locale;
   /** Albums to show; more than one renders tabs (homepage), one renders a plain list (album pages). */
   albumIds?: Album['id'][];
   id?: string;
@@ -37,6 +39,7 @@ interface Props {
 }
 
 const {
+  locale = 'de',
   albumIds = ['vol-1', 'vol-2'],
   id = ids.player,
   heading = 'Reinhören',
@@ -134,7 +137,7 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
             <div class="panel__aside">
               {showAside && (
                 <>
-                  <Cover album={album} width={420} sizes="(max-width: 760px) 100vw, 420px" />
+                  <Cover locale={locale} album={album} width={420} sizes="(max-width: 760px) 100vw, 420px" />
                   <p class="panel__meta">{meta[album.id].replace(/(HTR|Vol\.) /g, '$1 ')}</p>
                 </>
               )}

@@ -10,23 +10,30 @@ import Breadcrumb from '../components/Breadcrumb.astro';
 import Placeholder from '../components/Placeholder.astro';
 import { pressMentions, pressQuotes } from '../data/press';
 import { mailSubjects } from '../data/production';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 
 const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSubjects.press)}`;
 ---
 
 <BaseLayout
+  locale={locale}
   routeKey="press"
   title={`Presse: Rezensionen und Berichte | ${site.brand}`}
   description={`Presse zu ${site.brand} und Lullabies From Around The World: Rezensionen und Berichte über die Schlaflieder aus aller Welt.`}
 >
   <Section tone="light" aria-labelledby={titleId(ids.press)}>
-    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Musik', href: path('music') }, { label: 'Presse' }]} />
+    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Musik', href: path('music', locale) }, { label: 'Presse' }]} />
     <h1 id={titleId(ids.press)}>Presse</h1>
     <p class="lead press__intro">
-      Stimmen zu <a href={path('vol1')}>Lullabies From Around The World Vol.&nbsp;1</a>.
+      Stimmen zu <a href={path('vol1', locale)}>Lullabies From Around The World Vol.&nbsp;1</a>.
     </p>
   </Section>
 

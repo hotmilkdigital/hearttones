@@ -8,9 +8,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import { mailSubjects } from '../data/production';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { order, site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 
 const mail = (subject?: string) =>
   `mailto:${site.contact.email}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
@@ -25,7 +31,7 @@ const concerns = [
   {
     title: 'CD Vol. 2 bestellen',
     text: 'Bestellung per E-Mail – Preis, Versand und Zahlung stehen auf der Albumseite.',
-    href: `${path('vol2')}#${ids.order}`,
+    href: `${path('vol2', locale)}#${ids.order}`,
     action: 'Zur Bestellung',
   },
   {
@@ -38,12 +44,13 @@ const concerns = [
 ---
 
 <BaseLayout
+  locale={locale}
   routeKey="contact"
   title={`Kontakt | ${site.brand}`}
   description={`Kontakt zu ${site.owner.fullName} und ${site.brand}: E-Mail und Telefon, Erstgespräch nach Vereinbarung, CD-Bestellung Vol. 2.`}
 >
   <Section tone="light" aria-labelledby={titleId(ids.contact)}>
-    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Kontakt' }]} />
+    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Kontakt' }]} />
     <div class="contact">
       <div class="contact__text">
         <h1 id={titleId(ids.contact)}>Kontakt</h1>
@@ -77,7 +84,7 @@ const concerns = [
       }
     </ul>
     <p class="contact__legal">
-      Die Postanschrift finden Sie im <a href={path('imprint')}>Impressum</a>. Vol.&nbsp;2 kostet{' '}
+      Die Postanschrift finden Sie im <a href={path('imprint', locale)}>Impressum</a>. Vol.&nbsp;2 kostet{' '}
       {order.priceEur}&nbsp;€ pro CD zzgl. Versand.
     </p>
   </Section>

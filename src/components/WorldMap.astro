@@ -15,22 +15,24 @@
  */
 import { lineupText, type Album } from '../data/albums';
 import { countries, countryName, tracksForCountry, type CountryCode } from '../data/countries';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { countryId, hash, ids, mapTipId, trackId } from '../data/anchors';
 import { teamPins } from '../data/team-pins';
 import { MAP_HEIGHT, MAP_WIDTH, countryPath, landPath, project } from '../lib/world-map';
 
 interface Props {
+  locale?: Locale;
   interactive?: boolean;
   label?: string;
 }
 
 const {
+  locale = 'de',
   interactive = true,
   label = `Weltkarte mit den ${Object.keys(countries).length} Herkunftsländern der Lieder`,
 } = Astro.props;
 
-const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2');
+const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2', locale);
 
 const markers = (Object.keys(countries) as CountryCode[]).map((code) => {
   const country = countries[code];

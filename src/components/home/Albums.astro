@@ -4,12 +4,19 @@ import Section from '../Section.astro';
 import AlbumCard from '../AlbumCard.astro';
 import { albums } from '../../data/albums';
 import { ids, titleId } from '../../data/anchors';
+import type { Locale } from '../../data/routes';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 ---
 
 <Section tone="light" id={ids.albums} aria-labelledby={titleId(ids.albums)}>
   <h2 id={titleId(ids.albums)}>Die Alben</h2>
   <div class="albums">
-    {albums.map((album) => <AlbumCard album={album} />)}
+    {albums.map((album) => <AlbumCard locale={locale} album={album} />)}
   </div>
 </Section>
 

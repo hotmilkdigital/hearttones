@@ -1,10 +1,12 @@
 ---
+import type { Locale } from '../data/routes';
 /** Breadcrumb trail; the last item is the current page. */
 interface Props {
+  locale?: Locale;
   items: { label: string; href?: string }[];
 }
 
-const { items } = Astro.props;
+const { locale = 'de', items } = Astro.props;
 ---
 
 <nav class="breadcrumb" aria-label="Sie sind hier">

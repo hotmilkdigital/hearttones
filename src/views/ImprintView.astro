@@ -6,13 +6,20 @@
  */
 import LegalPage from '../components/LegalPage.astro';
 import Placeholder from '../components/Placeholder.astro';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { imageCredits, site } from '../data/site';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 
 const { owner, address, contact } = site;
 ---
 
 <LegalPage
+  locale={locale}
   routeKey="imprint"
   title={`Impressum – ${site.brand}`}
   heading="Impressum"
@@ -67,6 +74,6 @@ const { owner, address, contact } = site;
   <p><Placeholder text="Hinweis zum Urheberrecht an Texten, Fotos, Covern und Aufnahmen" /></p>
 
   <p>
-    Informationen zum Datenschutz finden Sie in der <a href={path('privacy')}>Datenschutzerklärung</a>.
+    Informationen zum Datenschutz finden Sie in der <a href={path('privacy', locale)}>Datenschutzerklärung</a>.
   </p>
 </LegalPage>

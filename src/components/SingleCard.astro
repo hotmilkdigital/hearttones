@@ -7,14 +7,16 @@
 import type { Single } from '../data/singles';
 import { roleLabel } from '../data/roles';
 import { singleId, titleId } from '../data/anchors';
+import type { Locale } from '../data/routes';
 
 interface Props {
+  locale?: Locale;
   single: Single;
   headingLevel?: 'h2' | 'h3';
   showCredits?: boolean;
 }
 
-const { single, headingLevel: Heading = 'h3', showCredits = true } = Astro.props;
+const { locale = 'de', single, headingLevel: Heading = 'h3', showCredits = true } = Astro.props;
 
 const credits = single.credits.map((c) => ({
   name: c.members ? `${c.name} (${c.members.join(', ')})` : c.name,

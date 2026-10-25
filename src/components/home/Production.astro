@@ -7,11 +7,17 @@
 import { Image } from 'astro:assets';
 import Section from '../Section.astro';
 import pianoPhoto from '../../assets/photos/philipp-fluegel-hot-milk-studio.webp';
-import { path } from '../../data/routes';
+import { path, type Locale } from '../../data/routes';
 import { productionIntro, services } from '../../data/production';
 import { site } from '../../data/site';
 import { works } from '../../data/works';
 import { ids, titleId } from '../../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 ---
 
 <Section tone="paper" id={ids.production} class="production" aria-labelledby={titleId(ids.production)}>
@@ -23,8 +29,8 @@ import { ids, titleId } from '../../data/anchors';
         {services.map((s) => <li>{s}</li>)}
       </ul>
       <div class="production__actions">
-        <a class="btn btn--primary" href={path('contact')}>Produktion anfragen</a>
-        <a class="btn btn--outline" href={path('production')}>Mehr zur Produktion</a>
+        <a class="btn btn--primary" href={path('contact', locale)}>Produktion anfragen</a>
+        <a class="btn btn--outline" href={path('production', locale)}>Mehr zur Produktion</a>
       </div>
     </div>
 
@@ -40,7 +46,7 @@ import { ids, titleId } from '../../data/anchors';
             ))
           }
         </ul>
-        <p class="production__refs-more"><a href={`${path('about')}#${ids.works}`}>Videos und Credits</a></p>
+        <p class="production__refs-more"><a href={`${path('about', locale)}#${ids.works}`}>Videos und Credits</a></p>
       </div>
 
       <div class="production__partner" data-tone="taupe">

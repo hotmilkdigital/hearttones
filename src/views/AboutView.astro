@@ -16,10 +16,16 @@ import ConsentVideo from '../components/ConsentVideo.astro';
 import familyPhoto from '../assets/photos/philipp-robert-kinder-2011.webp';
 import pianoPhoto from '../assets/photos/philipp-fluegel-hot-milk-studio.webp';
 import portraitPhoto from '../assets/photos/philipp-sohn-klavier.jpg';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { works } from '../data/works';
 import { ids, titleId, workId } from '../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 
 // From Philipp's questionnaire answers (00_Projektstatus).
 const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavinet', 'Moog und Talkbox', 'Vibraphon', 'Bass', 'Percussion'];
@@ -40,6 +46,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
 ---
 
 <BaseLayout
+  locale={locale}
   routeKey="about"
   ogType="profile"
   title={`${site.owner.fullName} – Komponist und Produzent | ${site.brand}`}
@@ -47,7 +54,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
 >
   <!-- 1 Intro -->
   <Section tone="light" aria-labelledby={titleId(ids.about)}>
-    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Über Philipp' }]} />
+    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Über Philipp' }]} />
     <div class="intro">
       <div class="intro__text">
         <p class="eyebrow intro__eyebrow">Über Philipp</p>
@@ -126,9 +133,9 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
           Vielfalt der Musik der Welt.
         </p>
         <p class="story__links">
-          <a href={path('vol1')}>Vol.&nbsp;1 (2011)</a>
-          <a href={path('vol2')}>Vol.&nbsp;2 (2023)</a>
-          <a href={path('journey')}>Die Reise</a>
+          <a href={path('vol1', locale)}>Vol.&nbsp;1 (2011)</a>
+          <a href={path('vol2', locale)}>Vol.&nbsp;2 (2023)</a>
+          <a href={path('journey', locale)}>Die Reise</a>
         </p>
       </div>
     </div>
@@ -153,7 +160,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
         <!-- Block C, 01_Brief/08 (version 25.10.2026, 14:45) -->
         <p class="craft__p">
           Seine neuen Songs „World Peace Now!“ und „Bombs Away!“ erscheinen demnächst als{' '}
-          <a href={path('singles')}>Berlin Peace Collective</a>. „Bombs Away!“ entstand 2006 mit seiner damaligen Band Phases
+          <a href={path('singles', locale)}>Berlin Peace Collective</a>. „Bombs Away!“ entstand 2006 mit seiner damaligen Band Phases
           of Life, als Statement gegen den Wahnsinn der Kriege weltweit; noch im selben Jahr spielte die Band den Song auf
           persönliche Einladung von Nina Hagen bei deren Peace Charity Gala. Für das Berlin Peace Collective wurde er
           teilweise neu aufgenommen und von Robert Cummings im Hot Milk Studio neu gemischt und gemastert. „World Peace Now!“
@@ -185,7 +192,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
       {
         works.map((w) => (
           <article class="work" aria-labelledby={`work-${w.id}`}>
-            <ConsentVideo
+            <ConsentVideo locale={locale}
               youtubeId={w.youtubeId}
               title={`${w.artist} – „${w.title}“`}
               posterTitle={`„${w.title}“`}
@@ -221,8 +228,8 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
         Partnerschaft mit dem Hot Milk Studio in Berlin. {site.contact.availability}.
       </p>
       <div class="cta__actions">
-        <a class="btn btn--light" href={path('contact')}>Produktion anfragen</a>
-        <a class="btn btn--outline" href={path('production')}>Mehr zur Produktion</a>
+        <a class="btn btn--light" href={path('contact', locale)}>Produktion anfragen</a>
+        <a class="btn btn--outline" href={path('production', locale)}>Mehr zur Produktion</a>
       </div>
     </div>
   </Section>

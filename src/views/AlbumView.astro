@@ -20,15 +20,16 @@ import { albumDuration, albumPerformers, formatDuration, type Album, type Credit
 import { people, type Person } from '../data/people';
 import { pressQuotes } from '../data/press';
 import { roleLabel } from '../data/roles';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { ids, titleId, hash } from '../data/anchors';
 
 interface Props {
+  locale?: Locale;
   album: Album;
 }
 
-const { album } = Astro.props;
+const { locale = 'de', album } = Astro.props;
 
 const nb = (s: string) => s.replace(/(Vol\.|HTR|LC-?|Nr\.) /g, '$1 ');
 const seriesTitle = 'Lullabies From Around The World';
@@ -79,6 +80,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
 ---
 
 <BaseLayout
+  locale={locale}
   title={pageTitle}
   description={description}
   routeKey={album.id === 'vol-1' ? 'vol1' : 'vol2'}
@@ -88,10 +90,10 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
   schema={albumGraph(album, ogCover ? new URL(ogCover.src, site.url).href : undefined)}
 >
   <Section tone="light" class="album-head" aria-labelledby={titleId(ids.album)}>
-    <Breadcrumb
+    <Breadcrumb locale={locale}
       items={[
-        { label: 'Start', href: path('home') },
-        { label: 'Musik', href: path('music') },
+        { label: 'Start', href: path('home', locale) },
+        { label: 'Musik', href: path('music', locale) },
         { label: nb(album.shortTitle) },
       ]}
     />
@@ -138,13 +140,13 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
       </div>
 
       <div class="album-head__aside">
-        <Cover album={album} width={420} sizes="(max-width: 760px) 100vw, 420px" shadow="light" loading="eager" />
+        <Cover locale={locale} album={album} width={420} sizes="(max-width: 760px) 100vw, 420px" shadow="light" loading="eager" />
         <CreditList items={facts} class="album-head__facts" />
       </div>
     </div>
   </Section>
 
-  <AudioPlayer albumIds={[album.id]} id={ids.tracks} heading="Die Lieder" showWriting showAside={false} />
+  <AudioPlayer locale={locale} albumIds={[album.id]} id={ids.tracks} heading="Die Lieder" showWriting showAside={false} />
 
   <Section tone="paper" aria-labelledby={titleId(ids.performers)}>
     <div class="people">
@@ -154,7 +156,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
           {performers.length} Musiker:innen und Ensembles.
         </p>
         <CreditList items={performerItems} class="people__list" />
-        <p class="people__more"><a href={path('artists')}>Alle Künstler:innen beider Alben</a></p>
+        <p class="people__more"><a href={path('artists', locale)}>Alle Künstler:innen beider Alben</a></p>
       </div>
       <div>
         <h2 id={titleId(ids.credits)}>Produktion und Gestaltung</h2>
@@ -174,7 +176,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
           <figcaption>
             „{quote.headline}“,{' '}
             {quote.source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />} ·{' '}
-            <a href={path('press')}>Presse</a>
+            <a href={path('press', locale)}>Presse</a>
           </figcaption>
         </figure>
       </Section>
@@ -185,10 +187,10 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
     album.status === 'available' && (
       <>
         <Section tone="sand" aria-labelledby={titleId(ids.order)}>
-          <OrderBlock album={album} />
+          <OrderBlock locale={locale} album={album} />
         </Section>
         <Section tone="light" aria-label="Förderung">
-          <FundingNotice />
+          <FundingNotice locale={locale} />
         </Section>
       </>
     )

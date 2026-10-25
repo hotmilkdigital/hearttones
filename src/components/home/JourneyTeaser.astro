@@ -7,9 +7,15 @@
 import Section from '../Section.astro';
 import WorldMap from '../WorldMap.astro';
 import { countries } from '../../data/countries';
-import { path } from '../../data/routes';
+import { path, type Locale } from '../../data/routes';
 import { anyAudioPlayable } from '../../lib/audio';
 import { ids, titleId } from '../../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 
 const count = Object.keys(countries).length;
 const audio = anyAudioPlayable();
@@ -26,10 +32,10 @@ const audio = anyAudioPlayable();
       <p class="journey__p">
         Auf der Karte finden Sie alle {count}&nbsp;Länder – mit Lied, Musiker:innen{audio ? ' und einer Hörprobe' : ''}.
       </p>
-      <a class="btn btn--primary journey__btn" href={path('journey')}>Zur Karte</a>
+      <a class="btn btn--primary journey__btn" href={path('journey', locale)}>Zur Karte</a>
     </div>
     <div class="journey__map">
-      <WorldMap interactive={false} label={`Weltkarte mit ${count} Markierungen für die Herkunftsländer der Lieder`} />
+      <WorldMap locale={locale} interactive={false} label={`Weltkarte mit ${count} Markierungen für die Herkunftsländer der Lieder`} />
     </div>
   </div>
 </Section>

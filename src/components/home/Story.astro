@@ -7,8 +7,14 @@
 import { Image } from 'astro:assets';
 import Section from '../Section.astro';
 import familyPhoto from '../../assets/photos/philipp-robert-kinder-2011.webp';
-import { path } from '../../data/routes';
+import { path, type Locale } from '../../data/routes';
 import { ids, titleId } from '../../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 ---
 
 <Section tone="light" id={ids.story} aria-labelledby={titleId(ids.story)}>
@@ -34,7 +40,7 @@ import { ids, titleId } from '../../data/anchors';
         Daraus wurde ein Projekt: eine Einschlaf-CD für Kinder, die auch Eltern gerne hören, und eine Reise durch die Vielfalt
         der Musik der Welt.
       </p>
-      <a class="btn btn--outline story__btn" href={path('about')}>Über Philipp von Rothkirch</a>
+      <a class="btn btn--outline story__btn" href={path('about', locale)}>Über Philipp von Rothkirch</a>
     </div>
   </div>
 </Section>

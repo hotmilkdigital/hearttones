@@ -12,9 +12,15 @@ import { albums, performerName, type Album, type Track } from '../data/albums';
 import { countryName } from '../data/countries';
 import { people, type Person, type PersonId } from '../data/people';
 import { roleLabel, type Role } from '../data/roles';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { artistsAlbumId, hash, ids, titleId, trackId } from '../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 
 interface Entry {
   id: PersonId;
@@ -25,7 +31,7 @@ interface Entry {
   songs: Track[];
 }
 
-const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2');
+const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2', locale);
 const nb = (s: string) => s.replace('Vol. ', 'Vol. ');
 const domain = (url: string) => new URL(url).hostname.replace(/^www\./, '');
 
@@ -60,16 +66,17 @@ const memorial =
 ---
 
 <BaseLayout
+  locale={locale}
   routeKey="artists"
   title={`Künstler:innen der Lullabies From Around The World | ${site.brand}`}
   description={`Die ${total} Musiker:innen und Ensembles auf Lullabies From Around The World Vol. 1 und Vol. 2 – mit Liedern, Instrumenten und Ländern.`}
 >
   <Section tone="light" aria-labelledby={titleId(ids.artists)}>
-    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Musik', href: path('music') }, { label: 'Künstler:innen' }]} />
+    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Musik', href: path('music', locale) }, { label: 'Künstler:innen' }]} />
     <h1 id={titleId(ids.artists)}>Künstler:innen</h1>
     <p class="lead artists__intro">
-      {total}&nbsp;Musiker:innen und Ensembles haben die Lieder auf <a href={path('vol1')}>Vol.&nbsp;1</a> und{' '}
-      <a href={path('vol2')}>Vol.&nbsp;2</a> gesungen und gespielt.
+      {total}&nbsp;Musiker:innen und Ensembles haben die Lieder auf <a href={path('vol1', locale)}>Vol.&nbsp;1</a> und{' '}
+      <a href={path('vol2', locale)}>Vol.&nbsp;2</a> gesungen und gespielt.
     </p>
     <p class="artists__jump">
       {
@@ -124,7 +131,7 @@ const memorial =
               )}
               {e.id === 'philipp-v-rothkirch' && (
                 <p class="artist__more">
-                  <a href={path('about')}>Mehr über Philipp von Rothkirch</a>
+                  <a href={path('about', locale)}>Mehr über Philipp von Rothkirch</a>
                 </p>
               )}
             </li>

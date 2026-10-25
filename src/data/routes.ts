@@ -28,6 +28,9 @@ export const routes = {
 
 export type RouteKey = keyof typeof routes;
 
+/** Every page except the homepage (rendered by PageView). */
+export type PageKey = Exclude<RouteKey, 'home'>;
+
 /** URL of a page in the given locale. */
 export function path(key: RouteKey, locale: Locale = defaultLocale): string {
   return routes[key][locale];

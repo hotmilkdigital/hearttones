@@ -1,25 +1,11 @@
 ---
 /**
  * All DE pages except the homepage. URLs come from src/data/routes.ts only, so slugs can change
- * in one place (CLAUDE.md §4). Every route key renders its view from src/views/.
+ * in one place (CLAUDE.md §4). The key → view mapping lives in PageView (shared with EN).
  */
 import type { GetStaticPaths } from 'astro';
-import MusicView from '../views/MusicView.astro';
-import AlbumView from '../views/AlbumView.astro';
-import SinglesView from '../views/SinglesView.astro';
-import JourneyView from '../views/JourneyView.astro';
-import ArtistsView from '../views/ArtistsView.astro';
-import AboutView from '../views/AboutView.astro';
-import ProductionView from '../views/ProductionView.astro';
-import PressView from '../views/PressView.astro';
-import ContactView from '../views/ContactView.astro';
-import ImprintView from '../views/ImprintView.astro';
-import PrivacyView from '../views/PrivacyView.astro';
-import WithdrawalView from '../views/WithdrawalView.astro';
-import { vol1, vol2 } from '../data/albums';
-import { routes, type RouteKey } from '../data/routes';
-
-type PageKey = Exclude<RouteKey, 'home'>;
+import PageView from '../views/PageView.astro';
+import { routes, type PageKey, type RouteKey } from '../data/routes';
 
 export const getStaticPaths = (() =>
   (Object.keys(routes) as RouteKey[])
@@ -32,16 +18,4 @@ export const getStaticPaths = (() =>
 const { key } = Astro.props as { key: PageKey };
 ---
 
-{key === 'music' && <MusicView />}
-{key === 'vol1' && <AlbumView album={vol1} />}
-{key === 'vol2' && <AlbumView album={vol2} />}
-{key === 'singles' && <SinglesView />}
-{key === 'journey' && <JourneyView />}
-{key === 'artists' && <ArtistsView />}
-{key === 'about' && <AboutView />}
-{key === 'production' && <ProductionView />}
-{key === 'press' && <PressView />}
-{key === 'contact' && <ContactView />}
-{key === 'imprint' && <ImprintView />}
-{key === 'privacy' && <PrivacyView />}
-{key === 'withdrawal' && <WithdrawalView />}
+<PageView pageKey={key} locale="de" />

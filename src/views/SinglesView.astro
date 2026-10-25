@@ -7,20 +7,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import SingleCard from '../components/SingleCard.astro';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { singles, singlesArtist } from '../data/singles';
 import { site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 ---
 
 <BaseLayout
+  locale={locale}
   routeKey="singles"
   title={`${singlesArtist} – neue Singles | ${site.brand}`}
   description={`${singlesArtist}: die neuen Singles „World Peace Now!“ und „Bombs Away!“ – Komposition und Keyboards: ${site.owner.fullName}. Die Veröffentlichung folgt.`}
 >
   <Section tone="light" aria-labelledby={titleId(ids.singles)}>
-    <Breadcrumb
-      items={[{ label: 'Start', href: path('home') }, { label: 'Musik', href: path('music') }, { label: singlesArtist }]}
+    <Breadcrumb locale={locale}
+      items={[{ label: 'Start', href: path('home', locale) }, { label: 'Musik', href: path('music', locale) }, { label: singlesArtist }]}
     />
     <p class="badge-soon">Demnächst</p>
     <h1 id={titleId(ids.singles)} class="singles__title">{singlesArtist}</h1>
@@ -32,7 +39,7 @@ import { ids, titleId } from '../data/anchors';
 
   <Section tone="night" aria-label="Singles">
     <div class="singles__grid">
-      {singles.map((single) => <SingleCard single={single} headingLevel="h2" />)}
+      {singles.map((single) => <SingleCard locale={locale} single={single} headingLevel="h2" />)}
     </div>
   </Section>
 </BaseLayout>

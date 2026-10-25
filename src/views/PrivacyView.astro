@@ -7,11 +7,18 @@
 import LegalPage from '../components/LegalPage.astro';
 import Placeholder from '../components/Placeholder.astro';
 import { externalLinkTargets, youtubeHosts, youtubeHostsCheckedOn } from '../data/privacy';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 ---
 
 <LegalPage
+  locale={locale}
   routeKey="privacy"
   title={`Datenschutz – ${site.brand}`}
   heading="Datenschutz"
@@ -21,7 +28,7 @@ import { site } from '../data/site';
   <h2>1. Verantwortlicher</h2>
   <p>
     Verantwortlich für die Datenverarbeitung auf dieser Website ist {site.owner.fullName}. Die Kontaktdaten finden Sie
-    im{' '}<a href={path('imprint')}>Impressum</a>. E-Mail: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+    im{' '}<a href={path('imprint', locale)}>Impressum</a>. E-Mail: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
   </p>
 
   <h2>2. Das Wichtigste in Kürze</h2>
@@ -48,7 +55,7 @@ import { site } from '../data/site';
 
   <h2>6. YouTube-Videos (Zwei-Klick-Lösung)</h2>
   <p>
-    Auf der Seite <a href={path('about')}>Über Philipp</a> sind Videos von YouTube eingebunden. Solange Sie nicht auf
+    Auf der Seite <a href={path('about', locale)}>Über Philipp</a> sind Videos von YouTube eingebunden. Solange Sie nicht auf
     „Video laden“ klicken, stellt Ihr Browser keine Verbindung zu YouTube oder Google her; angezeigt wird nur eine Vorschau
     von unserem Server.
   </p>

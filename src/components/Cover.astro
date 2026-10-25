@@ -7,8 +7,10 @@
 import { Picture } from 'astro:assets';
 import type { Album } from '../data/albums';
 import { clearedCover } from '../lib/covers';
+import type { Locale } from '../data/routes';
 
 interface Props {
+  locale?: Locale;
   album: Album;
   /** Rendered width in CSS px at the largest layout; used for srcset widths. */
   width: number;
@@ -18,7 +20,7 @@ interface Props {
   class?: string;
 }
 
-const { album, width, sizes, shadow = 'dark', loading = 'lazy', class: className } = Astro.props;
+const { locale = 'de', album, width, sizes, shadow = 'dark', loading = 'lazy', class: className } = Astro.props;
 const image = clearedCover(album);
 // 1×, ~1.5× and 2× of the layout width so phones (≈1.75 DPR) get a close match.
 const widths = image ? [width, Math.round(width * 1.5), width * 2].filter((w) => w <= image.width) : [];

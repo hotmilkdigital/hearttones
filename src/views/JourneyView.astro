@@ -18,16 +18,22 @@ import {
   type Continent,
   type CountryCode,
 } from '../data/countries';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { anyAudioPlayable } from '../lib/audio';
 import { teamPins } from '../data/team-pins';
 import { continentId, countryId, ids, titleId, trackId } from '../data/anchors';
 
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
+
 const countryCount = Object.keys(countries).length;
 const continentOrder: Continent[] = ['africa', 'americas', 'asia', 'europe', 'oceania'];
 
-const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2');
+const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2', locale);
 const trackUrl = (album: Album, track: Album['tracks'][number]) => `${albumUrl(album)}#${trackId(album.id, track.no)}`;
 const nb = (s: string) => s.replace('Vol. ', 'Vol. ');
 
@@ -54,12 +60,13 @@ const audio = anyAudioPlayable();
 ---
 
 <BaseLayout
+  locale={locale}
   routeKey="journey"
   title={`Die Reise: Schlaflieder aus ${countryCount} Ländern – ${site.brand}`}
   description={`Eine Weltkarte mit allen ${countryCount} Herkunftsländern der Lieder von Lullabies From Around The World Vol. 1 und Vol. 2 – mit Lied, Album und Musiker:innen.`}
 >
   <Section tone="light" aria-labelledby={titleId(ids.journey)}>
-    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Die Reise' }]} />
+    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Die Reise' }]} />
     <h1 id={titleId(ids.journey)}>Die Reise</h1>
     <div class="reise__intro">
       <p class="lead">
@@ -74,7 +81,7 @@ const audio = anyAudioPlayable();
 
   <Section tone="night" class="reise__map-section" aria-labelledby={titleId(ids.map)}>
     <h2 id={titleId(ids.map)} class="visually-hidden">Weltkarte</h2>
-    <WorldMap />
+    <WorldMap locale={locale} />
     <p class="reise__map-note">
       Zeigen Sie auf einen Punkt oder wählen Sie ihn mit der Tastatur aus, um Lied und Musiker:innen zu sehen. Alle Angaben
       finden Sie auch in der Liste unten.

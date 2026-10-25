@@ -7,10 +7,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from './Section.astro';
 import Breadcrumb from './Breadcrumb.astro';
 import Placeholder from './Placeholder.astro';
-import { path, type RouteKey } from '../data/routes';
+import { path, type RouteKey, type Locale } from '../data/routes';
 import { ids, titleId } from '../data/anchors';
 
 interface Props {
+  locale?: Locale;
   title: string;
   heading: string;
   description: string;
@@ -19,13 +20,13 @@ interface Props {
   routeKey?: RouteKey;
 }
 
-const { title, heading, description, status, routeKey } = Astro.props;
+const { locale = 'de', title, heading, description, status, routeKey } = Astro.props;
 const id = titleId(ids.legal);
 ---
 
-<BaseLayout title={title} description={description} routeKey={routeKey}>
+<BaseLayout locale={locale} title={title} description={description} routeKey={routeKey}>
   <Section tone="light" aria-labelledby={id}>
-    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: heading }]} />
+    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: heading }]} />
     <div class="legal">
       <h1 id={id}>{heading}</h1>
       {status && <p class="legal__status"><Placeholder text={status} /></p>}

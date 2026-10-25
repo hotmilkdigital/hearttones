@@ -1,13 +1,19 @@
 ---
 /** Homepage press line (artboard section 9): outlets as plain text (§5.10, §11), link to Presse. */
 import { pressOutlets } from '../../data/press';
-import { path } from '../../data/routes';
+import { path, type Locale } from '../../data/routes';
 import { ids, titleId } from '../../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 ---
 
 <section class="press" data-tone="light" aria-labelledby={titleId(ids.pressStrip)}>
   <div class="container press__inner">
-    <h2 id={titleId(ids.pressStrip)} class="eyebrow press__label"><a href={path('press')}>Presse</a></h2>
+    <h2 id={titleId(ids.pressStrip)} class="eyebrow press__label"><a href={path('press', locale)}>Presse</a></h2>
     <ul class="press__list">
       {pressOutlets.map((o) => <li>{o}</li>)}
     </ul>

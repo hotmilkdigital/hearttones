@@ -8,9 +8,15 @@ import Section from '../Section.astro';
 import HeroGlobe from '../../assets/illustrations/hero-globus.svg';
 import { albums } from '../../data/albums';
 import { countries } from '../../data/countries';
-import { path } from '../../data/routes';
+import { path, type Locale } from '../../data/routes';
 import { singles, singlesArtist } from '../../data/singles';
 import { ids, titleId, hash } from '../../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 
 // Derived from the data so the line can never drift from §5.4 (26 · 24 · 46); check-data asserts the values.
 const trackCount = albums.reduce((n, a) => n + a.tracks.length, 0);
@@ -38,7 +44,7 @@ const nextSingle = singles[0]!;
       </p>
       <div class="hero__actions">
         <a class="btn btn--light" href={hash(ids.player)}>Reinhören</a>
-        <a class="btn btn--outline" href={path('journey')}>Die Reise entdecken</a>
+        <a class="btn btn--outline" href={path('journey', locale)}>Die Reise entdecken</a>
       </div>
     </div>
     <div class="hero__art">

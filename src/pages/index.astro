@@ -1,28 +1,6 @@
 ---
-// Homepage in the order of the approved artboard (Startseite-Artboard_v6).
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/home/Hero.astro';
-import AudioPlayer from '../components/AudioPlayer.astro';
-import Albums from '../components/home/Albums.astro';
-import NewMusic from '../components/home/NewMusic.astro';
-import JourneyTeaser from '../components/home/JourneyTeaser.astro';
-import Story from '../components/home/Story.astro';
-import Production from '../components/home/Production.astro';
-import PressStrip from '../components/home/PressStrip.astro';
-import { site } from '../data/site';
+// Homepage (DE). The page itself lives in HomeView, shared with /en/.
+import HomeView from '../views/HomeView.astro';
 ---
 
-<BaseLayout
-  routeKey="home"
-  title={`${site.brand} – Schlaflieder aus aller Welt`}
-  description="Zwei Alben mit Wiegenliedern aus 24 Ländern, gesungen und gespielt von 46 Musiker:innen. Zum Einschlafen für Kinder – und zum Zuhören für Eltern."
->
-  <Hero />
-  <AudioPlayer />
-  <Albums />
-  <NewMusic />
-  <JourneyTeaser />
-  <Story />
-  <Production />
-  <PressStrip />
-</BaseLayout>
+<HomeView locale="de" />

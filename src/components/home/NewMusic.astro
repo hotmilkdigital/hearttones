@@ -6,10 +6,16 @@
  */
 import Section from '../Section.astro';
 import SingleCard from '../SingleCard.astro';
-import { path } from '../../data/routes';
+import { path, type Locale } from '../../data/routes';
 import { singles, singlesArtist } from '../../data/singles';
 import { site } from '../../data/site';
 import { ids, titleId } from '../../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 ---
 
 <Section tone="night" id={ids.newMusic} aria-labelledby={titleId(ids.newMusic)}>
@@ -20,9 +26,9 @@ import { ids, titleId } from '../../data/anchors';
     Milk Studio. Die Veröffentlichung folgt.
   </p>
   <div class="new__grid">
-    {singles.map((single) => <SingleCard single={single} showCredits={false} />)}
+    {singles.map((single) => <SingleCard locale={locale} single={single} showCredits={false} />)}
   </div>
-  <p class="new__more"><a href={path('singles')}>Alle Mitwirkenden der beiden Singles</a></p>
+  <p class="new__more"><a href={path('singles', locale)}>Alle Mitwirkenden der beiden Singles</a></p>
 </Section>
 
 <style>

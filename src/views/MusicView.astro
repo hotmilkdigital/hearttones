@@ -11,10 +11,16 @@ import AlbumCard from '../components/AlbumCard.astro';
 import SingleCard from '../components/SingleCard.astro';
 import { albums } from '../data/albums';
 import { countries } from '../data/countries';
-import { path, type RouteKey } from '../data/routes';
+import { path, type RouteKey, type Locale } from '../data/routes';
 import { singles, singlesArtist } from '../data/singles';
 import { site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 
 const trackCount = albums.reduce((n, a) => n + a.tracks.length, 0);
 const countryCount = Object.keys(countries).length;
@@ -28,12 +34,13 @@ const more: { key: RouteKey; title: string; text: string }[] = [
 ---
 
 <BaseLayout
+  locale={locale}
   routeKey="music"
   title={`Musik: Lullabies und Berlin Peace Collective | ${site.brand}`}
   description={`Die Musik von ${site.brand}: Lullabies From Around The World Vol. 1 und Vol. 2 sowie die neuen Singles des Berlin Peace Collective.`}
 >
   <Section tone="light" aria-labelledby={titleId(ids.music)}>
-    <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Musik' }]} />
+    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Musik' }]} />
     <h1 id={titleId(ids.music)}>Musik</h1>
     <p class="lead music__intro">
       Zwei Alben mit Wiegenliedern aus aller Welt – und neue Musik des {singlesArtist}.
@@ -44,7 +51,7 @@ const more: { key: RouteKey; title: string; text: string }[] = [
 
     <h2 class="music__h2">Lullabies From Around The World</h2>
     <div class="music__albums">
-      {albums.map((album) => <AlbumCard album={album} />)}
+      {albums.map((album) => <AlbumCard locale={locale} album={album} />)}
     </div>
   </Section>
 
@@ -56,9 +63,9 @@ const more: { key: RouteKey; title: string; text: string }[] = [
       Veröffentlichung folgt.
     </p>
     <div class="music__singles">
-      {singles.map((single) => <SingleCard single={single} showCredits={false} />)}
+      {singles.map((single) => <SingleCard locale={locale} single={single} showCredits={false} />)}
     </div>
-    <p class="music__more-link"><a href={path('singles')}>Zu den Singles mit allen Mitwirkenden</a></p>
+    <p class="music__more-link"><a href={path('singles', locale)}>Zu den Singles mit allen Mitwirkenden</a></p>
   </Section>
 
   <Section tone="sand" aria-labelledby={titleId(ids.more)}>
@@ -67,7 +74,7 @@ const more: { key: RouteKey; title: string; text: string }[] = [
       {
         more.map((m) => (
           <li>
-            <a class="music__tile" href={path(m.key)}>
+            <a class="music__tile" href={path(m.key, locale)}>
               <span class="music__tile-title">{m.title}</span>
               <span class="music__tile-text">{m.text}</span>
             </a>

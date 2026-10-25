@@ -8,18 +8,19 @@
 import Cover from './Cover.astro';
 import FundingNotice from './FundingNotice.astro';
 import type { Album } from '../data/albums';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { order } from '../data/site';
 import { albumCardId, ids } from '../data/anchors';
 
 interface Props {
+  locale?: Locale;
   album: Album;
   headingLevel?: 'h2' | 'h3';
 }
 
-const { album, headingLevel: Heading = 'h3' } = Astro.props;
+const { locale = 'de', album, headingLevel: Heading = 'h3' } = Astro.props;
 
-const url = path(album.id === 'vol-1' ? 'vol1' : 'vol2');
+const url = path(album.id === 'vol-1' ? 'vol1' : 'vol2', locale);
 const nb = (s: string) => s.replace(/(Vol\.|HTR|§) /g, '$1 ');
 const eur = (v: number) =>
   new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: Number.isInteger(v) ? 0 : 2 }).format(v);
@@ -29,7 +30,7 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
 <article class="album-card" aria-labelledby={`card-${album.id}`}>
   <div class="album-card__top">
     <a href={url} class="album-card__cover" tabindex="-1" aria-hidden="true">
-      <Cover album={album} width={160} sizes="160px" shadow="light" />
+      <Cover locale={locale} album={album} width={160} sizes="160px" shadow="light" />
     </a>
     <div class="album-card__body">
       <Heading id={albumCardId(album.id)} class="album-card__title">
@@ -69,7 +70,7 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
       }
     </div>
   </div>
-  {album.status === 'available' && <FundingNotice class="album-card__funding" />}
+  {album.status === 'available' && <FundingNotice locale={locale} class="album-card__funding" />}
 </article>
 
 <style>

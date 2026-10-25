@@ -1,0 +1,41 @@
+---
+/**
+ * Route key → view, shared by the DE pages (src/pages/[...page].astro) and the EN pages
+ * (src/pages/en/[...page].astro), so both languages always render the same views.
+ */
+import MusicView from '../views/MusicView.astro';
+import AlbumView from '../views/AlbumView.astro';
+import SinglesView from '../views/SinglesView.astro';
+import JourneyView from '../views/JourneyView.astro';
+import ArtistsView from '../views/ArtistsView.astro';
+import AboutView from '../views/AboutView.astro';
+import ProductionView from '../views/ProductionView.astro';
+import PressView from '../views/PressView.astro';
+import ContactView from '../views/ContactView.astro';
+import ImprintView from '../views/ImprintView.astro';
+import PrivacyView from '../views/PrivacyView.astro';
+import WithdrawalView from '../views/WithdrawalView.astro';
+import { vol1, vol2 } from '../data/albums';
+import type { Locale, PageKey } from '../data/routes';
+
+interface Props {
+  pageKey: PageKey;
+  locale: Locale;
+}
+
+const { pageKey: key, locale } = Astro.props;
+---
+
+{key === 'music' && <MusicView locale={locale} />}
+{key === 'vol1' && <AlbumView album={vol1} locale={locale} />}
+{key === 'vol2' && <AlbumView album={vol2} locale={locale} />}
+{key === 'singles' && <SinglesView locale={locale} />}
+{key === 'journey' && <JourneyView locale={locale} />}
+{key === 'artists' && <ArtistsView locale={locale} />}
+{key === 'about' && <AboutView locale={locale} />}
+{key === 'production' && <ProductionView locale={locale} />}
+{key === 'press' && <PressView locale={locale} />}
+{key === 'contact' && <ContactView locale={locale} />}
+{key === 'imprint' && <ImprintView locale={locale} />}
+{key === 'privacy' && <PrivacyView locale={locale} />}
+{key === 'withdrawal' && <WithdrawalView locale={locale} />}

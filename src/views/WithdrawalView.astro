@@ -5,12 +5,19 @@
  */
 import LegalPage from '../components/LegalPage.astro';
 import Placeholder from '../components/Placeholder.astro';
-import { path } from '../data/routes';
+import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { ids } from '../data/anchors';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
 ---
 
 <LegalPage
+  locale={locale}
   routeKey="withdrawal"
   title={`Widerrufsbelehrung – ${site.brand}`}
   heading="Widerrufsbelehrung"
@@ -18,7 +25,7 @@ import { ids } from '../data/anchors';
   status="Endgültiger Text der Widerrufsbelehrung – von Robert"
 >
   <p>
-    Gilt für die Bestellung der CD <a href={`${path('vol2')}#${ids.order}`}>Lullabies From Around The World Vol.&nbsp;2</a> per
+    Gilt für die Bestellung der CD <a href={`${path('vol2', locale)}#${ids.order}`}>Lullabies From Around The World Vol.&nbsp;2</a> per
     E-Mail.
   </p>
 
