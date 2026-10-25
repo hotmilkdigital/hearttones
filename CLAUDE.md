@@ -29,6 +29,17 @@ Audience: parents, families, educators, world-music listeners; musicians/singers
 | `../03_Design/hero-globus.svg` | Approved hero illustration (globe as night light) | Use as-is in the hero |
 | `../03_Design/reise-weltkarte-platzhalter.svg` | Rough map placeholder from the artboard | Replace with the generated map (§8.5) |
 | `../02_Assets/` | Originals (covers, logos, photos, funding logos, audio later) | Copy only what is used into `src/assets/` (§7) |
+| `../01_Brief/01_Fragebogen-Antworten_2026-10.md`, `../01_Brief/06_Fragebogen-Antworten-2_2026-10.md` | Philipp's questionnaire answers, rounds 1 and 2 (transcribed) | Background for copy and data; §11 here wins |
+
+### Folder zones (since 25.10.2026)
+
+`../01_Brief`, `../02_Assets` and `../03_Design` are **curated**: one version per file, documented in each folder's README. Next to them are three **raw** zones:
+
+- `../90_Eingang/` – client material exactly as received, one folder per delivery (`YYYY-MM-DD_<what>`). Read only when Robert asks. Never edit, rename, move or write anything here. To use something from it, first copy or transcribe it into the matching curated folder and add a line to that folder's README (file → source path → status/rights). Never copy from `90_Eingang` straight into `src/` or `public/`.
+- `../91_Werkstatt/` – Robert's own working files (GIMP/XCF masters, logo drafts, scans, recordings). Don't read unless asked.
+- `../99_Archiv/` – superseded versions. Never read or use, even if a file name looks relevant.
+
+The `.md` files in `../01_Brief` are **dated snapshots**; the masters live in Robert's claude.ai project (see `../01_Brief/README.md`). Don't edit them. If a snapshot looks outdated or contradicts §11, say so instead of guessing.
 
 ## 3. Stack
 
