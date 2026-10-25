@@ -1,94 +1,138 @@
 ---
 /**
- * Künstler:innen: all 46 performers and ensembles of both albums (CLAUDE.md §5.4), sorted by
- * name, with roles and songs (linked to the track on its album page). Names without links
- * until Philipp's research table is back (§8.3, §12); no photos without consent.
+ * Künstler:innen: all 46 performers and ensembles (CLAUDE.md §5.4), grouped by album – people
+ * on both albums appear in both groups with that album's roles and songs. Songs link to the
+ * track on its album page. Own website as an external link with the domain as link text
+ * (§5.16). Years of death as „verstorben <Jahr>", never a cross. No photos (§5.16, consent).
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
-import Placeholder from '../components/Placeholder.astro';
-import { albums, trackAnchor, type Album, type Track } from '../data/albums';
+import { albums, performerName, trackAnchor, type Album, type Track } from '../data/albums';
 import { countryName } from '../data/countries';
-import { people, type PersonId } from '../data/people';
+import { people, type Person, type PersonId } from '../data/people';
 import { roleLabel, type Role } from '../data/roles';
 import { path } from '../data/routes';
 import { site } from '../data/site';
 
 interface Entry {
   id: PersonId;
+  person: Person;
+  /** Name as printed on this album, if different (e.g. Serkan Kaynarcali on Vol. 1). */
+  creditedAs?: string;
   roles: Role[];
-  songs: { album: Album; track: Track }[];
+  songs: Track[];
 }
 
-const byId = new Map<PersonId, Entry>();
-for (const album of albums) {
+const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2');
+const nb = (s: string) => s.replace('Vol. ', 'Vol. ');
+const domain = (url: string) => new URL(url).hostname.replace(/^www\./, '');
+
+const groups = albums.map((album) => {
+  const byId = new Map<PersonId, Entry>();
   for (const track of album.tracks) {
     for (const p of track.lineup) {
-      const e = byId.get(p.person) ?? { id: p.person, roles: [], songs: [] };
+      const person: Person = people[p.person];
+      const e = byId.get(p.person) ?? { id: p.person, person, roles: [], songs: [] };
+      const printed = performerName(p);
+      if (printed !== person.name) e.creditedAs = printed;
       for (const r of p.roles) if (!e.roles.includes(r)) e.roles.push(r);
-      e.songs.push({ album, track });
+      e.songs.push(track);
       byId.set(p.person, e);
     }
   }
-}
+  const entries = [...byId.values()].sort((a, b) => a.person.name.localeCompare(b.person.name, 'de'));
+  return { album, entries };
+});
 
-const entries = [...byId.values()].sort((a, b) => people[a.id].name.localeCompare(people[b.id].name, 'de'));
-const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2');
-const nb = (s: string) => s.replace('Vol. ', 'Vol. ');
+const total = new Set(groups.flatMap((g) => g.entries.map((e) => e.id))).size;
+
+// „In Erinnerung an A (verstorben 2012), B (verstorben 2017) und C (verstorben 2024)."
+const deceased = (Object.values(people) as Person[])
+  .filter((p) => p.diedYear)
+  .sort((a, b) => a.diedYear! - b.diedYear!)
+  .map((p) => `${p.name} (verstorben ${p.diedYear})`);
+const memorial =
+  deceased.length > 0
+    ? `In Erinnerung an ${deceased.length > 1 ? `${deceased.slice(0, -1).join(', ')} und ${deceased.at(-1)}` : deceased[0]}.`
+    : null;
 ---
 
 <BaseLayout
   routeKey="artists"
   title={`Künstler:innen der Lullabies From Around The World | ${site.brand}`}
-  description={`Die ${entries.length} Musiker:innen und Ensembles auf Lullabies From Around The World Vol. 1 und Vol. 2 – mit Liedern, Instrumenten und Ländern.`}
+  description={`Die ${total} Musiker:innen und Ensembles auf Lullabies From Around The World Vol. 1 und Vol. 2 – mit Liedern, Instrumenten und Ländern.`}
 >
   <Section tone="light" aria-labelledby="kuenstler-title">
     <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Musik', href: path('music') }, { label: 'Künstler:innen' }]} />
     <h1 id="kuenstler-title">Künstler:innen</h1>
     <p class="lead artists__intro">
-      {entries.length}&nbsp;Musiker:innen und Ensembles haben die Lieder auf <a href={path('vol1')}>Vol.&nbsp;1</a> und{' '}
+      {total}&nbsp;Musiker:innen und Ensembles haben die Lieder auf <a href={path('vol1')}>Vol.&nbsp;1</a> und{' '}
       <a href={path('vol2')}>Vol.&nbsp;2</a> gesungen und gespielt.
     </p>
-    <p class="artists__note"><Placeholder text="aktuelle Links und Fotos der Musiker:innen (Recherche Philipp)" /></p>
-
-    <ul class="artists" aria-label="Alle Musiker:innen und Ensembles">
+    <p class="artists__jump">
       {
-        entries.map((e) => {
-          const person = people[e.id];
-          return (
+        groups.map(({ album, entries }) => (
+          <a href={`#kuenstler-${album.id}`}>
+            {nb(album.shortTitle)} ({entries.length})
+          </a>
+        ))
+      }
+    </p>
+  </Section>
+
+  {
+    groups.map(({ album, entries }, i) => (
+      <Section tone={i === 0 ? 'paper' : 'sand'} id={`kuenstler-${album.id}`} aria-labelledby={`kuenstler-${album.id}-title`}>
+        <h2 id={`kuenstler-${album.id}-title`}>
+          {nb(album.shortTitle)} <span class="artists__year">· {album.year}</span>
+        </h2>
+        <p class="artists__count">
+          {entries.length}&nbsp;Musiker:innen und Ensembles auf <a href={albumUrl(album)}>Lullabies From Around The World {nb(album.shortTitle)}</a>
+        </p>
+        <ul class="artists" aria-label={`Musiker:innen und Ensembles auf ${album.shortTitle}`}>
+          {entries.map((e) => (
             <li class="artist">
-              <h2 class="artist__name">{person.name}</h2>
-              {'alsoCredited' in person && person.alsoCredited && (
-                <p class="artist__aka">auch: {person.alsoCredited}</p>
+              <h3 class="artist__name">
+                {e.person.name}
+                {e.person.diedYear && <span class="artist__died">verstorben {e.person.diedYear}</span>}
+              </h3>
+              {(e.creditedAs || e.person.alsoCredited) && (
+                <p class="artist__aka">
+                  {e.creditedAs ? `auf ${nb(album.shortTitle)} als ${e.creditedAs}` : `auch: ${e.person.alsoCredited}`}
+                </p>
               )}
               <p class="artist__roles">
-                {person.kind === 'ensemble' && <span class="artist__tag">Ensemble</span>}
+                {e.person.kind === 'ensemble' && <span class="artist__tag">Ensemble</span>}
                 {e.roles.map((r) => roleLabel(r)).join(', ')}
               </p>
               <ul class="artist__songs">
-                {e.songs.map(({ album, track }) => (
+                {e.songs.map((track) => (
                   <li>
                     <a href={`${albumUrl(album)}#${trackAnchor(album, track)}`}>
                       „<span lang={track.lang}>{track.title}</span>“
                     </a>{' '}
-                    <span class="artist__meta">
-                      {nb(album.shortTitle)} · {track.countries.map((c) => countryName(c)).join(' / ')}
-                    </span>
+                    <span class="artist__meta">{track.countries.map((c) => countryName(c)).join(' / ')}</span>
                   </li>
                 ))}
               </ul>
+              {e.person.website && (
+                <p class="artist__web">
+                  Website: <a href={e.person.website} rel="noopener">{domain(e.person.website)}</a>
+                </p>
+              )}
               {e.id === 'philipp-v-rothkirch' && (
                 <p class="artist__more">
                   <a href={path('about')}>Mehr über Philipp von Rothkirch</a>
                 </p>
               )}
             </li>
-          );
-        })
-      }
-    </ul>
-  </Section>
+          ))}
+        </ul>
+        {i === groups.length - 1 && memorial && <p class="artists__memorial">{memorial}</p>}
+      </Section>
+    ))
+  }
 </BaseLayout>
 
 <style>
@@ -97,15 +141,37 @@ const nb = (s: string) => s.replace('Vol. ', 'Vol. ');
     margin-top: 20px;
   }
 
-  .artists__note {
+  .artists__jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
     margin-top: 16px;
+    font-weight: 700;
+  }
+
+  .artists__jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+
+  .artists__year {
+    font-family: var(--font-sans);
+    font-size: 0.6em;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .artists__count {
+    margin-top: 10px;
+    color: var(--text-muted);
   }
 
   .artists {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
     gap: 20px;
-    margin: 40px 0 0;
+    margin: 32px 0 0;
     padding: 0;
     list-style: none;
   }
@@ -115,33 +181,33 @@ const nb = (s: string) => s.replace('Vol. ', 'Vol. ');
     border: 1px solid var(--sand);
     border-radius: var(--radius-card);
     background: var(--paper);
+    color: var(--cocoa);
   }
 
   .artist__name {
     font-size: 21px;
   }
 
-  .artist__more {
-    margin-top: 6px;
-    font-weight: 700;
-  }
-
-  .artist__more a {
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--touch-min);
+  /* „verstorben 2012" – same weight and size as the role text, no cross (§5.16) */
+  .artist__died {
+    display: inline-block;
+    margin-left: 8px;
+    font-family: var(--font-sans);
+    font-size: var(--fs-meta);
+    font-weight: 400;
+    color: var(--ink-muted);
   }
 
   .artist__aka {
     margin-top: 2px;
     font-size: var(--fs-small);
-    color: var(--text-muted);
+    color: var(--ink-muted);
   }
 
   .artist__roles {
     margin-top: 6px;
     font-size: var(--fs-meta);
-    color: var(--text-muted);
+    color: var(--ink-muted);
   }
 
   .artist__tag {
@@ -171,6 +237,31 @@ const nb = (s: string) => s.replace('Vol. ', 'Vol. ');
 
   .artist__meta {
     font-size: var(--fs-small);
-    color: var(--text-muted);
+    color: var(--ink-muted);
+  }
+
+  .artist__web,
+  .artist__more {
+    margin-top: 4px;
+    font-size: var(--fs-meta);
+  }
+
+  .artist__web {
+    color: var(--ink-muted);
+  }
+
+  .artist__web a,
+  .artist__more a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+    font-weight: 700;
+  }
+
+  .artists__memorial {
+    max-width: 760px;
+    margin-top: 40px;
+    font-family: var(--font-serif);
+    font-size: 19px;
   }
 </style>
