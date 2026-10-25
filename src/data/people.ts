@@ -2,6 +2,8 @@
  * Performers on Vol. 1 and Vol. 2 (persons and ensembles), source: ../01_Brief/02_CD-Credits-Vol1-Vol2.md.
  * One entry per person, so the same musician on both albums counts once (CLAUDE.md §5.4: 46).
  *
+ * `diedYear` is shown as „verstorben 2012“ / „deceased 2012“ – never a cross (§5.16).
+ *
  * `website`: only the musician's own website, researched 25.10.2026 (CLAUDE.md §5.16) – never a
  * platform profile (SoundCloud, Bandcamp, SoundBetter, Facebook, YouTube, Wikipedia) or an
  * employer/orchestra/school page. Without an own website the musician is listed by name only.
@@ -13,7 +15,7 @@
 export interface Person {
   name: string;
   kind: 'person' | 'ensemble';
-  /** Own website, https. */
+  /** Own website – https, except where the site has no working HTTPS (see comment at the entry). */
   website?: string;
   /** Other name the person is credited under (shown on the Künstler:innen page). */
   alsoCredited?: string;
@@ -64,12 +66,14 @@ export const people = {
   'tribhanga-campling': { name: 'Tribhanga Campling', kind: 'person' },
   // Vol. 2
   'kgomotso-tsatsi': { name: 'Kgomotso Tsatsi', kind: 'person', website: 'https://kileza.com/' },
-  'momo-djender': { name: 'Momo Djender', kind: 'person', website: 'https://momodjender.com/' },
+  // No HTTPS on the server (times out); http works – tested by Robert and curl, 25.10.2026.
+  'momo-djender': { name: 'Momo Djender', kind: 'person', website: 'http://www.momodjender.com/' },
   'sepideh-safiaryan': { name: 'Sepideh Safiaryan', kind: 'person' },
   'roksana-vikaluk': { name: 'Roksana Vikaluk', kind: 'person', website: 'https://roksana.com.pl/' },
   'julia-messenger': { name: 'Julia Messenger', kind: 'person', website: 'https://juliamessenger.com/' },
   'zulya-nazipovna-kamalova': { name: 'Zulya Nazipovna Kamalova', kind: 'person', diedYear: 2024 },
-  'nino-tsitsishvili': { name: 'Nino Tsitsishvili', kind: 'person', website: 'https://ninotsitsishvili.org/' },
+  // HTTPS broken (TLS error in every client); http works – tested by Robert and curl, 25.10.2026.
+  'nino-tsitsishvili': { name: 'Nino Tsitsishvili', kind: 'person', website: 'http://ninotsitsishvili.org/' },
   'joseph-jordania': { name: 'Joseph Jordania', kind: 'person', website: 'https://www.josephjordania.org/' },
   'mal-webb': { name: 'Mal Webb', kind: 'person', website: 'https://www.malwebb.com/' },
   'iza-hoell': { name: 'Iza Höll', kind: 'person', website: 'https://www.iza-hoell.com/' },

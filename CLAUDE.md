@@ -96,7 +96,7 @@ Main navigation: **Musik · Die Reise · Produktion · Über Philipp · Kontakt*
 13. Hot Milk Studio may be named and linked (https://www.hotmilkstudio.de/) as production partner. Never present Robert/Hot Milk as owner of Heart Tones, and never show Hot Milk Studio's address as Philipp's.
 14. Payment details (bank account, PayPal address) **never** on the site – they go in the email order confirmation only.
 15. German typography: „…" quotes, en dash with spaces – , non-breaking space in "Vol. 1", "§ 19", numbers + units. Gender: Doppelpunkt (Musiker:innen).
-16. Musician links (decided 25.10.2026): only link a musician's **own website** (`website` in `src/data/people.ts`). No platform profiles (SoundCloud, Bandcamp, SoundBetter, Facebook, YouTube, Wikipedia) and no employer, orchestra or school pages. Without an own website the musician is listed by name only. Photos only after Philipp has the artist's permission and the photographer credit (`photo.consent`).
+16. Musician links (decided 25.10.2026): only link a musician's **own website** (`website` in `src/data/people.ts`). No platform profiles (SoundCloud, Bandcamp, SoundBetter, Facebook, YouTube, Wikipedia) and no employer, orchestra or school pages. Without an own website the musician is listed by name only. Photos only after Philipp has the artist's permission and the photographer credit (`photo.consent`). Deceased musicians: „verstorben 2012" (EN "deceased 2012") – **never a cross (†)**, since not all were Christians.
 
 ## 6. Design system
 
@@ -249,13 +249,14 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 25.10.2026 | Nina Hagen Peace Charity Gala (2006) may be published (confirmed by Robert via musicians on that gig). Bombs Away! is Philipp's composition, originally produced with his band Phases of Life (dissolved); Philipp has the band's permission to release the reworked, remixed version; the band may be named. Escape from Baltimore appeared on a Fanfare Ciocărlia anniversary album (Jubiläumsalbum). |
 | 25.10.2026 | Über Philipp: B10 intro and bio from 01_Brief/08; Philipp's approval pending. Not published: worldpeacenow campaign. |
 | 25.10.2026 | Musician links: own websites only, no platform profiles or employer/orchestra/school pages (§5.16). 19 researched websites in `people.ts`; all booklet links removed. `diedYear` for Gilbert Abdourahmane Diop (2012), Mesut Lekesiz (2017), Zulya Nazipovna Kamalova (2024). Optional `photo` fields prepared, unused until consent and credit. |
+| 25.10.2026 | Year of death shown as „verstorben + Jahr" / "deceased + year", never „†". sarasvatidasi.com works for visitors (Cloudflare check only blocks tools). momodjender.com and ninotsitsishvili.org have no working HTTPS → linked as http://www.momodjender.com/ and http://ninotsitsishvili.org/ (tested by Robert and curl). |
 | 24.10.2026 | World Peace Now! line-up confirmed, incl. the „BÄM" drumline members Ramon Buntebart, Leander Winkler, Rafael Nussbaumer. All three are adults (Robert) – names may be published; no guardian consent needed. |
 
 ## 12. Open items (build around them with placeholders)
 
 - Portraits of Philipp (shoot pending) → placeholder blocks.
 - Über Philipp: Philipp's approval of the bio (01_Brief/08), perspective of the "Wie wir uns kennenlernten" text, end of Philipp's Vol. 1 story.
-- Musicians' photos (permission and credit via Philipp); websites researched 25.10.2026, three need checking (see `people.ts` commit).
+- Musicians' photos (permission and credit via Philipp). Websites and years of death are in `people.ts` but not shown on the site yet.
 - Press sources (magazine/issue/year).
 - Singles artwork, date, distribution.
 - Widerrufsbelehrung, Impressum/Datenschutz final texts.
