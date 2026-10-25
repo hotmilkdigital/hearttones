@@ -101,9 +101,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
           {seriesTitle} <span class="album-head__vol">{nb(album.shortTitle)}</span>
         </h1>
         <p class="lead album-head__intro">{album.teaser}</p>
-        <p class="album-head__more">
-          <Placeholder text={`Albumtext ${album.shortTitle}: Idee und Entstehung (Philipp/Robert)`} />
-        </p>
+        {album.story?.map((p) => <p class="album-head__more">{nb(p)}</p>)}
 
         {
           album.status === 'outOfPrint' ? (

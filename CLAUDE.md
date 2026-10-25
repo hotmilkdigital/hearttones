@@ -26,6 +26,7 @@ Audience: parents, families, educators, world-music listeners; musicians/singers
 | `../01_Brief/05_Ueber-Philipp_Seitenplan.md` | Plan and draft text for the "Über Philipp" page, reference videos | Page structure, `ConsentVideo` |
 | `../01_Brief/07_Presse-Rezensionen.md` | Two press reviews, approved short quotes | Press page, Vol. 1 page |
 | `../01_Brief/08_Ueber-Philipp_Kurzbio.md` | Philipp's short intro (B10) and bio, blocks A–C, with what was deliberately left out | Über Philipp page, text verbatim |
+| `../01_Brief/09_Albumtexte.md` | Approved album texts Vol. 1 and Vol. 2 (25.10.2026) | `story` in `src/data/albums.ts`, verbatim |
 | `../03_Design/Startseite-Artboard_v6.dc.html` | Approved desktop homepage artboard (Claude Design export) | **Reference** for layout, order and German copy of the homepage. Not code to copy (see §6.8) |
 | `../03_Design/hero-globus.svg` | Approved hero illustration (globe as night light) | Use as-is in the hero |
 | `../03_Design/reise-weltkarte-platzhalter.svg` | Rough map placeholder from the artboard | Replace with the generated map (§8.5) |
@@ -255,6 +256,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 25.10.2026 | Peter Böckelmann thanked on the Vol. 1 page at Philipp's request; he pre-financed the CD pressing. Text in `albums.ts` (`thanks`), shown below the production credits; not on the homepage, not in the schema. |
 | 25.10.2026 | Vol.-1 story on Über Philipp approved by Philipp as is – no continuation. Placeholder removed there and in the homepage section „Wie alles begann" (same item, Robert). |
 | 24.10.2026 | World Peace Now! line-up confirmed, incl. the „BÄM" drumline members Ramon Buntebart, Leander Winkler, Rafael Nussbaumer. All three are adults (Robert) – names may be published; no guardian consent needed. |
+| 25.10.2026 | Album texts Vol. 1 and Vol. 2 approved (01_Brief/09): verbatim as `story` in `albums.ts`, two paragraphs below the lead line on each album page; not on the homepage, not in the schema. „Komplett analog" means no computer synths or programmed beats – not acoustic-only. Robert is named as co-producer, never „Toningenieur" („dem Koproduzenten, mit dem Philipp beide Alben produziert hat" on Über Philipp and the homepage). |
 
 ## 12. Open items (build around them with placeholders)
 
