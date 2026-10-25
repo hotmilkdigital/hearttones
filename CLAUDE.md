@@ -251,12 +251,13 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 25.10.2026 | Musician links: own websites only, no platform profiles or employer/orchestra/school pages (§5.16). 19 researched websites in `people.ts`; all booklet links removed. `diedYear` for Gilbert Abdourahmane Diop (2012), Mesut Lekesiz (2017), Zulya Nazipovna Kamalova (2024). Optional `photo` fields prepared, unused until consent and credit. |
 | 25.10.2026 | Year of death shown as „verstorben + Jahr" / "deceased + year", never „†". sarasvatidasi.com works for visitors (Cloudflare check only blocks tools). momodjender.com and ninotsitsishvili.org have no working HTTPS → linked as http://www.momodjender.com/ and http://ninotsitsishvili.org/ (tested by Robert and curl). |
 | 25.10.2026 | Interim portrait on Über Philipp = photo with his son at the upright piano (`02_Assets/photos/philipp-luca-klavier.jpg`, in `src/` as `philipp-sohn-klavier.jpg`), square; frame follows the image's aspect ratio. Child not named anywhere on the site (text, alt, caption, file names). Credit „Foto: Michael von Rothkirch" in caption and Impressum (Robert, 25.10.2026). Studio portrait replaces it later (`portrait` in `AboutView.astro`). |
+| 25.10.2026 | Vol.-1 story on Über Philipp approved by Philipp as is – no continuation. Placeholder removed there and in the homepage section „Wie alles begann" (same item, Robert). |
 | 24.10.2026 | World Peace Now! line-up confirmed, incl. the „BÄM" drumline members Ramon Buntebart, Leander Winkler, Rafael Nussbaumer. All three are adults (Robert) – names may be published; no guardian consent needed. |
 
 ## 12. Open items (build around them with placeholders)
 
 - Portraits of Philipp (shoot pending) → placeholder blocks.
-- Über Philipp: Philipp's approval of the bio (01_Brief/08), perspective of the "Wie wir uns kennenlernten" text, end of Philipp's Vol. 1 story.
+- Über Philipp: Philipp's approval of the bio (01_Brief/08), perspective of the "Wie wir uns kennenlernten" text.
 - Musicians' photos (permission and credit via Philipp). Websites and years of death are in `people.ts` but not shown on the site yet.
 - Press sources (magazine/issue/year).
 - Singles artwork, date, distribution.

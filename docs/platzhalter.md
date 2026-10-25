@@ -1,11 +1,10 @@
 # PLATZHALTER – offene Inhalte
 
-Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 23 verschiedene Platzhalter, 51 Vorkommen. Vor jedem Release: Liste muss leer sein.
+Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 21 verschiedene Platzhalter, 49 Vorkommen. Vor jedem Release: Liste muss leer sein.
 
 | Was fehlt | Seiten |
 |---|---|
 | jobTitle | `/`, `/404`, `/datenschutz/`, `/die-reise/`, `/impressum/`, `/kontakt/`, `/kuenstlerinnen/`, `/musik/`, `/musik/berlin-peace-collective/`, `/musik/lullabies-vol-1/`, `/musik/lullabies-vol-2/`, `/philipp-von-rothkirch/`, `/presse/`, `/produktion/`, `/widerruf/` |
-| Fortsetzung aus Philipps Geschichte | `/` |
 | OG-Bild freigeben | `/`, `/404`, `/datenschutz/`, `/die-reise/`, `/impressum/`, `/kontakt/`, `/kuenstlerinnen/`, `/musik/`, `/musik/berlin-peace-collective/`, `/philipp-von-rothkirch/`, `/presse/`, `/produktion/`, `/widerruf/` |
 | Endgültiger Text der Datenschutzerklärung – von Robert | `/datenschutz/` |
 | Serverstandort (Deutschland/Finnland), Angaben zu Server-Logfiles (erfasste Daten, Zweck, Rechtsgrundlage, Speicherdauer) und Auftragsverarbeitung mit Hetzner | `/datenschutz/` |
@@ -21,7 +20,6 @@ Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 23 verschied
 | aktuelle Links der Musiker:innen (Recherche Philipp) | `/musik/lullabies-vol-1/`, `/musik/lullabies-vol-2/` |
 | Magazin, Ausgabe, Jahr | `/musik/lullabies-vol-1/`, `/presse/` |
 | Albumtext Vol. 2: Idee und Entstehung (Philipp/Robert) | `/musik/lullabies-vol-2/` |
-| Fortsetzung von Philipps Vol.-1-Geschichte („Somit hatten wir beide …“) | `/philipp-von-rothkirch/` |
 | Belege und Links zu den Beiträgen prüfen | `/presse/` |
 | Pressefotos (Porträts nach dem Fotoshooting) | `/presse/` |
 | Endgültiger Text der Widerrufsbelehrung – von Robert | `/widerruf/` |

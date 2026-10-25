@@ -1,12 +1,11 @@
 ---
 /**
  * Homepage „Wie alles begann" (artboard section 7): family photo 2011 with the required credit
- * „Foto: Benedikt Stehle" (§5.11), artboard text, placeholder for the rest of Philipp's story,
+ * „Foto: Benedikt Stehle" (§5.11), artboard text (approved by Philipp as is, 25.10.2026),
  * link to Über Philipp.
  */
 import { Image } from 'astro:assets';
 import Section from '../Section.astro';
-import Placeholder from '../Placeholder.astro';
 import familyPhoto from '../../assets/photos/philipp-robert-kinder-2011.webp';
 import { path } from '../../data/routes';
 ---
@@ -34,7 +33,6 @@ import { path } from '../../data/routes';
         Daraus wurde ein Projekt: eine Einschlaf-CD für Kinder, die auch Eltern gerne hören, und eine Reise durch die Vielfalt
         der Musik der Welt.
       </p>
-      <p class="story__p"><Placeholder text="Fortsetzung aus Philipps Geschichte" /></p>
       <a class="btn btn--outline story__btn" href={path('about')}>Über Philipp von Rothkirch</a>
     </div>
   </div>
