@@ -106,7 +106,7 @@ export const vol1: Album = {
     'Cover von Heart Tones Vol. 1: Lullabies From Around The World, eine lächelnde schwangere Frau mit einem als Erdkugel bemalten Bauch',
   teaser: '13 Lieder aus Haiti, Senegal, Georgien, Indien und neun weiteren Ländern.',
   story: [
-    'Zwei Kinder, ein Tag Abstand: 2011 kam der Sohn von Philipp von Rothkirch zur Welt, nur einen Tag nach der Tochter von Robert Cummings, mit dem er das Album produziert hat. Aus diesem Zufall wurde ein gemeinsames Projekt. Philipp bat befreundete Musiker:innen um ein Schlaflied aus ihrer Heimat.',
+    'Zwei Kinder, ein Tag Abstand: 2009 kam der Sohn von Philipp von Rothkirch zur Welt, nur einen Tag nach der Tochter von Robert Cummings, mit dem er das Album produziert hat. Aus diesem Zufall wurde ein gemeinsames Projekt. Philipp bat befreundete Musiker:innen um ein Schlaflied aus ihrer Heimat.',
     'Dabei galten ein paar einfache Regeln: Die Lieder sollten so ruhig sein, dass ein schlafendes Baby nicht aufwacht. Alles wurde von Hand eingespielt, ohne Computer-Synthesizer und programmierte Beats. Musikalisch sollten die Lieder so sein, dass man sie auch über das Kindesalter hinaus gern hört. Und sie sollten den Gedanken der Völkerverbindung schon in die Wiege legen, mit 13 Liedern aus 13 Ländern, von Haiti bis Indien.',
   ],
   credits: [

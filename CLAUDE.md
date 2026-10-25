@@ -257,6 +257,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 25.10.2026 | Vol.-1 story on Über Philipp approved by Philipp as is – no continuation. Placeholder removed there and in the homepage section „Wie alles begann" (same item, Robert). |
 | 24.10.2026 | World Peace Now! line-up confirmed, incl. the „BÄM" drumline members Ramon Buntebart, Leander Winkler, Rafael Nussbaumer. All three are adults (Robert) – names may be published; no guardian consent needed. |
 | 25.10.2026 | Album texts Vol. 1 and Vol. 2 approved (01_Brief/09): verbatim as `story` in `albums.ts`, two paragraphs below the lead line on each album page; not on the homepage, not in the schema. „Komplett analog" means no computer synths or programmed beats – not acoustic-only. Robert is named as co-producer, never „Toningenieur" („dem Koproduzenten, mit dem Philipp beide Alben produziert hat" on Über Philipp and the homepage). |
+| 25.10.2026 | Correction: the two children (Philipp von Rothkirch's son, Robert Cummings' daughter) were born in **2009**, not 2011 – Vol.-1 story in `albums.ts` says „2009 kam der Sohn“. Vol. 1 release year 2011 and the family photo year 2011 are correct and stay. |
 
 ## 12. Open items (build around them with placeholders)
 
