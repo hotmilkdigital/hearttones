@@ -51,7 +51,7 @@ const { owner, address, contact } = site;
     {
       imageCredits.map((c) => (
         <li>
-          {c.image}: {c.credit}
+          {c.image}: {c.credit ?? <Placeholder text="Fotograf:in" />}
         </li>
       ))
     }

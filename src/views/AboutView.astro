@@ -6,7 +6,8 @@
  * videos), 5 production call to action. Open texts are [PLATZHALTER] (CLAUDE.md §5.1, §12).
  * No school projects, no ensemble arrangements as a service (§11).
  */
-import { Image } from 'astro:assets';
+import { Image, Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
@@ -14,12 +15,27 @@ import Placeholder from '../components/Placeholder.astro';
 import ConsentVideo from '../components/ConsentVideo.astro';
 import familyPhoto from '../assets/photos/philipp-robert-kinder-2011.webp';
 import pianoPhoto from '../assets/photos/philipp-fluegel-hot-milk-studio.webp';
+import portraitPhoto from '../assets/photos/philipp-sohn-klavier.jpg';
 import { path } from '../data/routes';
 import { site } from '../data/site';
 import { works } from '../data/works';
 
 // From Philipp's questionnaire answers (00_Projektstatus).
 const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavinet', 'Moog und Talkbox', 'Vibraphon', 'Bass', 'Percussion'];
+
+/**
+ * Intro portrait. Interim (§11, 25.10.2026): Philipp with his son at the upright piano, square.
+ * The child is never named – not in text, alt, caption or file names. A studio portrait later
+ * replaces `image` (any aspect ratio; the frame follows it); `null` shows the placeholder again.
+ * `credit: null` renders „Foto: [PLATZHALTER: Fotograf:in]" (same entry in site.imageCredits).
+ */
+const portrait: { image: ImageMetadata; alt: string; credit: string | null } | null = {
+  image: portraitPhoto,
+  alt: 'Philipp von Rothkirch spielt Klavier, sein kleiner Sohn liegt auf dem Klavier und lehnt den Kopf an seine Stirn',
+  credit: null,
+};
+// Never wider than the column (340 px) or the source; 1×/2×/3× within the source's 1080 px.
+const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.image.width) : [];
 ---
 
 <BaseLayout
@@ -45,9 +61,29 @@ const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavin
           Musikschule.
         </p>
       </div>
-      <div class="intro__portrait" role="img" aria-label="Platzhalter für ein Porträt">
-        <Placeholder text="Porträt Philipp von Rothkirch – Fotoshooting ausstehend" />
-      </div>
+      {
+        portrait ? (
+          <figure class="intro__portrait intro__portrait--photo">
+            <Picture
+              src={portrait.image}
+              alt={portrait.alt}
+              widths={portraitWidths}
+              width={portraitWidths.at(-1)}
+              sizes="(max-width: 760px) min(100vw, 340px), 340px"
+              formats={['avif', 'webp']}
+              fallbackFormat="jpg"
+              loading="eager"
+              fetchpriority="high"
+              class="intro__img"
+            />
+            <figcaption>Foto: {portrait.credit ?? <Placeholder text="Fotograf:in" />}</figcaption>
+          </figure>
+        ) : (
+          <div class="intro__portrait" role="img" aria-label="Platzhalter für ein Porträt">
+            <Placeholder text="Porträt Philipp von Rothkirch – Fotoshooting ausstehend" />
+          </div>
+        )
+      }
     </div>
   </Section>
 
@@ -230,6 +266,30 @@ const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavin
     border-radius: var(--radius-card);
     background: var(--sand);
     text-align: center;
+  }
+
+  /* With a photo the frame follows the image's own aspect ratio (square for the interim photo). */
+  .intro__portrait--photo {
+    display: block;
+    margin: 0;
+    padding: 0;
+    aspect-ratio: auto;
+    background: none;
+    text-align: left;
+  }
+
+  .intro__portrait--photo :global(.intro__img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-photo);
+  }
+
+  .intro__portrait--photo figcaption {
+    margin-top: 10px;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
   }
 
   /* 2 Geschichte */

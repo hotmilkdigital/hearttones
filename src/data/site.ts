@@ -51,13 +51,15 @@ export const order = {
  */
 export const ogDefaultApproved = false;
 
-/** Image credits for captions and the Impressum (§5.11). */
-export const imageCredits = [
+/** Image credits for captions and the Impressum (§5.11). `credit: null` → [PLATZHALTER: Fotograf:in]. */
+export const imageCredits: { image: string; credit: string | null }[] = [
+  // Interim portrait (§11, 25.10.2026) – the child is never named.
+  { image: 'Philipp von Rothkirch am Klavier mit seinem Sohn (Über Philipp)', credit: null },
   { image: 'Familienfoto 2011 (Philipp von Rothkirch und Robert Cummings mit ihren Kindern)', credit: 'Benedikt Stehle' },
   { image: 'Philipp von Rothkirch am Flügel im Hot Milk Studio', credit: 'Robert Cummings' },
   { image: 'Cover Vol. 1', credit: 'Andre Wagner (Foto), Sylvia Puta (Bodypainting)' },
   { image: 'Cover Vol. 2', credit: 'Benedikt Stehle (Foto)' },
-] as const;
+];
 
 /**
  * Förderhinweis for Vol. 2 – verbatim from the Initiative Musik guidelines (§11, 18.10.2026).

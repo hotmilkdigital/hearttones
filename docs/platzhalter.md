@@ -1,6 +1,6 @@
 # PLATZHALTER – offene Inhalte
 
-Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 24 verschiedene Platzhalter, 52 Vorkommen. Vor jedem Release: Liste muss leer sein.
+Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 24 verschiedene Platzhalter, 53 Vorkommen. Vor jedem Release: Liste muss leer sein.
 
 | Was fehlt | Seiten |
 |---|---|
@@ -14,6 +14,7 @@ Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 24 verschied
 | Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerspruch, Beschwerde bei einer Aufsichtsbehörde | `/datenschutz/` |
 | Stand der Datenschutzerklärung (Datum) | `/datenschutz/` |
 | Endgültiger Text des Impressums – von Robert | `/impressum/` |
+| Fotograf:in | `/impressum/`, `/philipp-von-rothkirch/` |
 | Hinweis nach § 36 VSBG (Teilnahme an Streitbeilegungsverfahren) | `/impressum/` |
 | Haftungshinweise für eigene Inhalte und externe Links | `/impressum/` |
 | Hinweis zum Urheberrecht an Texten, Fotos, Covern und Aufnahmen | `/impressum/` |
@@ -21,7 +22,6 @@ Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 24 verschied
 | aktuelle Links der Musiker:innen (Recherche Philipp) | `/musik/lullabies-vol-1/`, `/musik/lullabies-vol-2/` |
 | Magazin, Ausgabe, Jahr | `/musik/lullabies-vol-1/`, `/presse/` |
 | Albumtext Vol. 2: Idee und Entstehung (Philipp/Robert) | `/musik/lullabies-vol-2/` |
-| Porträt Philipp von Rothkirch – Fotoshooting ausstehend | `/philipp-von-rothkirch/` |
 | Fortsetzung von Philipps Vol.-1-Geschichte („Somit hatten wir beide …“) | `/philipp-von-rothkirch/` |
 | Belege und Links zu den Beiträgen prüfen | `/presse/` |
 | Pressefotos (Porträts nach dem Fotoshooting) | `/presse/` |
