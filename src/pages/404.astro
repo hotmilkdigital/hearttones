@@ -1,31 +1,80 @@
 ---
-/** 404 – always noindex, no canonical. Links to the main sections (CLAUDE.md §4). */
+/**
+ * Bilingual 404 (CLAUDE.md §11, 25.10.2026): one page for both languages, so the server needs no
+ * extra rules. German block first, then English, each with its own lang attribute, a short message
+ * and links to the main sections in that language. The English links appear only once the EN
+ * pages exist (`enPublished`). Always noindex, no canonical, no redirects, no JavaScript.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
-import { mainNav, path } from '../data/routes';
+import { enPublished, mainNav, path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+
+const copy = {
+  de: {
+    eyebrow: 'Fehler 404',
+    heading: 'Seite nicht gefunden',
+    text: 'Diese Seite gibt es nicht oder nicht mehr.',
+    more: 'Vielleicht finden Sie hier, was Sie suchen:',
+    home: 'Zur Startseite',
+  },
+  en: {
+    eyebrow: 'Error 404',
+    heading: 'Page not found',
+    text: 'This page does not exist or is no longer available.',
+    more: 'Perhaps you will find what you are looking for here:',
+    home: 'Go to the homepage',
+  },
+} as const satisfies Record<Locale, Record<string, string>>;
+
+const blocks = [
+  { locale: 'de' as const, links: true },
+  { locale: 'en' as const, links: enPublished },
+];
 ---
 
-<BaseLayout title={`Seite nicht gefunden – ${site.brand}`} description="Diese Seite gibt es nicht oder nicht mehr. Hier finden Sie den Weg zur Musik, zur Reise und zum Kontakt." noindex>
+<BaseLayout
+  title={`Seite nicht gefunden · Page not found – ${site.brand}`}
+  description="Diese Seite gibt es nicht oder nicht mehr. – This page does not exist or is no longer available."
+  noindex
+>
   <Section tone="light" class="notfound" aria-labelledby={titleId(ids.notFound)}>
-    <p class="eyebrow notfound__eyebrow">Fehler 404</p>
-    <h1 id={titleId(ids.notFound)}>Seite nicht gefunden</h1>
-    <p class="lead notfound__text">
-      Diese Seite gibt es nicht oder nicht mehr. Vielleicht finden Sie hier, was Sie suchen:
-    </p>
-    <ul class="notfound__links">
-      <li><a class="btn btn--primary" href={path('home')}>Zur Startseite</a></li>
-      {
-        mainNav.map((item) => (
-          <li>
-            <a class="btn btn--outline" href={path(item.key)}>
-              {item.label.de}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      blocks.map(({ locale, links }) => {
+        const t = copy[locale];
+        const Heading = locale === 'de' ? 'h1' : 'h2';
+        const headingId = locale === 'de' ? titleId(ids.notFound) : titleId(`${ids.notFound}-${locale}`);
+        return (
+          <div class="notfound__block" lang={locale} aria-labelledby={headingId} role="group">
+            <p class="eyebrow notfound__eyebrow">{t.eyebrow}</p>
+            <Heading id={headingId} class="notfound__title">
+              {t.heading}
+            </Heading>
+            <p class="lead notfound__text">
+              {t.text}
+              {links && ` ${t.more}`}
+            </p>
+            {links && (
+              <ul class="notfound__links">
+                <li>
+                  <a class="btn btn--primary" href={path('home', locale)}>
+                    {t.home}
+                  </a>
+                </li>
+                {mainNav.map((item) => (
+                  <li>
+                    <a class="btn btn--outline" href={path(item.key, locale)}>
+                      {item.label[locale]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+      })
+    }
   </Section>
 </BaseLayout>
 
@@ -34,9 +83,22 @@ import { ids, titleId } from '../data/anchors';
     min-height: 60vh;
   }
 
+  .notfound__block + .notfound__block {
+    margin-top: 56px;
+    padding-top: 48px;
+    border-top: 1px solid var(--sand);
+  }
+
   .notfound__eyebrow {
     margin-bottom: 12px;
     color: var(--taupe);
+  }
+
+  /* Both languages carry the same weight: the English h2 is set like the German h1. */
+  .notfound__title {
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+    letter-spacing: var(--tracking-h1);
   }
 
   .notfound__text {

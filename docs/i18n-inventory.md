@@ -330,9 +330,9 @@ sitemap({
 
 Dafür muss `routes.ts` von `astro.config.mjs` importierbar sein (TS-Import in der Config vorher testen; falls er nicht geht, ein kleines `routes.mjs`, aus dem `routes.ts` re-exportiert).
 
-### 5.7 404
+### 5.7 404 – erledigt (25.10.2026)
 
-Astro erzeugt eine einzige `404.html`. **Vorschlag:** eine zweisprachige 404 (DE oben, EN darunter, beide mit Links in die jeweilige Sprache). Kein Server-Routing nötig, funktioniert auf Coolify ohne Extra-Konfiguration. Alternative: `en/404.astro` plus nginx-Regel `error_page 404 /en/404.html` für `/en/` – mehr Betriebsaufwand.
+Eine zweisprachige `404.html` (DE oben, EN darunter, je mit `lang`), siehe §6 Nr. 8. Keine Server-Regeln, keine Weiterleitungen, kein eigenes JavaScript.
 
 ### 5.8 Build-Check: fehlende EN-Texte
 
@@ -365,7 +365,7 @@ Astro erzeugt eine einzige `404.html`. **Vorschlag:** eine zweisprachige 404 (DE
 | 5 | Preisformat | EN **„€15“**, DE **„15 €“** (über `formatEur(locale)`). |
 | 6 | Vancouver-Pin | **Wird übersetzt** (Note, Rollen, Land). |
 | 7 | Anker-IDs | **Gemeinsam für beide Sprachen**, kurz, klein, ASCII, sprachneutral, nicht übersetzt (`src/data/anchors.ts`, umgesetzt). |
-| 8 | 404 | **Bilingual** – Details folgen im nächsten Prompt. |
+| 8 | 404 | **Eine zweisprachige Seite** (`src/pages/404.astro`, umgesetzt): DE-Block, dann EN-Block, je mit `lang`; EN-Links erst, wenn `enPublished`. Keine Server-Regeln. |
 | 9 | Übersetzung | **Claude übersetzt** in den folgenden Prompts. Robert prüft, Philipp gibt frei. |
 
 Damit fällt für §5.4 weg: EN-Fassungen von `order.taxNote` und den Rechtstexten. `mailSubjects` und `order.subject` bleiben einsprachig (kein `Localized`).

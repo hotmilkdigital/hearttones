@@ -63,6 +63,15 @@ Alle 38 verwendeten Farbpaare erfüllen WCAG 2.2 AA → [contrast.md](contrast.m
 - Web-Audio: ffmpeg fehlt noch; Bitrate offen.
 - Tastaturtest und 390/1440-Screenshots wurden je Seite beim Bau gemacht; nach P3 einmal komplett wiederholen.
 
+## 7. Nach dem Deploy auf Staging (manuell)
+
+- **404-Status:** Eine fehlende URL muss HTTP-Status **404** liefern, nicht 200 (sonst indexieren Suchmaschinen leere Seiten als „Soft 404“). Prüfen für eine DE- und eine EN-Adresse, z. B.:
+  ```
+  curl -s -o /dev/null -w "%{http_code}\n" -u <user>:<passwort> https://<staging>/gibt-es-nicht/
+  curl -s -o /dev/null -w "%{http_code}\n" -u <user>:<passwort> https://<staging>/en/does-not-exist/
+  ```
+  Beide müssen `404` ausgeben und die zweisprachige Seite aus `dist/404.html` zeigen. Lokal (`astro preview`) geprüft am 25.10.2026: beide 404.
+
 ## Befehle
 
 ```
