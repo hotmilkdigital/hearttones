@@ -40,7 +40,7 @@ const terms = [
 <div class="order" id="bestellen">
   <h2 id="bestellen-title">CD bestellen</h2>
   <p class="order__intro">
-    Bestellen Sie {album.shortTitle.replace(' ', ' ')} per E-Mail direkt bei {site.owner.shortName}.
+    Bestellen Sie {album.shortTitle.replace(' ', ' ')} per E-Mail direkt bei {site.owner.fullName}.
   </p>
   <CreditList items={terms} class="order__terms" />
   <p class="order__tax">{order.taxNote.replace('§ ', '§ ')}</p>

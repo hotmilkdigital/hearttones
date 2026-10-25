@@ -105,8 +105,9 @@ for (const { album, track } of tracks) {
     );
 }
 
-// Restricted content anywhere in src/ (§5.8, §5.9)
+// Restricted content anywhere in src/ (§5.3, §5.8, §5.9)
 const forbidden: [RegExp, string][] = [
+  [/Philipp\s+v\.\s*Rothkirch/, 'abbreviated name – always „Philipp von Rothkirch" (§5.3)'],
   [/sophie[\s-]*scholl/i, 'Sophie-Scholl-Schule (§5.8)'],
   [/big\s*band/i, 'big band (§5.8)'],
   [/semjon|barlas/i, 'Semjon Barlas (§5.8)'],

@@ -43,7 +43,7 @@ export const singles: Single[] = [
     // Line-up confirmed by Robert, 24.10.2026; the drumline members on the recording are adults, names cleared.
     creditsConfirmed: true,
     credits: [
-      { name: 'Philipp v. Rothkirch', roles: ['composition', 'keys'] },
+      { name: 'Philipp von Rothkirch', roles: ['composition', 'keys'] },
       { name: 'Robert Cummings', roles: ['production', 'mixing', 'mastering'] },
       { name: 'Benedikt Stehle', roles: ['drums', 'vocals', 'arrangement'] },
       { name: 'Rene Flechsenhaar', roles: ['bass'] },
@@ -66,7 +66,7 @@ export const singles: Single[] = [
     },
     creditsConfirmed: true,
     credits: [
-      { name: 'Philipp v. Rothkirch', roles: ['composition', 'keys', 'production'] },
+      { name: 'Philipp von Rothkirch', roles: ['composition', 'keys', 'production'] },
       { name: 'Kiko King', roles: ['vocals'], note: { de: 'Phases of Life, 2006', en: 'Phases of Life, 2006' } },
       { name: 'Ingo Schulz', roles: ['recording', 'production'], note: { de: '2006', en: '2006' } },
       { name: 'Benedikt Stehle', roles: ['liveDrums'] },

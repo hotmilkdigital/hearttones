@@ -22,7 +22,7 @@ Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 25 verschied
 | aktuelle Links der Musiker:innen (Recherche Philipp) | `/musik/lullabies-vol-1/`, `/musik/lullabies-vol-2/` |
 | Magazin, Ausgabe, Jahr | `/musik/lullabies-vol-1/`, `/presse/` |
 | Albumtext Vol. 2: Idee und Entstehung (Philipp/Robert) | `/musik/lullabies-vol-2/` |
-| Porträt Philipp v. Rothkirch – Fotoshooting ausstehend | `/philipp-von-rothkirch/` |
+| Porträt Philipp von Rothkirch – Fotoshooting ausstehend | `/philipp-von-rothkirch/` |
 | Fortsetzung von Philipps Vol.-1-Geschichte („Somit hatten wir beide …“) | `/philipp-von-rothkirch/` |
 | Belege und Links zu den Beiträgen prüfen | `/presse/` |
 | Pressefotos (Porträts nach dem Fotoshooting) | `/presse/` |

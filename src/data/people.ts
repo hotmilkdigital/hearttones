@@ -18,7 +18,7 @@ export const people = {
   // Vol. 1
   'rachelle-jeanty': { name: 'Rachelle Jeanty', kind: 'person', printedLink: 'myspace.com/rachellejeanty' },
   'cremildo-de-caifaz': { name: 'Cremildo de Caifaz', kind: 'person' },
-  'philipp-v-rothkirch': { name: 'Philipp v. Rothkirch', kind: 'person', printedLink: 'philippvonrothkirch.com' },
+  'philipp-v-rothkirch': { name: 'Philipp von Rothkirch', kind: 'person', printedLink: 'philippvonrothkirch.com' },
   'talia-kliger': { name: 'Talia Kliger', kind: 'person', printedLink: 'myspace.com/taliakliger' },
   'uri-gincel': { name: 'Uri Gincel', kind: 'person', printedLink: 'gincel.com' },
   'gilbert-abdourahmane-diop': { name: 'Gilbert Abdourahmane Diop', kind: 'person', printedLink: 'myspace.com/abdourahmanediop' },

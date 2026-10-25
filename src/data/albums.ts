@@ -100,7 +100,7 @@ export const vol1: Album = {
     'Cover von Heart Tones Vol. 1: Lullabies From Around The World, eine lächelnde schwangere Frau mit einem als Erdkugel bemalten Bauch',
   teaser: '13 Lieder aus Haiti, Senegal, Georgien, Indien und neun weiteren Ländern.',
   credits: [
-    { role: 'production', names: ['Philipp v. Rothkirch'] },
+    { role: 'production', names: ['Philipp von Rothkirch'] },
     { role: 'coProduction', names: ['Robert Cummings'] },
     { role: 'recording', names: ['Robert Cummings'], exceptTracks: [7] },
     { role: 'recording', names: ['Peter Sund („the farm“)'], tracks: [7] },
@@ -176,7 +176,7 @@ export const vol1: Album = {
       slug: '05-tu-mi-mariposa',
       title: 'Tu mi mariposa',
       lang: 'es',
-      writing: { type: 'music', music: 'Philipp v. Rothkirch & Eugenia Tapia', lyrics: 'Eugenia Tapia' },
+      writing: { type: 'music', music: 'Philipp von Rothkirch & Eugenia Tapia', lyrics: 'Eugenia Tapia' },
       countries: ['CL'],
       durationSec: 166.45,
       lineup: [
@@ -237,7 +237,7 @@ export const vol1: Album = {
       slug: '10-viele-tausend-sternlein',
       title: 'Viele tausend Sternlein',
       lang: 'de',
-      writing: { type: 'music', music: 'Philipp v. Rothkirch', lyrics: 'Sabine v. Rothkirch' },
+      writing: { type: 'music', music: 'Philipp von Rothkirch', lyrics: 'Sabine v. Rothkirch' },
       countries: ['DE'],
       durationSec: 99.47,
       lineup: [
@@ -251,7 +251,7 @@ export const vol1: Album = {
       slug: '11-sleep-little-baby',
       title: 'Sleep Little Baby',
       lang: 'en',
-      writing: { type: 'music', music: 'Philipp v. Rothkirch', lyrics: 'Kiko King' },
+      writing: { type: 'music', music: 'Philipp von Rothkirch', lyrics: 'Kiko King' },
       countries: ['US'],
       durationSec: 142.76,
       lineup: [
@@ -304,7 +304,7 @@ export const vol2: Album = {
     'Cover von Heart Tones Vol. 2: Lullabies From Around The World, vier schlafende Kinder unter einer bunten Decke',
   teaser: '13 Lieder von Südafrika über Iran und die Mongolei bis Brasilien.',
   credits: [
-    { role: 'production', names: ['Robert Cummings', 'Philipp v. Rothkirch'] },
+    { role: 'production', names: ['Robert Cummings', 'Philipp von Rothkirch'] },
     { role: 'recording', names: ['Robert Cummings'] },
     { role: 'mixing', names: ['Robert Cummings'] },
     { role: 'mastering', names: ['Robert Cummings'] },
@@ -366,7 +366,7 @@ export const vol2: Album = {
       no: 5,
       slug: '05-munzel',
       title: 'Munzel',
-      writing: { type: 'unspecified', names: 'Philipp v. Rothkirch' },
+      writing: { type: 'unspecified', names: 'Philipp von Rothkirch' },
       countries: ['DE'],
       durationSec: 197.15,
       lineup: [{ person: PvR, roles: ['piano'] }],
@@ -462,7 +462,7 @@ export const vol2: Album = {
       slug: '12-ninna-nanna',
       title: 'Ninna nanna',
       lang: 'it',
-      writing: { type: 'unspecified', names: 'Tamara Soldan / Philipp v. Rothkirch' },
+      writing: { type: 'unspecified', names: 'Tamara Soldan / Philipp von Rothkirch' },
       countries: ['IT', 'DE'],
       durationSec: 135.24,
       lineup: [
@@ -476,7 +476,7 @@ export const vol2: Album = {
       slug: '13-ouve-o-sinho',
       title: 'Ouve o sinho',
       lang: 'pt',
-      writing: { type: 'unspecified', names: 'Isabela Santos / Philipp v. Rothkirch' },
+      writing: { type: 'unspecified', names: 'Isabela Santos / Philipp von Rothkirch' },
       countries: ['BR', 'DE'],
       durationSec: 135.92,
       lineup: [

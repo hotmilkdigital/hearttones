@@ -32,7 +32,7 @@ export const works: Work[] = [
     year: 2021,
     youtubeId: 'G4tORyVfDb8',
     credit:
-      'Komposition: Philipp v. Rothkirch, Benedikt Stehle und Henry Ernst. Produktion: Henry Ernst. Gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
+      'Komposition: Philipp von Rothkirch, Benedikt Stehle und Henry Ernst. Produktion: Henry Ernst. Gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
     shortRole: 'Komposition mit Benedikt Stehle und Henry Ernst',
     creditConfirmed: true,
     artistLink: { label: 'Fanfare Ciocărlia bei Asphalt Tango', href: 'https://asphalt-tango.de/' },
@@ -44,7 +44,7 @@ export const works: Work[] = [
     year: 2014,
     youtubeId: 'IVkwNzdCu88',
     credit:
-      'Komposition und Produktion: Philipp v. Rothkirch. Aufgenommen, gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
+      'Komposition und Produktion: Philipp von Rothkirch. Aufgenommen, gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
     shortRole: 'Komposition und Produktion',
     creditConfirmed: true,
     artistLink: { label: 'ingridarthur.com', href: 'https://www.ingridarthur.com/' },

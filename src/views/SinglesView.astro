@@ -15,7 +15,7 @@ import { site } from '../data/site';
 <BaseLayout
   routeKey="singles"
   title={`${singlesArtist} – neue Singles | ${site.brand}`}
-  description={`${singlesArtist}: die neuen Singles „World Peace Now!“ und „Bombs Away!“ – Komposition und Keyboards: ${site.owner.shortName}. Die Veröffentlichung folgt.`}
+  description={`${singlesArtist}: die neuen Singles „World Peace Now!“ und „Bombs Away!“ – Komposition und Keyboards: ${site.owner.fullName}. Die Veröffentlichung folgt.`}
 >
   <Section tone="light" aria-labelledby="singles-title">
     <Breadcrumb
@@ -24,7 +24,7 @@ import { site } from '../data/site';
     <p class="badge-soon">Demnächst</p>
     <h1 id="singles-title" class="singles__title">{singlesArtist}</h1>
     <p class="lead singles__intro">
-      Zwei neue Stücke des {singlesArtist} – Komposition und Keyboards: {site.owner.shortName}, gemischt und gemastert im
+      Zwei neue Stücke des {singlesArtist} – Komposition und Keyboards: {site.owner.fullName}, gemischt und gemastert im
       Hot Milk Studio. Die Veröffentlichung folgt.
     </p>
   </Section>

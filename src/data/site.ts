@@ -10,10 +10,8 @@ export const site = {
   labelCode: 'LC-27925',
   claim: 'Music from around the world',
   owner: {
-    /** Impressum, schema, titles/meta (§5.3) */
+    /** Always the full name – in running text, titles, schema and Impressum (§5.3, 25.10.2026). */
     fullName: 'Philipp von Rothkirch',
-    /** Running text (§5.3) */
-    shortName: 'Philipp v. Rothkirch',
   },
   contact: {
     email: 'info@hearttones.net',
@@ -55,8 +53,8 @@ export const ogDefaultApproved = false;
 
 /** Image credits for captions and the Impressum (§5.11). */
 export const imageCredits = [
-  { image: 'Familienfoto 2011 (Philipp v. Rothkirch und Robert Cummings mit ihren Kindern)', credit: 'Benedikt Stehle' },
-  { image: 'Philipp v. Rothkirch am Flügel im Hot Milk Studio', credit: 'Robert Cummings' },
+  { image: 'Familienfoto 2011 (Philipp von Rothkirch und Robert Cummings mit ihren Kindern)', credit: 'Benedikt Stehle' },
+  { image: 'Philipp von Rothkirch am Flügel im Hot Milk Studio', credit: 'Robert Cummings' },
   { image: 'Cover Vol. 1', credit: 'Andre Wagner (Foto), Sylvia Puta (Bodypainting)' },
   { image: 'Cover Vol. 2', credit: 'Benedikt Stehle (Foto)' },
 ] as const;

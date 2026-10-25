@@ -15,7 +15,7 @@ export const services = [
 
 /** Approved artboard intro for the production section. */
 export const productionIntro =
-  'Sie singen und brauchen ein Instrumental, ein Arrangement oder eine fertige Produktion? Philipp v. Rothkirch komponiert schnell einen tragfähigen Basis-Song und gibt ihm prägnante Licks – genreübergreifend.';
+  'Sie singen und brauchen ein Instrumental, ein Arrangement oder eine fertige Produktion? Philipp von Rothkirch komponiert schnell einen tragfähigen Basis-Song und gibt ihm prägnante Licks – genreübergreifend.';
 
 /** How a production runs (Philipp's answers: Ablauf). */
 export const process = [
