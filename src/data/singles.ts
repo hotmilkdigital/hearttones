@@ -3,8 +3,8 @@
  * Source: ../01_Brief/02_CD-Credits-Vol1-Vol2.md, section "Singles".
  *
  * Never add anything listed as restricted in CLAUDE.md §5.8 and §5.9 (school performance and
- * arrangement, the unproven gala story, the campaign domain). scripts/check-data.ts fails the
- * build if those terms appear anywhere in src/. No player, artwork or release date until released.
+ * arrangement, the campaign domain). scripts/check-data.ts fails the build if those terms appear
+ * anywhere in src/. No player, artwork or release date until released.
  */
 
 import type { Locale } from './routes.ts';

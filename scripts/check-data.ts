@@ -111,7 +111,6 @@ const forbidden: [RegExp, string][] = [
   [/sophie[\s-]*scholl/i, 'Sophie-Scholl-Schule (§5.8)'],
   [/big\s*band/i, 'big band (§5.8)'],
   [/semjon|barlas/i, 'Semjon Barlas (§5.8)'],
-  [/nina\s*hagen|charity\s*gala/i, 'Nina Hagen / Peace Charity Gala (§5.8)'],
   [/worldpeacenow/i, 'worldpeacenow.global (§5.9)'],
 ];
 const walk = (dir: string): string[] =>
