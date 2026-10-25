@@ -547,6 +547,7 @@ export function writingText(writing: Writing, locale: Locale = 'de'): string {
 }
 
 export interface AlbumPerformer {
+  id: PersonId;
   name: string;
   roles: Role[];
   tracks: number[];
@@ -557,7 +558,7 @@ export function albumPerformers(album: Album): AlbumPerformer[] {
   const byPerson = new Map<PersonId, AlbumPerformer>();
   for (const track of album.tracks) {
     for (const p of track.lineup) {
-      const entry = byPerson.get(p.person) ?? { name: performerName(p), roles: [], tracks: [] };
+      const entry = byPerson.get(p.person) ?? { id: p.person, name: performerName(p), roles: [], tracks: [] };
       for (const role of p.roles) if (!entry.roles.includes(role)) entry.roles.push(role);
       entry.tracks.push(track.no);
       byPerson.set(p.person, entry);

@@ -1,7 +1,11 @@
 ---
-/** Two-column credit list (term → detail), e.g. role → names or name → roles. */
+/**
+ * Two-column credit list (term → detail), e.g. role → names or name → roles.
+ * Optional per row: `termNote` after the term in detail style (e.g. „verstorben 2012"),
+ * `link` after the detail (e.g. a musician's own website, domain as link text, §5.16).
+ */
 interface Props {
-  items: { term: string; detail: string }[];
+  items: { term: string; termNote?: string; detail: string; link?: { href: string; text: string } }[];
   class?: string;
 }
 
@@ -12,8 +16,21 @@ const { items, class: className } = Astro.props;
   {
     items.map((item) => (
       <div class="credits__row">
-        <dt>{item.term}</dt>
-        <dd>{item.detail}</dd>
+        <dt>
+          {item.term}
+          {item.termNote && <span class="credits__note">{item.termNote}</span>}
+        </dt>
+        <dd>
+          {item.detail}
+          {item.link && (
+            <>
+              {' · '}
+              <a href={item.link.href} rel="noopener">
+                {item.link.text}
+              </a>
+            </>
+          )}
+        </dd>
       </div>
     ))
   }
@@ -36,9 +53,20 @@ const { items, class: className } = Astro.props;
     font-weight: 700;
   }
 
+  /* Same weight and colour as the detail text */
+  .credits__note {
+    margin-left: 6px;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
   dd {
     margin: 0;
     color: var(--text-muted);
+  }
+
+  dd a {
+    font-weight: 700;
   }
 
   @media (max-width: 640px) {

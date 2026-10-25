@@ -17,6 +17,7 @@ import AudioPlayer from '../components/AudioPlayer.astro';
 import FundingNotice from '../components/FundingNotice.astro';
 import OrderBlock from '../components/album/OrderBlock.astro';
 import { albumDuration, albumPerformers, formatDuration, type Album, type Credit } from '../data/albums';
+import { people, type Person } from '../data/people';
 import { pressQuotes } from '../data/press';
 import { roleLabel } from '../data/roles';
 import { path } from '../data/routes';
@@ -53,10 +54,18 @@ const creditItem = (c: Credit) => ({
     : c.names.join(', '),
 });
 
-const performerItems = performers.map((p) => ({
-  term: p.name,
-  detail: [p.roles.map((r) => roleLabel(r)).join(', '), `Nr. ${p.tracks.join(', ')}`].filter(Boolean).join(' · '),
-}));
+// Own website (domain as link text) and year of death from people.ts (§5.16).
+const performerItems = performers.map((p) => {
+  const person: Person = people[p.id];
+  return {
+    term: p.name,
+    termNote: person.diedYear ? `verstorben ${person.diedYear}` : undefined,
+    detail: [p.roles.map((r) => roleLabel(r)).join(', '), `Nr. ${p.tracks.join(', ')}`].filter(Boolean).join(' · '),
+    link: person.website
+      ? { href: person.website, text: new URL(person.website).hostname.replace(/^www\./, '') }
+      : undefined,
+  };
+});
 
 const quote = album.id === 'vol-1' ? pressQuotes.find((q) => q.id === 'schlaf-mein-kind') : undefined;
 
@@ -143,7 +152,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
       <div>
         <h2 id="mitwirkende-title">Mitwirkende</h2>
         <p class="people__intro">
-          {performers.length} Musiker:innen und Ensembles. <Placeholder text="aktuelle Links der Musiker:innen (Recherche Philipp)" />
+          {performers.length} Musiker:innen und Ensembles.
         </p>
         <CreditList items={performerItems} class="people__list" />
         <p class="people__more"><a href={path('artists')}>Alle Künstler:innen beider Alben</a></p>

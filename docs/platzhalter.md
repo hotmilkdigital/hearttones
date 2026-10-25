@@ -1,6 +1,6 @@
 # PLATZHALTER – offene Inhalte
 
-Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 21 verschiedene Platzhalter, 49 Vorkommen. Vor jedem Release: Liste muss leer sein.
+Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 20 verschiedene Platzhalter, 47 Vorkommen. Vor jedem Release: Liste muss leer sein.
 
 | Was fehlt | Seiten |
 |---|---|
@@ -17,7 +17,6 @@ Generiert von `npm run qa:dist -- --write` aus dem Build (`dist/`). 21 verschied
 | Haftungshinweise für eigene Inhalte und externe Links | `/impressum/` |
 | Hinweis zum Urheberrecht an Texten, Fotos, Covern und Aufnahmen | `/impressum/` |
 | Albumtext Vol. 1: Idee und Entstehung (Philipp/Robert) | `/musik/lullabies-vol-1/` |
-| aktuelle Links der Musiker:innen (Recherche Philipp) | `/musik/lullabies-vol-1/`, `/musik/lullabies-vol-2/` |
 | Magazin, Ausgabe, Jahr | `/musik/lullabies-vol-1/`, `/presse/` |
 | Albumtext Vol. 2: Idee und Entstehung (Philipp/Robert) | `/musik/lullabies-vol-2/` |
 | Belege und Links zu den Beiträgen prüfen | `/presse/` |
