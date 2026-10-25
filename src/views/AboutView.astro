@@ -36,8 +36,13 @@ const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavin
         <p class="eyebrow intro__eyebrow">Über Philipp</p>
         <h1 id="ueber-title">{site.owner.fullName}</h1>
         <p class="lead intro__lead">Komponist, Produzent und Musiker in Berlin-Kreuzberg.</p>
+        <!-- Block A, 01_Brief/08_Ueber-Philipp_Kurzbio.md (Philipp's approval pending) -->
         <p class="intro__more">
-          <Placeholder text="Drei Sätze über Philipp (B10) – Entwurf von Robert, Freigabe Philipp" />
+          Philipp v. Rothkirch stammt aus Niedersachsen und lebt seit 2000 in Berlin. Als Keyboarder mit einer Vorliebe für
+          Funk und Soul spielte er live und im Studio unter anderem für Gilbert Abdourahmane Diop, Kirk Smith, Della Miles und
+          Ingrid Arthur sowie im Wintergarten Varieté Berlin. Außerdem arbeitet er als Musiktherapeut in Kitas, in
+          Seniorenheimen und mit einer Gruppe von Menschen mit Trisomie 21 und unterrichtet Klavier an einer Berliner
+          Musikschule.
         </p>
       </div>
       <div class="intro__portrait" role="img" aria-label="Platzhalter für ein Porträt">
@@ -101,9 +106,19 @@ const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavin
         <ul class="craft__instruments" aria-label="Instrumente">
           {instruments.map((i) => <li>{i}</li>)}
         </ul>
+        <!-- Block B, 01_Brief/08 -->
+        <p class="craft__p">
+          Seine Lieblingsinstrumente sind Fender Rhodes, Hohner Clavinet und Moog, gern auch mit Talkbox.
+        </p>
         <p class="craft__p">
           Philipp v. Rothkirch komponiert schnell einen tragfähigen Basis-Song und gibt ihm prägnante Licks –
           genreübergreifend.
+        </p>
+        <!-- Block C, 01_Brief/08 -->
+        <p class="craft__p">
+          Seine neuen Songs „World Peace Now!“ und „Bombs Away!“ erscheinen demnächst als{' '}
+          <a href={path('singles')}>Berlin Peace Collective</a>. „World Peace Now!“ entstand gemeinsam mit Produzent Robert
+          Cummings im Hot Milk Studio.
         </p>
         <p class="craft__p">
           Am Anfang steht ein Erstgespräch, telefonisch oder vor Ort. Die Vorproduktion entsteht in Kreuzberg, Aufnahme und

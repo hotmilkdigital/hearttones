@@ -25,6 +25,7 @@ Audience: parents, families, educators, world-music listeners; musicians/singers
 | `../01_Brief/02_CD-Credits-Vol1-Vol2.md` | Full tracklists, credits, countries, singles credits | Single source for `src/data/albums.ts` and `src/data/singles.ts` |
 | `../01_Brief/05_Ueber-Philipp_Seitenplan.md` | Plan and draft text for the "Über Philipp" page, reference videos | Page structure, `ConsentVideo` |
 | `../01_Brief/07_Presse-Rezensionen.md` | Two press reviews, approved short quotes | Press page, Vol. 1 page |
+| `../01_Brief/08_Ueber-Philipp_Kurzbio.md` | Philipp's short intro (B10) and bio, blocks A–C, with what was deliberately left out | Über Philipp page, text verbatim |
 | `../03_Design/Startseite-Artboard_v6.dc.html` | Approved desktop homepage artboard (Claude Design export) | **Reference** for layout, order and German copy of the homepage. Not code to copy (see §6.8) |
 | `../03_Design/hero-globus.svg` | Approved hero illustration (globe as night light) | Use as-is in the hero |
 | `../03_Design/reise-weltkarte-platzhalter.svg` | Rough map placeholder from the artboard | Replace with the generated map (§8.5) |
@@ -243,12 +244,13 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 24.10.2026 | Final logo SVGs and cover masters in place (§6.4, §7). Logo inline from one master with token fills; favicon from the glyph (heart-light in dark browser UI); covers as `<Picture>` AVIF/WebP 420/630/840 px, OG/schema image 1200 px JPEG on album pages (still behind the §9 cover gates in production). |
 | 24.10.2026 | Web audio = Robert's MP3s copied unchanged (192 kbps CBR, clean tags, no artwork; no re-encoding) to `public/audio/`. `check:data` asserts every track has its file and the MP3 duration matches `albums.ts` (±2 s). |
 | 24.10.2026 | Die Reise: extra pin Vancouver, BC – „Heimatstadt von Robert Cummings, Inhaber und Betreiber des Hot Milk Studio Berlin", roles „Koproduktion, Mixing und Mastering von Vol. 1 und Vol. 2 – und fast alle Aufnahmen", link hotmilkstudio.de (`src/data/team-pins.ts`). Distinct marker (cocoa diamond, cream ring) with legend, not counted in the 24 countries, own list entry „Hinter den Aufnahmen"; Die Reise page only, not the homepage teaser. Philipp to approve. |
+| 25.10.2026 | Über Philipp: B10 intro and bio from 01_Brief/08; Philipp's approval pending. Not published: Nina Hagen gala, Phases of Life, worldpeacenow campaign. |
 | 24.10.2026 | World Peace Now! line-up confirmed, incl. the „BÄM" drumline members Ramon Buntebart, Leander Winkler, Rafael Nussbaumer. All three are adults (Robert) – names may be published; no guardian consent needed. |
 
 ## 12. Open items (build around them with placeholders)
 
 - Portraits of Philipp (shoot pending) → placeholder blocks.
-- Über Philipp: self-description (B10), perspective of the "Wie wir uns kennenlernten" text, end of Philipp's Vol. 1 story.
+- Über Philipp: Philipp's approval of the bio (01_Brief/08), perspective of the "Wie wir uns kennenlernten" text, end of Philipp's Vol. 1 story.
 - Musicians' current links/photos (Philipp's research table).
 - Press sources (magazine/issue/year).
 - Singles artwork, date, distribution.
