@@ -76,6 +76,8 @@ export interface Album {
   /** One-line teaser (approved artboard copy). */
   teaser: string;
   credits: Credit[];
+  /** Short thanks line shown below the production credits on the album page (not on the homepage, not in the schema). */
+  thanks?: string;
   /** Studio statement (§5.7): almost entirely recorded, entirely mixed and mastered there. */
   studio: string;
   links: ExternalLink[];
@@ -95,6 +97,8 @@ export const vol1: Album = {
   catalogueNo: 'HTR 001',
   labelCode: 'LC-27925',
   copyright: 'Heart Tones Records 2011',
+  // At Philipp's request (25.10.2026): Peter Böckelmann pre-financed the CD pressing.
+  thanks: 'Vielen Dank an Peter Böckelmann für seine Unterstützung.',
   status: 'outOfPrint',
   coverAlt:
     'Cover von Heart Tones Vol. 1: Lullabies From Around The World, eine lächelnde schwangere Frau mit einem als Erdkugel bemalten Bauch',

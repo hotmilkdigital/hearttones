@@ -151,6 +151,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
       <div>
         <h2 id="produktion-title">Produktion und Gestaltung</h2>
         <CreditList items={album.credits.map(creditItem)} class="people__list" />
+        {album.thanks && <p class="people__thanks">{album.thanks}</p>}
       </div>
     </div>
   </Section>
@@ -261,6 +262,13 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
   .people :global(.people__list) {
     margin-top: 20px;
     font-size: var(--fs-meta);
+  }
+
+  /* Thanks line below the production credits – same size and colour as the credit details. */
+  .people__thanks {
+    margin-top: 16px;
+    font-size: var(--fs-meta);
+    color: var(--text-muted);
   }
 
   .people__more {
