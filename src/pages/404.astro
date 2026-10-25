@@ -4,12 +4,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import { mainNav, path } from '../data/routes';
 import { site } from '../data/site';
+import { ids, titleId } from '../data/anchors';
 ---
 
 <BaseLayout title={`Seite nicht gefunden – ${site.brand}`} description="Diese Seite gibt es nicht oder nicht mehr. Hier finden Sie den Weg zur Musik, zur Reise und zum Kontakt." noindex>
-  <Section tone="light" class="notfound" aria-labelledby="notfound-title">
+  <Section tone="light" class="notfound" aria-labelledby={titleId(ids.notFound)}>
     <p class="eyebrow notfound__eyebrow">Fehler 404</p>
-    <h1 id="notfound-title">Seite nicht gefunden</h1>
+    <h1 id={titleId(ids.notFound)}>Seite nicht gefunden</h1>
     <p class="lead notfound__text">
       Diese Seite gibt es nicht oder nicht mehr. Vielleicht finden Sie hier, was Sie suchen:
     </p>

@@ -18,6 +18,7 @@ Gebaute Seiten (10): `/`, `/musik/lullabies-vol-1/`, `/musik/lullabies-vol-2/`, 
 | Canonical (außer 404) | ✅ |
 | `lang` auf `<html>` | ✅ `de` |
 | Genau ein `<h1>` je Seite, `alt` an jedem `<img>` | ✅ |
+| Interne Links und Anker (seit 25.10.2026) | ✅ Jeder Link führt auf eine gebaute Seite; jedes `#fragment` (gleiche oder andere Seite) und jede `aria-labelledby`/`-controls`/`-describedby`-Referenz trifft eine vorhandene ID; IDs je Seite eindeutig, klein, ASCII (`src/data/anchors.ts`) |
 | Open Graph + Twitter Card, `og:image` vorhanden | ✅ Standardbild 1200×630 aus dem Hero; Albumseiten nutzen das Cover, sobald es freigegeben ist |
 | JSON-LD | ✅ `WebSite`, `Person`, `MusicGroup` (Heart Tones), `Organization` (Heart Tones Records, LC-27925) auf allen Seiten; `MusicAlbum` mit 13 `MusicRecording` (Name, Position, ISO-Dauer, Mitwirkende) auf Vol. 1/Vol. 2 |
 | `hreflang` | Vorbereitet, aktiv sobald `enPublished = true` in `src/data/routes.ts` |

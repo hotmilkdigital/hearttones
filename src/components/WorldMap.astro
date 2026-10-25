@@ -13,22 +13,20 @@
  * cocoa diamond with cream ring – visibly different from the country markers and not counted
  * in the 24 countries. A legend explains both marker types.
  */
-import { lineupText, trackAnchor, type Album } from '../data/albums';
+import { lineupText, type Album } from '../data/albums';
 import { countries, countryName, tracksForCountry, type CountryCode } from '../data/countries';
 import { path } from '../data/routes';
+import { countryId, hash, ids, mapTipId, trackId } from '../data/anchors';
 import { teamPins } from '../data/team-pins';
 import { MAP_HEIGHT, MAP_WIDTH, countryPath, landPath, project } from '../lib/world-map';
 
 interface Props {
   interactive?: boolean;
-  /** Id of the list the "skip map" link and multi-song markers point to. */
-  listId?: string;
   label?: string;
 }
 
 const {
   interactive = true,
-  listId = 'laender',
   label = `Weltkarte mit den ${Object.keys(countries).length} Herkunftsländern der Lieder`,
 } = Astro.props;
 
@@ -49,10 +47,10 @@ const markers = (Object.keys(countries) as CountryCode[]).map((code) => {
   }));
   const href =
     refs.length === 1
-      ? `${albumUrl(refs[0]!.album)}#${trackAnchor(refs[0]!.album, refs[0]!.track)}`
-      : `#${listId}-${code.toLowerCase()}`;
+      ? `${albumUrl(refs[0]!.album)}#${trackId(refs[0]!.album.id, refs[0]!.track.no)}`
+      : hash(countryId(code));
   const ariaLabel = `${name}: ${songs.map((s) => `„${s.title}“ (${s.album.replace(' ', ' ')})`).join(', ')}`;
-  return { code, x, y, name, songs, href, ariaLabel, tipId: `map-tip-${code.toLowerCase()}` };
+  return { code, x, y, name, songs, href, ariaLabel, tipId: mapTipId(code) };
 });
 
 // Diamond corners around the projected point (half-diagonal 9 units).
@@ -60,7 +58,7 @@ const diamond = (x: number, y: number, r = 9) => `${x},${y - r} ${x + r},${y} ${
 const team = interactive
   ? teamPins.map((p) => {
       const [x, y] = project(p.lon, p.lat);
-      return { ...p, x, y, points: diamond(x, y), tipId: `map-tip-${p.id}`, ariaLabel: `${p.place}: ${p.name} – ${p.roles}` };
+      return { ...p, x, y, points: diamond(x, y), tipId: mapTipId(p.id), ariaLabel: `${p.place}: ${p.name} – ${p.roles}` };
     })
   : [];
 
@@ -70,7 +68,7 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
 <div class:list={['map', { 'map--interactive': interactive }]} data-world-map={interactive ? '' : undefined}>
   {
     interactive && (
-      <a class="map__skip" href={`#${listId}`}>
+      <a class="map__skip" href={hash(ids.countries)}>
         Karte überspringen – zur Länderliste
       </a>
     )

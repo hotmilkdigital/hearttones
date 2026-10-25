@@ -10,6 +10,7 @@
  */
 import Logo from './Logo.astro';
 import { enPublished, mainNav, path, routes, type Locale, type RouteKey } from '../data/routes';
+import { ids } from '../data/anchors';
 
 interface Props {
   locale?: Locale;
@@ -29,7 +30,9 @@ const items = mainNav.map((item) => {
 });
 
 const other: Locale = locale === 'de' ? 'en' : 'de';
-const switchHref = current ? path(current, other) : path('home', other);
+// Same page in each language (falls back to the homepage). Anchor ids are shared across languages
+// (anchors.ts), so the script below carries the current #fragment over on click.
+const langHref = (l: Locale) => (current ? path(current, l) : path('home', l));
 ---
 
 <header class="header" data-tone="light" data-header>
@@ -40,7 +43,7 @@ const switchHref = current ? path(current, other) : path('home', other);
       type="button"
       class="header__toggle"
       aria-expanded="false"
-      aria-controls="hauptmenue"
+      aria-controls={ids.menu}
       data-menu-toggle
       hidden
     >
@@ -51,7 +54,7 @@ const switchHref = current ? path(current, other) : path('home', other);
       Menü
     </button>
 
-    <nav class="header__nav" id="hauptmenue" aria-label="Hauptnavigation" data-menu>
+    <nav class="header__nav" id={ids.menu} aria-label="Hauptnavigation" data-menu>
       <ul class="header__list">
         {
           items.map((item) => (
@@ -66,11 +69,11 @@ const switchHref = current ? path(current, other) : path('home', other);
       {
         enPublished && (
           <p class="header__lang">
-            <a href={path('home', 'de')} lang="de" aria-current={locale === 'de' ? 'true' : undefined}>
+            <a href={langHref('de')} lang="de" hreflang="de" data-lang-switch aria-current={locale === 'de' ? 'true' : undefined}>
               DE
             </a>
             <span aria-hidden="true">/</span>
-            <a href={switchHref} lang={other} hreflang={other}>
+            <a href={langHref(other)} lang={other} hreflang={other} data-lang-switch>
               {other.toUpperCase()}
             </a>
           </p>
@@ -104,6 +107,14 @@ const switchHref = current ? path(current, other) : path('home', other);
       }
     });
     mobile.addEventListener('change', () => setOpen(false));
+  });
+
+  // Language switch keeps the current #fragment (ids are the same in DE and EN). Without JS it
+  // simply opens the page top.
+  document.querySelectorAll<HTMLAnchorElement>('a[data-lang-switch]').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (location.hash) link.hash = location.hash;
+    });
   });
 </script>
 

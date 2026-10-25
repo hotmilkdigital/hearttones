@@ -1,7 +1,7 @@
 ---
 /**
  * Homepage „Neue Musik" (artboard section 5, night): Berlin Peace Collective, „Demnächst",
- * both singles as cards without credits (those are on the singles page). id="neu" is the
+ * both singles as cards without credits (those are on the singles page). `ids.newMusic` is the
  * target of the hero pill. Restrictions §5.8 apply.
  */
 import Section from '../Section.astro';
@@ -9,11 +9,12 @@ import SingleCard from '../SingleCard.astro';
 import { path } from '../../data/routes';
 import { singles, singlesArtist } from '../../data/singles';
 import { site } from '../../data/site';
+import { ids, titleId } from '../../data/anchors';
 ---
 
-<Section tone="night" id="neu" aria-labelledby="neu-title">
+<Section tone="night" id={ids.newMusic} aria-labelledby={titleId(ids.newMusic)}>
   <p class="badge-soon">Demnächst</p>
-  <h2 id="neu-title" class="new__title">Neue Musik</h2>
+  <h2 id={titleId(ids.newMusic)} class="new__title">Neue Musik</h2>
   <p class="new__intro">
     Zwei neue Stücke des {singlesArtist} – Komposition und Keyboards: {site.owner.fullName}, gemischt und gemastert im Hot
     Milk Studio. Die Veröffentlichung folgt.

@@ -22,6 +22,7 @@ import { pressQuotes } from '../data/press';
 import { roleLabel } from '../data/roles';
 import { path } from '../data/routes';
 import { site } from '../data/site';
+import { ids, titleId, hash } from '../data/anchors';
 
 interface Props {
   album: Album;
@@ -86,7 +87,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
   imageAlt={album.coverAlt}
   schema={albumGraph(album, ogCover ? new URL(ogCover.src, site.url).href : undefined)}
 >
-  <Section tone="light" class="album-head" aria-labelledby="album-title">
+  <Section tone="light" class="album-head" aria-labelledby={titleId(ids.album)}>
     <Breadcrumb
       items={[
         { label: 'Start', href: path('home') },
@@ -97,7 +98,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
     <div class="album-head__grid">
       <div class="album-head__text">
         <p class="eyebrow album-head__eyebrow">{site.brand} · Album · {album.year}</p>
-        <h1 id="album-title">
+        <h1 id={titleId(ids.album)}>
           {seriesTitle} <span class="album-head__vol">{nb(album.shortTitle)}</span>
         </h1>
         <p class="lead album-head__intro">{album.teaser}</p>
@@ -118,7 +119,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
           ) : (
             <div class="album-head__status">
               <div class="album-head__actions">
-                <a class="btn btn--primary" href="#bestellen">
+                <a class="btn btn--primary" href={hash(ids.order)}>
                   CD per E-Mail bestellen
                 </a>
                 {album.links.map((l) => (
@@ -143,12 +144,12 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
     </div>
   </Section>
 
-  <AudioPlayer albumIds={[album.id]} id="lieder" heading="Die Lieder" showWriting showAside={false} />
+  <AudioPlayer albumIds={[album.id]} id={ids.tracks} heading="Die Lieder" showWriting showAside={false} />
 
-  <Section tone="paper" aria-labelledby="mitwirkende-title">
+  <Section tone="paper" aria-labelledby={titleId(ids.performers)}>
     <div class="people">
       <div>
-        <h2 id="mitwirkende-title">Mitwirkende</h2>
+        <h2 id={titleId(ids.performers)}>Mitwirkende</h2>
         <p class="people__intro">
           {performers.length} Musiker:innen und Ensembles.
         </p>
@@ -156,7 +157,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
         <p class="people__more"><a href={path('artists')}>Alle Künstler:innen beider Alben</a></p>
       </div>
       <div>
-        <h2 id="produktion-title">Produktion und Gestaltung</h2>
+        <h2 id={titleId(ids.credits)}>Produktion und Gestaltung</h2>
         <CreditList items={album.credits.map(creditItem)} class="people__list" />
         {album.thanks && <p class="people__thanks">{album.thanks}</p>}
       </div>
@@ -183,7 +184,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
   {
     album.status === 'available' && (
       <>
-        <Section tone="sand" aria-labelledby="bestellen-title">
+        <Section tone="sand" aria-labelledby={titleId(ids.order)}>
           <OrderBlock album={album} />
         </Section>
         <Section tone="light" aria-label="Förderung">

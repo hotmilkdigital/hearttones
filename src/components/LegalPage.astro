@@ -8,6 +8,7 @@ import Section from './Section.astro';
 import Breadcrumb from './Breadcrumb.astro';
 import Placeholder from './Placeholder.astro';
 import { path, type RouteKey } from '../data/routes';
+import { ids, titleId } from '../data/anchors';
 
 interface Props {
   title: string;
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const { title, heading, description, status, routeKey } = Astro.props;
-const id = 'legal-title';
+const id = titleId(ids.legal);
 ---
 
 <BaseLayout title={title} description={description} routeKey={routeKey}>

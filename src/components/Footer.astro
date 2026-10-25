@@ -8,6 +8,7 @@
 import Logo from './Logo.astro';
 import { enPublished, path, type Locale, type RouteKey } from '../data/routes';
 import { site } from '../data/site';
+import { ids } from '../data/anchors';
 
 interface Props {
   locale?: Locale;
@@ -52,8 +53,8 @@ const legal: { key: RouteKey; label: string }[] = [
       <p class="footer__note">{site.contact.availability}</p>
     </div>
 
-    <nav class="footer__col" aria-labelledby="footer-pages">
-      <h2 class="footer__title" id="footer-pages">Seiten</h2>
+    <nav class="footer__col" aria-labelledby={ids.footerPages}>
+      <h2 class="footer__title" id={ids.footerPages}>Seiten</h2>
       <ul class="footer__links">
         {
           pages.map((p) => (

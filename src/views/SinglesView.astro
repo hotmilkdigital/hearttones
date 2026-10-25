@@ -10,6 +10,7 @@ import SingleCard from '../components/SingleCard.astro';
 import { path } from '../data/routes';
 import { singles, singlesArtist } from '../data/singles';
 import { site } from '../data/site';
+import { ids, titleId } from '../data/anchors';
 ---
 
 <BaseLayout
@@ -17,12 +18,12 @@ import { site } from '../data/site';
   title={`${singlesArtist} – neue Singles | ${site.brand}`}
   description={`${singlesArtist}: die neuen Singles „World Peace Now!“ und „Bombs Away!“ – Komposition und Keyboards: ${site.owner.fullName}. Die Veröffentlichung folgt.`}
 >
-  <Section tone="light" aria-labelledby="singles-title">
+  <Section tone="light" aria-labelledby={titleId(ids.singles)}>
     <Breadcrumb
       items={[{ label: 'Start', href: path('home') }, { label: 'Musik', href: path('music') }, { label: singlesArtist }]}
     />
     <p class="badge-soon">Demnächst</p>
-    <h1 id="singles-title" class="singles__title">{singlesArtist}</h1>
+    <h1 id={titleId(ids.singles)} class="singles__title">{singlesArtist}</h1>
     <p class="lead singles__intro">
       Zwei neue Stücke des {singlesArtist} – Komposition und Keyboards: {site.owner.fullName}, gemischt und gemastert im
       Hot Milk Studio. Die Veröffentlichung folgt.

@@ -8,6 +8,7 @@ import CreditList from '../CreditList.astro';
 import type { Album } from '../../data/albums';
 import { path } from '../../data/routes';
 import { order, site } from '../../data/site';
+import { ids, titleId } from '../../data/anchors';
 
 interface Props {
   album: Album;
@@ -37,8 +38,8 @@ const terms = [
 ];
 ---
 
-<div class="order" id="bestellen">
-  <h2 id="bestellen-title">CD bestellen</h2>
+<div class="order" id={ids.order}>
+  <h2 id={titleId(ids.order)}>CD bestellen</h2>
   <p class="order__intro">
     Bestellen Sie {album.shortTitle.replace(' ', ' ')} per E-Mail direkt bei {site.owner.fullName}.
   </p>

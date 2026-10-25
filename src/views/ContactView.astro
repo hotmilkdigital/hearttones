@@ -10,6 +10,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
 import { mailSubjects } from '../data/production';
 import { path } from '../data/routes';
 import { order, site } from '../data/site';
+import { ids, titleId } from '../data/anchors';
 
 const mail = (subject?: string) =>
   `mailto:${site.contact.email}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
@@ -24,7 +25,7 @@ const concerns = [
   {
     title: 'CD Vol. 2 bestellen',
     text: 'Bestellung per E-Mail – Preis, Versand und Zahlung stehen auf der Albumseite.',
-    href: `${path('vol2')}#bestellen`,
+    href: `${path('vol2')}#${ids.order}`,
     action: 'Zur Bestellung',
   },
   {
@@ -41,11 +42,11 @@ const concerns = [
   title={`Kontakt | ${site.brand}`}
   description={`Kontakt zu ${site.owner.fullName} und ${site.brand}: E-Mail und Telefon, Erstgespräch nach Vereinbarung, CD-Bestellung Vol. 2.`}
 >
-  <Section tone="light" aria-labelledby="kontakt-title">
+  <Section tone="light" aria-labelledby={titleId(ids.contact)}>
     <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Kontakt' }]} />
     <div class="contact">
       <div class="contact__text">
-        <h1 id="kontakt-title">Kontakt</h1>
+        <h1 id={titleId(ids.contact)}>Kontakt</h1>
         <p class="lead contact__lead">Schreiben Sie eine E-Mail oder rufen Sie an. {site.contact.availability}.</p>
       </div>
       <div class="contact__card" data-tone="taupe">
@@ -60,8 +61,8 @@ const concerns = [
     </div>
   </Section>
 
-  <Section tone="sand" aria-labelledby="anliegen-title">
-    <h2 id="anliegen-title">Ihr Anliegen</h2>
+  <Section tone="sand" aria-labelledby={titleId(ids.topics)}>
+    <h2 id={titleId(ids.topics)}>Ihr Anliegen</h2>
     <ul class="concerns">
       {
         concerns.map((c) => (

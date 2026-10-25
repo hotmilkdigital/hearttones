@@ -10,6 +10,7 @@ import { albums } from '../../data/albums';
 import { countries } from '../../data/countries';
 import { path } from '../../data/routes';
 import { singles, singlesArtist } from '../../data/singles';
+import { ids, titleId, hash } from '../../data/anchors';
 
 // Derived from the data so the line can never drift from §5.4 (26 · 24 · 46); check-data asserts the values.
 const trackCount = albums.reduce((n, a) => n + a.tracks.length, 0);
@@ -19,15 +20,15 @@ const performerCount = new Set(albums.flatMap((a) => a.tracks.flatMap((t) => t.l
 const nextSingle = singles[0]!;
 ---
 
-<Section tone="taupe" class="hero" aria-labelledby="hero-title">
+<Section tone="taupe" class="hero" aria-labelledby={titleId(ids.hero)}>
   <div class="hero__grid">
     <div class="hero__text">
-      <a class="hero__pill" href="#neu">
+      <a class="hero__pill" href={hash(ids.newMusic)}>
         <span class="badge-soon">Demnächst</span>
         <span>Neue Musik: {nextSingle.title} ({singlesArtist})&nbsp;<span aria-hidden="true">→</span></span>
       </a>
       <p class="eyebrow">Lullabies from around the world</p>
-      <h1 id="hero-title">Schlaflieder aus aller Welt</h1>
+      <h1 id={titleId(ids.hero)}>Schlaflieder aus aller Welt</h1>
       <p class="lead hero__intro">
         Zwei Alben mit Wiegenliedern, gesungen und gespielt von Musiker:innen aus aller Welt. Zum Einschlafen für Kinder
         – und zum Zuhören für Eltern.
@@ -36,7 +37,7 @@ const nextSingle = singles[0]!;
         {trackCount}&nbsp;Lieder · {countryCount}&nbsp;Länder · {performerCount}&nbsp;Musiker:innen
       </p>
       <div class="hero__actions">
-        <a class="btn btn--light" href="#player">Reinhören</a>
+        <a class="btn btn--light" href={hash(ids.player)}>Reinhören</a>
         <a class="btn btn--outline" href={path('journey')}>Die Reise entdecken</a>
       </div>
     </div>

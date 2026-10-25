@@ -171,9 +171,9 @@ Art: **nav** Navigation · **btn** Button/Link-Text · **lbl** Label/Überschrif
 | `lib/schema.ts` | kein `inLanguage` gesetzt | meta |
 | `lib/world-map.ts:46` | Build-Fehlermeldung (Englisch, intern) | – |
 
-### 2.6 Anker-IDs (deutsch)
+### 2.6 Anker-IDs – erledigt (25.10.2026)
 
-`#inhalt`, `#neu`, `#alben`, `#player`, `#lieder`, `#bestellen`, `#geschichte`, `#reise`, `#produktion`, `#hauptmenue`, `#arbeiten-title` sowie die Track-Anker `vol-1-<slug>`. Sie sind für Besucher kaum sichtbar, werden aber seitenübergreifend verlinkt (Karte → Player, Produktion → `#arbeiten-title`). **Vorschlag:** in beiden Sprachen gleich lassen, damit Deep-Links stabil bleiben.
+Alle IDs stehen in `src/data/anchors.ts`: sprachneutral, kurz, klein, ASCII, in DE und EN gleich (z. B. `#main`, `#new-music`, `#journey`, `#order`, `#works`). Track-Anker sind Album + Nummer (`#vol-1-07`). Der Sprachumschalter übernimmt das aktuelle `#fragment`. `qa:dist` prüft, dass jeder `#`-Link eine vorhandene ID trifft.
 
 ---
 
@@ -364,7 +364,7 @@ Astro erzeugt eine einzige `404.html`. **Vorschlag:** eine zweisprachige 404 (DE
 | 4 | Mail-Betreffzeilen | **Nicht übersetzen** („Bestellung Heart Tones Vol. 2“, „Produktionsanfrage“, „Presseanfrage“ bleiben auch auf EN-Seiten). |
 | 5 | Preisformat | EN **„€15“**, DE **„15 €“** (über `formatEur(locale)`). |
 | 6 | Vancouver-Pin | **Wird übersetzt** (Note, Rollen, Land). |
-| 7 | Anker-IDs | Folgt im nächsten Prompt. |
+| 7 | Anker-IDs | **Gemeinsam für beide Sprachen**, kurz, klein, ASCII, sprachneutral, nicht übersetzt (`src/data/anchors.ts`, umgesetzt). |
 | 8 | 404 | **Bilingual** – Details folgen im nächsten Prompt. |
 | 9 | Übersetzung | **Claude übersetzt** in den folgenden Prompts. Robert prüft, Philipp gibt frei. |
 

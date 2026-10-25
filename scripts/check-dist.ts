@@ -2,7 +2,9 @@
  * QA on the built site (run after `npm run build`): npm run qa:dist [-- --write]
  * - SEO checks per page (CLAUDE.md §8.7): unique title and description, description length,
  *   canonical, og:image file exists, JSON-LD parses, exactly one <h1>, lang, alt on every <img>,
- *   every internal link resolves to a built page.
+ *   every internal link resolves to a built page, every #fragment (same page or other page) and
+ *   every aria-labelledby/-controls/-describedby resolves to an id on that page; ids are unique and
+ *   lowercase ASCII (anchors.ts, CLAUDE.md §11).
  * - Lists every [PLATZHALTER: …] per page (§5.1). With --write: docs/platzhalter.md.
  * Exits 1 on SEO errors; placeholders are reported, not failed (they are expected on staging).
  */
@@ -36,6 +38,10 @@ const pages = walk(DIST)
     return { file, url, html: readFileSync(file, 'utf8') };
   })
   .sort((a, b) => a.url.localeCompare(b.url));
+
+// All ids per page, for the fragment and ARIA reference checks.
+const ID_FORMAT = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const idsByUrl = new Map(pages.map(({ url, html }) => [url, [...html.matchAll(/\sid="([^"]*)"/g)].map((m) => m[1]!)]));
 
 const errors: string[] = [];
 const warn: string[] = [];
@@ -93,6 +99,27 @@ for (const { url, html } of pages) {
     if (!existsSync(target) && !existsSync(join(DIST, `${href}.html`)))
       errors.push(`${url}: internal link to ${href} has no page`);
   }
+
+  // Ids: unique, lowercase ASCII, language-neutral (anchors.ts).
+  const pageIds = idsByUrl.get(url)!;
+  const idSet = new Set(pageIds);
+  for (const id of new Set(pageIds.filter((id, i) => pageIds.indexOf(id) !== i))) errors.push(`${url}: duplicate id "${id}"`);
+  for (const id of idSet) if (!ID_FORMAT.test(id)) errors.push(`${url}: id "${id}" is not lowercase ASCII`);
+
+  // Every #fragment link resolves to an id on the target page (same page or another built page).
+  for (const m of html.matchAll(/<a\b[^>]*\bhref="(\/[^"#?]*)?#([^"]*)"/g)) {
+    const path = m[1] ?? url;
+    const fragment = decodeURIComponent(m[2]!);
+    if (!fragment) continue;
+    const targetIds = idsByUrl.get(path.replace(/index\.html$/, ''));
+    if (!targetIds) continue; // a missing page is reported above
+    if (!targetIds.includes(fragment)) errors.push(`${url}: link to ${path}#${fragment} – no such id`);
+  }
+
+  // ARIA references point to ids on the same page.
+  for (const m of html.matchAll(/\saria-(labelledby|controls|describedby)="([^"]*)"/g))
+    for (const ref of m[2]!.split(/\s+/).filter(Boolean))
+      if (!idSet.has(ref)) errors.push(`${url}: aria-${m[1]} refers to missing id "${ref}"`);
 
   // Placeholders in text and attributes
   const text = decode(html.replace(/<script[\s\S]*?<\/script>/g, (s) => (s.includes('PLATZHALTER') ? s : '')).replace(/<[^>]+>/g, ' '));

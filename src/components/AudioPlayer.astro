@@ -18,11 +18,11 @@ import {
   audioSrc,
   formatDuration,
   lineupText,
-  trackAnchor,
   writingText,
   type Album,
 } from '../data/albums';
 import { countryName } from '../data/countries';
+import { ids, panelId, tabId, titleId, trackId } from '../data/anchors';
 import { isPlayable } from '../lib/audio';
 
 interface Props {
@@ -38,7 +38,7 @@ interface Props {
 
 const {
   albumIds = ['vol-1', 'vol-2'],
-  id = 'player',
+  id = ids.player,
   heading = 'Reinhören',
   showWriting = false,
   showAside = true,
@@ -53,7 +53,7 @@ const panels = selectedAlbums.map((album, i) => {
     return {
       track,
       src,
-      anchor: trackAnchor(album, track),
+      anchor: trackId(album.id, track.no),
       playable: isPlayable(album, track),
       countries: track.countries.map((c) => countryName(c)).join(' / '),
       lineup: lineupText(track),
@@ -79,7 +79,7 @@ const showLinks = (album: Album) => album.id === 'vol-2';
 const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
 ---
 
-<Section tone="night" id={id} aria-labelledby={`${id}-title`}>
+<Section tone="night" id={id} aria-labelledby={titleId(id)}>
   <div
     class:list={['player', { 'player--single': !tabbed }]}
     data-player
@@ -87,7 +87,7 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
     data-label-play="„{title}“ abspielen"
     data-label-pause="„{title}“ pausieren"
   >
-    <h2 id={`${id}-title`}>{heading}</h2>
+    <h2 id={titleId(id)}>{heading}</h2>
     <p class="player__intro">
       {
         anyPlayable
@@ -106,8 +106,8 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
             type="button"
             class="tabs__tab"
             role="tab"
-            id={`tab-${album.id}`}
-            aria-controls={`panel-${album.id}`}
+            id={tabId(album.id)}
+            aria-controls={panelId(album.id)}
             aria-selected={selected ? 'true' : 'false'}
             tabindex={selected ? 0 : -1}
           >
@@ -122,10 +122,10 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
       panels.map(({ album, tracks }) => {
         const first = tracks[0]!;
         const tabAttrs = tabbed
-          ? ({ role: 'tabpanel', tabindex: 0, 'aria-labelledby': `tab-${album.id}` } as const)
+          ? ({ role: 'tabpanel', tabindex: 0, 'aria-labelledby': tabId(album.id) } as const)
           : {};
         return (
-          <div class:list={['panel', { 'panel--compact': !showAside }]} id={`panel-${album.id}`} data-panel={album.id} {...tabAttrs}>
+          <div class:list={['panel', { 'panel--compact': !showAside }]} id={panelId(album.id)} data-panel={album.id} {...tabAttrs}>
             {tabbed && (
               <h3 class="visually-hidden">
                 {album.shortTitle}: {album.title} ({album.year})

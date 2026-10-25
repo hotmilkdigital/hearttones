@@ -4,7 +4,8 @@
  * Only facts from the data files – nothing invented (§5.1). Validate with validator.schema.org.
  */
 import { people } from '../data/people';
-import { albumDuration, isoDuration, trackAnchor, vol1, vol2, type Album } from '../data/albums';
+import { trackId } from '../data/anchors';
+import { albumDuration, isoDuration, vol1, vol2, type Album } from '../data/albums';
 import { path, type RouteKey } from '../data/routes';
 import { site } from '../data/site';
 
@@ -89,7 +90,7 @@ export function albumGraph(album: Album, imageUrl?: string): Node[] {
         ...(track.titleAlt ? { alternateName: track.titleAlt } : {}),
         position: track.no,
         duration: isoDuration(track.durationSec),
-        url: `${url}#${trackAnchor(album, track)}`,
+        url: `${url}#${trackId(album.id, track.no)}`,
         inAlbum: { '@id': ids.album(album) },
         byArtist: track.lineup.map((p) => {
           const person = people[p.person];

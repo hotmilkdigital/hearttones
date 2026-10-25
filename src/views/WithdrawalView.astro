@@ -7,6 +7,7 @@ import LegalPage from '../components/LegalPage.astro';
 import Placeholder from '../components/Placeholder.astro';
 import { path } from '../data/routes';
 import { site } from '../data/site';
+import { ids } from '../data/anchors';
 ---
 
 <LegalPage
@@ -17,7 +18,7 @@ import { site } from '../data/site';
   status="Endgültiger Text der Widerrufsbelehrung – von Robert"
 >
   <p>
-    Gilt für die Bestellung der CD <a href={`${path('vol2')}#bestellen`}>Lullabies From Around The World Vol.&nbsp;2</a> per
+    Gilt für die Bestellung der CD <a href={`${path('vol2')}#${ids.order}`}>Lullabies From Around The World Vol.&nbsp;2</a> per
     E-Mail.
   </p>
 

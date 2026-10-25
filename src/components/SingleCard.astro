@@ -6,6 +6,7 @@
  */
 import type { Single } from '../data/singles';
 import { roleLabel } from '../data/roles';
+import { singleId, titleId } from '../data/anchors';
 
 interface Props {
   single: Single;
@@ -21,8 +22,8 @@ const credits = single.credits.map((c) => ({
 }));
 ---
 
-<article class="single" id={single.slug} aria-labelledby={`${single.slug}-title`}>
-  <Heading id={`${single.slug}-title`} class="single__title">{single.title}</Heading>
+<article class="single" id={singleId(single.slug)} aria-labelledby={titleId(singleId(single.slug))}>
+  <Heading id={titleId(singleId(single.slug))} class="single__title">{single.title}</Heading>
   <p class="single__meta">{single.artist} · Single · Veröffentlichung folgt</p>
   {single.teaser.de && <p class="single__teaser">{single.teaser.de}</p>}
 

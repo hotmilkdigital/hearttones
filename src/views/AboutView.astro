@@ -19,6 +19,7 @@ import portraitPhoto from '../assets/photos/philipp-sohn-klavier.jpg';
 import { path } from '../data/routes';
 import { site } from '../data/site';
 import { works } from '../data/works';
+import { ids, titleId, workId } from '../data/anchors';
 
 // From Philipp's questionnaire answers (00_Projektstatus).
 const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavinet', 'Moog und Talkbox', 'Vibraphon', 'Bass', 'Percussion'];
@@ -45,12 +46,12 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
   description={`${site.owner.fullName}: Komponist, Produzent und Musiker in Berlin-Kreuzberg, Gründer von ${site.brand} und den Lullabies From Around The World.`}
 >
   <!-- 1 Intro -->
-  <Section tone="light" aria-labelledby="ueber-title">
+  <Section tone="light" aria-labelledby={titleId(ids.about)}>
     <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Über Philipp' }]} />
     <div class="intro">
       <div class="intro__text">
         <p class="eyebrow intro__eyebrow">Über Philipp</p>
-        <h1 id="ueber-title">{site.owner.fullName}</h1>
+        <h1 id={titleId(ids.about)}>{site.owner.fullName}</h1>
         <p class="lead intro__lead">Komponist, Produzent und Musiker in Berlin-Kreuzberg.</p>
         <!-- Block A, 01_Brief/08_Ueber-Philipp_Kurzbio.md (Philipp's approval pending) -->
         <p class="intro__more">
@@ -88,7 +89,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
   </Section>
 
   <!-- 2 Geschichte -->
-  <Section tone="paper" aria-labelledby="geschichte-title">
+  <Section tone="paper" aria-labelledby={titleId(ids.story)}>
     <div class="story">
       <figure class="story__photo">
         <Image
@@ -104,7 +105,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
       </figure>
       <div class="story__text">
         <p class="eyebrow story__eyebrow">Wie alles begann</p>
-        <h2 id="geschichte-title">Zwei Kinder, ein Tag Abstand</h2>
+        <h2 id={titleId(ids.story)}>Zwei Kinder, ein Tag Abstand</h2>
 
         <h3 class="story__sub">Wie Philipp und Robert sich kennenlernten</h3>
         <p>
@@ -134,10 +135,10 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
   </Section>
 
   <!-- 3 Instrumente und Arbeitsweise -->
-  <Section tone="light" aria-labelledby="instrumente-title">
+  <Section tone="light" aria-labelledby={titleId(ids.instruments)}>
     <div class="craft">
       <div class="craft__text">
-        <h2 id="instrumente-title">Instrumente und Arbeitsweise</h2>
+        <h2 id={titleId(ids.instruments)}>Instrumente und Arbeitsweise</h2>
         <ul class="craft__instruments" aria-label="Instrumente">
           {instruments.map((i) => <li>{i}</li>)}
         </ul>
@@ -177,8 +178,8 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
   </Section>
 
   <!-- 4 Ausgewählte Arbeiten -->
-  <Section tone="night" aria-labelledby="arbeiten-title">
-    <h2 id="arbeiten-title">Ausgewählte Arbeiten</h2>
+  <Section tone="night" id={ids.works} aria-labelledby={titleId(ids.works)}>
+    <h2 id={titleId(ids.works)}>Ausgewählte Arbeiten</h2>
     <p class="works__intro">Kompositionen und Produktionen für andere Künstler:innen.</p>
     <div class="works">
       {
@@ -190,7 +191,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
               posterTitle={`„${w.title}“`}
               subtitle={w.artist}
             />
-            <h3 id={`work-${w.id}`} class="work__title">
+            <h3 id={workId(w.id)} class="work__title">
               „{w.title}“
             </h3>
             <p class="work__meta">
@@ -212,9 +213,9 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
   </Section>
 
   <!-- 5 Produktion -->
-  <Section tone="taupe" aria-labelledby="produktion-cta-title">
+  <Section tone="taupe" aria-labelledby={titleId(ids.enquiry)}>
     <div class="cta">
-      <h2 id="produktion-cta-title">Produktion anfragen</h2>
+      <h2 id={titleId(ids.enquiry)}>Produktion anfragen</h2>
       <p class="cta__text">
         Sie singen und brauchen ein Instrumental, ein Arrangement oder eine fertige Produktion? Philipp von Rothkirch arbeitet in
         Partnerschaft mit dem Hot Milk Studio in Berlin. {site.contact.availability}.

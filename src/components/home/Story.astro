@@ -8,9 +8,10 @@ import { Image } from 'astro:assets';
 import Section from '../Section.astro';
 import familyPhoto from '../../assets/photos/philipp-robert-kinder-2011.webp';
 import { path } from '../../data/routes';
+import { ids, titleId } from '../../data/anchors';
 ---
 
-<Section tone="light" id="geschichte" aria-labelledby="geschichte-home-title">
+<Section tone="light" id={ids.story} aria-labelledby={titleId(ids.story)}>
   <div class="story">
     <figure class="story__photo">
       <Image
@@ -24,7 +25,7 @@ import { path } from '../../data/routes';
     </figure>
     <div class="story__text">
       <p class="eyebrow story__eyebrow">Wie alles begann</p>
-      <h2 id="geschichte-home-title">Zwei Kinder, ein Tag Abstand</h2>
+      <h2 id={titleId(ids.story)}>Zwei Kinder, ein Tag Abstand</h2>
       <p class="story__p">
         Die Idee zu den Schlafliedern kam mit der Geburt von Philipps Sohn. Nur einen Tag zuvor war die Tochter von Robert
         Cummings zur Welt gekommen – dem Koproduzenten, mit dem Philipp beide Alben produziert hat.

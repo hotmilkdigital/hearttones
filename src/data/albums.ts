@@ -577,7 +577,3 @@ export function albumPerformers(album: Album): AlbumPerformer[] {
   return [...byPerson.values()];
 }
 
-/** Anchor id of a track, used by the player list and deep links from the map. */
-export function trackAnchor(album: Album, track: Track): string {
-  return `${album.id}-${track.slug}`;
-}

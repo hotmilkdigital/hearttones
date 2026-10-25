@@ -10,6 +10,7 @@ import FundingNotice from './FundingNotice.astro';
 import type { Album } from '../data/albums';
 import { path } from '../data/routes';
 import { order } from '../data/site';
+import { albumCardId, ids } from '../data/anchors';
 
 interface Props {
   album: Album;
@@ -31,7 +32,7 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
       <Cover album={album} width={160} sizes="160px" shadow="light" />
     </a>
     <div class="album-card__body">
-      <Heading id={`card-${album.id}`} class="album-card__title">
+      <Heading id={albumCardId(album.id)} class="album-card__title">
         <a href={url}>Lullabies From Around The World <span class="nowrap">{nb(album.shortTitle)}</span></a>
       </Heading>
       <p class="album-card__meta">{meta}</p>
@@ -50,7 +51,7 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
         ) : (
           <>
             <div class="album-card__actions">
-              <a class="btn btn--primary" href={`${url}#bestellen`}>
+              <a class="btn btn--primary" href={`${url}#${ids.order}`}>
                 CD per E-Mail bestellen
               </a>
               {album.links.map((l) => (

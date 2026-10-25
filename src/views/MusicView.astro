@@ -14,6 +14,7 @@ import { countries } from '../data/countries';
 import { path, type RouteKey } from '../data/routes';
 import { singles, singlesArtist } from '../data/singles';
 import { site } from '../data/site';
+import { ids, titleId } from '../data/anchors';
 
 const trackCount = albums.reduce((n, a) => n + a.tracks.length, 0);
 const countryCount = Object.keys(countries).length;
@@ -31,9 +32,9 @@ const more: { key: RouteKey; title: string; text: string }[] = [
   title={`Musik: Lullabies und Berlin Peace Collective | ${site.brand}`}
   description={`Die Musik von ${site.brand}: Lullabies From Around The World Vol. 1 und Vol. 2 sowie die neuen Singles des Berlin Peace Collective.`}
 >
-  <Section tone="light" aria-labelledby="musik-title">
+  <Section tone="light" aria-labelledby={titleId(ids.music)}>
     <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Musik' }]} />
-    <h1 id="musik-title">Musik</h1>
+    <h1 id={titleId(ids.music)}>Musik</h1>
     <p class="lead music__intro">
       Zwei Alben mit Wiegenliedern aus aller Welt – und neue Musik des {singlesArtist}.
     </p>
@@ -47,9 +48,9 @@ const more: { key: RouteKey; title: string; text: string }[] = [
     </div>
   </Section>
 
-  <Section tone="night" aria-labelledby="bpc-title">
+  <Section tone="night" aria-labelledby={titleId(ids.singlesTeaser)}>
     <p class="badge-soon">Demnächst</p>
-    <h2 id="bpc-title" class="music__bpc-title">{singlesArtist}</h2>
+    <h2 id={titleId(ids.singlesTeaser)} class="music__bpc-title">{singlesArtist}</h2>
     <p class="music__bpc-intro">
       Zwei neue Stücke – Komposition und Keyboards: {site.owner.fullName}, gemischt und gemastert im Hot Milk Studio. Die
       Veröffentlichung folgt.
@@ -60,8 +61,8 @@ const more: { key: RouteKey; title: string; text: string }[] = [
     <p class="music__more-link"><a href={path('singles')}>Zu den Singles mit allen Mitwirkenden</a></p>
   </Section>
 
-  <Section tone="sand" aria-labelledby="mehr-title">
-    <h2 id="mehr-title">Mehr entdecken</h2>
+  <Section tone="sand" aria-labelledby={titleId(ids.more)}>
+    <h2 id={titleId(ids.more)}>Mehr entdecken</h2>
     <ul class="music__more">
       {
         more.map((m) => (

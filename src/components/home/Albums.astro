@@ -3,10 +3,11 @@
 import Section from '../Section.astro';
 import AlbumCard from '../AlbumCard.astro';
 import { albums } from '../../data/albums';
+import { ids, titleId } from '../../data/anchors';
 ---
 
-<Section tone="light" id="alben" aria-labelledby="alben-title">
-  <h2 id="alben-title">Die Alben</h2>
+<Section tone="light" id={ids.albums} aria-labelledby={titleId(ids.albums)}>
+  <h2 id={titleId(ids.albums)}>Die Alben</h2>
   <div class="albums">
     {albums.map((album) => <AlbumCard album={album} />)}
   </div>

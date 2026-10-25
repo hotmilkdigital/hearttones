@@ -13,6 +13,7 @@ import { path } from '../data/routes';
 import { mailSubjects, pricing, process, productionIntro, services } from '../data/production';
 import { site } from '../data/site';
 import { works } from '../data/works';
+import { ids, referenceId, titleId } from '../data/anchors';
 
 const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSubjects.production)}`;
 ---
@@ -22,9 +23,9 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
   title={`Produktion: Komposition, Arrangement und Aufnahme | ${site.brand}`}
   description={`Musikproduktion mit ${site.owner.fullName} in Berlin-Kreuzberg, in Partnerschaft mit dem Hot Milk Studio. Erstgespräch nach Vereinbarung.`}
 >
-  <Section tone="light" aria-labelledby="produktion-title">
+  <Section tone="light" aria-labelledby={titleId(ids.production)}>
     <Breadcrumb items={[{ label: 'Start', href: path('home') }, { label: 'Produktion' }]} />
-    <h1 id="produktion-title">Produktion</h1>
+    <h1 id={titleId(ids.production)}>Produktion</h1>
     <p class="lead prod__intro">{productionIntro}</p>
     <div class="prod__actions">
       <a class="btn btn--primary" href={mailto}>Produktion per E-Mail anfragen</a>
@@ -33,17 +34,17 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
     <p class="prod__note">{site.contact.availability}. {pricing}</p>
   </Section>
 
-  <Section tone="paper" aria-labelledby="leistungen-title">
+  <Section tone="paper" aria-labelledby={titleId(ids.services)}>
     <div class="prod__two">
       <div>
-        <h2 id="leistungen-title">Leistungen</h2>
+        <h2 id={titleId(ids.services)}>Leistungen</h2>
         <ul class="prod__services">
           {services.map((s) => <li>{s}</li>)}
         </ul>
         <p class="prod__p">Genreübergreifend – für Sänger:innen, die ein Instrumental, ein Arrangement oder eine fertige Produktion brauchen.</p>
       </div>
       <div>
-        <h2 id="ablauf-title">So läuft eine Produktion ab</h2>
+        <h2 id={titleId(ids.process)}>So läuft eine Produktion ab</h2>
         <ol class="prod__steps">
           {
             process.map((step) => (
@@ -58,20 +59,20 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
     </div>
   </Section>
 
-  <Section tone="night" aria-labelledby="referenzen-title">
-    <h2 id="referenzen-title">Referenzen</h2>
+  <Section tone="night" aria-labelledby={titleId(ids.references)}>
+    <h2 id={titleId(ids.references)}>Referenzen</h2>
     <p class="prod__muted">Kompositionen und Produktionen für andere Künstler:innen.</p>
     <div class="prod__refs">
       {
         works.map((w) => (
           <article class="prod__ref" aria-labelledby={`ref-${w.id}`}>
-            <h3 id={`ref-${w.id}`}>„{w.title}“</h3>
+            <h3 id={referenceId(w.id)}>„{w.title}“</h3>
             <p class="prod__ref-meta">
               {w.artist} · {w.year}
             </p>
             <p class="prod__ref-credit">{w.credit}</p>
             <p class="prod__ref-links">
-              <a href={`${path('about')}#arbeiten-title`}>Video ansehen</a>
+              <a href={`${path('about')}#${ids.works}`}>Video ansehen</a>
               <a href={w.artistLink.href}>{w.artistLink.label}</a>
             </p>
           </article>
@@ -84,7 +85,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
     </p>
   </Section>
 
-  <Section tone="taupe" aria-labelledby="partner-title">
+  <Section tone="taupe" aria-labelledby={titleId(ids.partner)}>
     <div class="prod__partner">
       <figure class="prod__photo">
         <Image
@@ -97,7 +98,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
         <figcaption>Foto: Robert Cummings</figcaption>
       </figure>
       <div class="prod__partner-text">
-        <h2 id="partner-title">In Partnerschaft mit Hot Milk Studio</h2>
+        <h2 id={titleId(ids.partner)}>In Partnerschaft mit Hot Milk Studio</h2>
         <p>
           Philipps Produktionen entstehen überwiegend im Hot Milk Studio in Berlin, dem Studio von Robert Cummings: Die
           Vorproduktion findet in Kreuzberg statt, Aufnahme und Postproduktion im Hot Milk Studio.
@@ -108,8 +109,8 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
     </div>
   </Section>
 
-  <Section tone="light" aria-labelledby="anfrage-title">
-    <h2 id="anfrage-title">Produktion anfragen</h2>
+  <Section tone="light" aria-labelledby={titleId(ids.enquiry)}>
+    <h2 id={titleId(ids.enquiry)}>Produktion anfragen</h2>
     <p class="prod__p">
       Schreiben Sie kurz, woran Sie arbeiten. {site.contact.availability} – telefonisch oder vor Ort.
     </p>

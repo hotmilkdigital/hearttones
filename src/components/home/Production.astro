@@ -11,12 +11,13 @@ import { path } from '../../data/routes';
 import { productionIntro, services } from '../../data/production';
 import { site } from '../../data/site';
 import { works } from '../../data/works';
+import { ids, titleId } from '../../data/anchors';
 ---
 
-<Section tone="paper" id="produktion" class="production" aria-labelledby="produktion-home-title">
+<Section tone="paper" id={ids.production} class="production" aria-labelledby={titleId(ids.production)}>
   <div class="production__grid">
     <div class="production__main">
-      <h2 id="produktion-home-title">Produktion</h2>
+      <h2 id={titleId(ids.production)}>Produktion</h2>
       <p class="production__intro">{productionIntro}</p>
       <ul class="production__services">
         {services.map((s) => <li>{s}</li>)}
@@ -39,7 +40,7 @@ import { works } from '../../data/works';
             ))
           }
         </ul>
-        <p class="production__refs-more"><a href={`${path('about')}#arbeiten-title`}>Videos und Credits</a></p>
+        <p class="production__refs-more"><a href={`${path('about')}#${ids.works}`}>Videos und Credits</a></p>
       </div>
 
       <div class="production__partner" data-tone="taupe">
