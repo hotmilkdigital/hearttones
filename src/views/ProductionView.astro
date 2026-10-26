@@ -14,12 +14,14 @@ import { mailSubjects, pricing, process, productionIntro, services } from '../da
 import { site } from '../data/site';
 import { works } from '../data/works';
 import { ids, referenceId, titleId } from '../data/anchors';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSubjects.production)}`;
 ---
@@ -27,16 +29,16 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
 <BaseLayout
   locale={locale}
   routeKey="production"
-  title={`Produktion: Komposition, Arrangement und Aufnahme | ${site.brand}`}
-  description={`Musikproduktion mit ${site.owner.fullName} in Berlin-Kreuzberg, in Partnerschaft mit dem Hot Milk Studio. Erstgespräch nach Vereinbarung.`}
+  title={t('production.title', { brand: site.brand })}
+  description={t('production.description', { fullName: site.owner.fullName })}
 >
   <Section tone="light" aria-labelledby={titleId(ids.production)}>
-    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Produktion' }]} />
-    <h1 id={titleId(ids.production)}>Produktion</h1>
+    <Breadcrumb locale={locale} items={[{ label: t('nav.home'), href: path('home', locale) }, { label: t('nav.production') }]} />
+    <h1 id={titleId(ids.production)}>{t('production.heading')}</h1>
     <p class="lead prod__intro">{productionIntro}</p>
     <div class="prod__actions">
-      <a class="btn btn--primary" href={mailto}>Produktion per E-Mail anfragen</a>
-      <a class="btn btn--outline" href={`tel:${site.contact.phone}`}>Anrufen: {site.contact.phoneDisplay}</a>
+      <a class="btn btn--primary" href={mailto}>{t('production.enquireByEmail')}</a>
+      <a class="btn btn--outline" href={`tel:${site.contact.phone}`}>{t('production.call', { phone: site.contact.phoneDisplay })}</a>
     </div>
     <p class="prod__note">{site.contact.availability}. {pricing}</p>
   </Section>
@@ -44,14 +46,14 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
   <Section tone="paper" aria-labelledby={titleId(ids.services)}>
     <div class="prod__two">
       <div>
-        <h2 id={titleId(ids.services)}>Leistungen</h2>
+        <h2 id={titleId(ids.services)}>{t('production.services')}</h2>
         <ul class="prod__services">
           {services.map((s) => <li>{s}</li>)}
         </ul>
-        <p class="prod__p">Genreübergreifend – für Sänger:innen, die ein Instrumental, ein Arrangement oder eine fertige Produktion brauchen.</p>
+        <p class="prod__p">{t('production.servicesIntro')}</p>
       </div>
       <div>
-        <h2 id={titleId(ids.process)}>So läuft eine Produktion ab</h2>
+        <h2 id={titleId(ids.process)}>{t('production.process')}</h2>
         <ol class="prod__steps">
           {
             process.map((step) => (
@@ -67,19 +69,19 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
   </Section>
 
   <Section tone="night" aria-labelledby={titleId(ids.references)}>
-    <h2 id={titleId(ids.references)}>Referenzen</h2>
-    <p class="prod__muted">Kompositionen und Produktionen für andere Künstler:innen.</p>
+    <h2 id={titleId(ids.references)}>{t('production.references')}</h2>
+    <p class="prod__muted">{t('common.worksIntro')}</p>
     <div class="prod__refs">
       {
         works.map((w) => (
-          <article class="prod__ref" aria-labelledby={`ref-${w.id}`}>
-            <h3 id={referenceId(w.id)}>„{w.title}“</h3>
+          <article class="prod__ref" aria-labelledby={referenceId(w.id)}>
+            <h3 id={referenceId(w.id)}>{t('common.quoteOpen')}{w.title}{t('common.quoteClose')}</h3>
             <p class="prod__ref-meta">
               {w.artist} · {w.year}
             </p>
             <p class="prod__ref-credit">{w.credit}</p>
             <p class="prod__ref-links">
-              <a href={`${path('about', locale)}#${ids.works}`}>Video ansehen</a>
+              <a href={`${path('about', locale)}#${ids.works}`}>{t('production.watchVideo')}</a>
               <a href={w.artistLink.href}>{w.artistLink.label}</a>
             </p>
           </article>
@@ -87,8 +89,11 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
       }
     </div>
     <p class="prod__muted prod__refs-note">
-      Außerdem: die beiden Alben <a href={path('vol1', locale)}>Lullabies From Around The World Vol.&nbsp;1</a> und{' '}
-      <a href={path('vol2', locale)}>Vol.&nbsp;2</a>, die Philipp von Rothkirch mit Robert Cummings produziert hat.
+      {t.split('production.albumsNote').map((s, i) =>
+        i % 2 ? (
+          s === 'vol1' ? <a href={path('vol1', locale)}>Lullabies From Around The World Vol.&nbsp;1</a> : <a href={path('vol2', locale)}>Vol.&nbsp;2</a>
+        ) : s,
+      )}
     </p>
   </Section>
 
@@ -97,29 +102,26 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
       <figure class="prod__photo">
         <Image
           src={pianoPhoto}
-          alt="Philipp von Rothkirch am Flügel im Hot Milk Studio, Mikrofone über den Saiten"
+          alt={t('photo.pianoAlt')}
           widths={[560, 1120, 1600]}
           sizes="(max-width: 760px) 100vw, 560px"
           class="prod__img"
         />
-        <figcaption>Foto: Robert Cummings</figcaption>
+        <figcaption>{t('common.photo', { name: 'Robert Cummings' })}</figcaption>
       </figure>
       <div class="prod__partner-text">
-        <h2 id={titleId(ids.partner)}>In Partnerschaft mit Hot Milk Studio</h2>
-        <p>
-          Philipps Produktionen entstehen überwiegend im Hot Milk Studio in Berlin, dem Studio von Robert Cummings: Die
-          Vorproduktion findet in Kreuzberg statt, Aufnahme und Postproduktion im Hot Milk Studio.
-        </p>
-        <p>Dort wurden auch beide Alben zum größten Teil aufgenommen sowie gemischt und gemastert.</p>
+        <h2 id={titleId(ids.partner)}>{t('production.partnerHeading')}</h2>
+        <p>{t('production.partner1')}</p>
+        <p>{t('production.partner2')}</p>
         <p class="prod__partner-link"><a href={site.partner.url}>hotmilkstudio.de</a></p>
       </div>
     </div>
   </Section>
 
   <Section tone="light" aria-labelledby={titleId(ids.enquiry)}>
-    <h2 id={titleId(ids.enquiry)}>Produktion anfragen</h2>
+    <h2 id={titleId(ids.enquiry)}>{t('production.enquire')}</h2>
     <p class="prod__p">
-      Schreiben Sie kurz, woran Sie arbeiten. {site.contact.availability} – telefonisch oder vor Ort.
+      {t('production.closing', { availability: site.contact.availability })}
     </p>
     <div class="prod__actions">
       <a class="btn btn--primary" href={mailto}>{site.contact.email}</a>

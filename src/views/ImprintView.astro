@@ -8,12 +8,14 @@ import LegalPage from '../components/LegalPage.astro';
 import Placeholder from '../components/Placeholder.astro';
 import { path, type Locale } from '../data/routes';
 import { imageCredits, site } from '../data/site';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 const { owner, address, contact } = site;
 ---
@@ -21,9 +23,9 @@ const { owner, address, contact } = site;
 <LegalPage
   locale={locale}
   routeKey="imprint"
-  title={`Impressum – ${site.brand}`}
-  heading="Impressum"
-  description={`Impressum von ${site.url.replace('https://', '')} – Angaben nach § 5 DDG.`}
+  title={t('imprint.title', { brand: site.brand })}
+  heading={t('imprint.heading')}
+  description={t('imprint.description', { domain: site.url.replace('https://', '') })}
   status="Endgültiger Text des Impressums – von Robert"
 >
   <h2>Angaben gemäß §&nbsp;5 DDG</h2>

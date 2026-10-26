@@ -25,6 +25,7 @@ import { countryName } from '../data/countries';
 import { ids, panelId, tabId, titleId, trackId } from '../data/anchors';
 import { isPlayable } from '../lib/audio';
 import type { Locale } from '../data/routes';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
@@ -42,10 +43,11 @@ const {
   locale = 'de',
   albumIds = ['vol-1', 'vol-2'],
   id = ids.player,
-  heading = 'Reinhören',
+  heading,
   showWriting = false,
   showAside = true,
 } = Astro.props;
+const t = useT(locale);
 
 const selectedAlbums = albums.filter((a) => albumIds.includes(a.id));
 const tabbed = selectedAlbums.length > 1;
@@ -58,9 +60,9 @@ const panels = selectedAlbums.map((album, i) => {
       src,
       anchor: trackId(album.id, track.no),
       playable: isPlayable(album, track),
-      countries: track.countries.map((c) => countryName(c)).join(' / '),
-      lineup: lineupText(track),
-      writing: showWriting ? writingText(track.writing) : null,
+      countries: track.countries.map((c) => countryName(c, locale)).join(' / '),
+      lineup: lineupText(track, locale),
+      writing: showWriting ? writingText(track.writing, locale) : null,
       time: formatDuration(track.durationSec),
     };
   });
@@ -71,12 +73,12 @@ const anyPlayable = panels.some((p) => p.tracks.some((t) => t.playable));
 
 // Meta lines and link labels as in the approved artboard.
 const meta: Record<Album['id'], string> = {
-  'vol-1': `Heart Tones Records · HTR 001 · ${formatDuration(albumDuration(albums[0]))}`,
-  'vol-2': 'Asphalt Tango Records · HTR 002 · gefördert von der Initiative Musik',
+  'vol-1': t('player.metaVol1', { duration: formatDuration(albumDuration(albums[0])) }),
+  'vol-2': t('player.metaVol2'),
 };
 const linkLabels: Record<Album['id'], Record<string, string>> = {
   'vol-1': {},
-  'vol-2': { 'Asphalt Tango Records': 'Vol. 2 bei Asphalt Tango Records', Bandcamp: 'Vol. 2 auf Bandcamp' },
+  'vol-2': { 'Asphalt Tango Records': t('player.linkAsphaltTango'), Bandcamp: t('player.linkBandcamp') },
 };
 const showLinks = (album: Album) => album.id === 'vol-2';
 const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
@@ -87,22 +89,22 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
     class:list={['player', { 'player--single': !tabbed }]}
     data-player
     data-playable={String(anyPlayable)}
-    data-label-play="„{title}“ abspielen"
-    data-label-pause="„{title}“ pausieren"
+    data-label-play={t('player.play')}
+    data-label-pause={t('player.pause')}
   >
-    <h2 id={titleId(id)}>{heading}</h2>
+    <h2 id={titleId(id)}>{heading ?? t('player.heading')}</h2>
     <p class="player__intro">
       {
         anyPlayable
           ? tabbed
-            ? 'Wählen Sie ein Album und hören Sie alle Lieder direkt hier.'
-            : 'Hören Sie alle Lieder direkt hier.'
-          : 'Hörproben folgen in Kürze.'
+            ? t('player.introTabs')
+            : t('player.introSingle')
+          : t('player.soon')
       }
     </p>
 
     {tabbed && (
-    <div class="tabs" role="tablist" aria-label="Album wählen" data-tablist hidden>
+    <div class="tabs" role="tablist" aria-label={t('player.chooseAlbum')} data-tablist hidden>
       {
         panels.map(({ album, selected }) => (
           <button
@@ -147,7 +149,7 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
                   type="button"
                   class="play-btn play-btn--large"
                   data-bar-toggle
-                  aria-label={`„${first.track.title}“ abspielen`}
+                  aria-label={t('player.play', { title: first.track.title })}
                   disabled={!first.playable}
                 >
                   <svg class="icon-play" width="16" height="18" viewBox="0 0 16 18" aria-hidden="true">
@@ -169,7 +171,7 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
                     max={Math.round(first.track.durationSec)}
                     step="1"
                     value="0"
-                    aria-label="Position im Lied"
+                    aria-label={t('player.seek')}
                     data-bar-seek
                     disabled
                   />
@@ -191,22 +193,22 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
             </div>
 
             <ol class="tracks">
-              {tracks.map((t, i) => (
+              {tracks.map((tr, i) => (
                 <li
                   class="track"
-                  id={t.anchor}
+                  id={tr.anchor}
                   data-track
                   data-index={i}
-                  data-src={t.playable ? t.src : undefined}
-                  data-title={t.track.title}
-                  data-duration={Math.round(t.track.durationSec)}
+                  data-src={tr.playable ? tr.src : undefined}
+                  data-title={tr.track.title}
+                  data-duration={Math.round(tr.track.durationSec)}
                 >
                   <button
                     type="button"
                     class="play-btn"
                     data-track-toggle
-                    aria-label={`„${t.track.title}“ abspielen`}
-                    disabled={!t.playable}
+                    aria-label={t('player.play', { title: tr.track.title })}
+                    disabled={!tr.playable}
                   >
                     <svg class="icon-play" width="12" height="14" viewBox="0 0 16 18" aria-hidden="true">
                       <path d="M2 1 L14 9 L2 17 Z" />
@@ -216,24 +218,24 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
                       <rect x="10" y="1" width="4" height="16" />
                     </svg>
                   </button>
-                  <span class="track__no">{t.track.no}</span>
+                  <span class="track__no">{tr.track.no}</span>
                   <div class="track__main">
                     <span class="track__title">
-                      <span lang={t.track.lang}>{t.track.title}</span>
-                      {t.track.titleAlt && (
+                      <span lang={tr.track.lang}>{tr.track.title}</span>
+                      {tr.track.titleAlt && (
                         <>
                           {' / '}
-                          <span lang={t.track.titleAltLang}>{t.track.titleAlt}</span>
+                          <span lang={tr.track.titleAltLang}>{tr.track.titleAlt}</span>
                         </>
                       )}
                     </span>
-                    <span class="track__lineup">{t.lineup}</span>
-                    {t.writing && <span class="track__writing">{t.writing}</span>}
+                    <span class="track__lineup">{tr.lineup}</span>
+                    {tr.writing && <span class="track__writing">{tr.writing}</span>}
                   </div>
-                  <span class="track__country">{t.countries}</span>
+                  <span class="track__country">{tr.countries}</span>
                   <span class="track__time">
-                    <span class="visually-hidden">Dauer </span>
-                    {t.time}
+                    <span class="visually-hidden">{t('player.duration')} </span>
+                    {tr.time}
                   </span>
                 </li>
               ))}

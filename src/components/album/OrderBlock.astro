@@ -9,6 +9,8 @@ import type { Album } from '../../data/albums';
 import { path, type Locale } from '../../data/routes';
 import { order, site } from '../../data/site';
 import { ids, titleId } from '../../data/anchors';
+import { useT } from '../../i18n/t';
+import { formatEur } from '../../i18n/format';
 
 interface Props {
   locale?: Locale;
@@ -16,38 +18,31 @@ interface Props {
 }
 
 const { locale = 'de', album } = Astro.props;
+const t = useT(locale);
 
-const eur = (value: number) =>
-  new Intl.NumberFormat('de-DE', {
-    style: 'currency',
-    currency: 'EUR',
-    minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
-  }).format(value);
+const eur = (value: number) => formatEur(value, locale);
 
 const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(order.subject)}`;
 
 const terms = [
-  { term: 'Preis', detail: `${eur(order.priceEur)} pro CD` },
+  { term: t('order.price'), detail: t('order.priceValue', { price: eur(order.priceEur) }) },
   {
-    term: 'Versand',
-    detail: `${eur(order.shippingDeEur)} innerhalb Deutschlands, ${eur(order.shippingIntlEur)} international`,
+    term: t('order.shipping'),
+    detail: t('order.shippingValue', { shippingDe: eur(order.shippingDeEur), shippingIntl: eur(order.shippingIntlEur) }),
   },
-  {
-    term: 'Zahlung',
-    detail: 'Per Überweisung oder PayPal – die Zahlungsdaten erhalten Sie mit der Bestellbestätigung per E-Mail.',
-  },
+  { term: t('order.payment'), detail: t('order.paymentValue') },
 ];
 ---
 
 <div class="order" id={ids.order}>
-  <h2 id={titleId(ids.order)}>CD bestellen</h2>
+  <h2 id={titleId(ids.order)}>{t('order.heading')}</h2>
   <p class="order__intro">
-    Bestellen Sie {album.shortTitle.replace(' ', ' ')} per E-Mail direkt bei {site.owner.fullName}.
+    {t('order.intro', { shortTitle: album.shortTitle.replace(' ', ' '), fullName: site.owner.fullName })}
   </p>
   <CreditList items={terms} class="order__terms" />
-  <p class="order__tax">{order.taxNote.replace('§ ', '§ ')}</p>
+  <p class="order__tax" lang={locale === 'de' ? undefined : 'de'}>{order.taxNote.replace('§ ', '§ ')}</p>
   <div class="order__actions">
-    <a class="btn btn--primary" href={mailto}>CD per E-Mail bestellen</a>
+    <a class="btn btn--primary" href={mailto}>{t('album.orderByEmail')}</a>
     {
       album.links.map((l) => (
         <a class="btn btn--outline" href={l.href}>
@@ -57,10 +52,10 @@ const terms = [
     }
   </div>
   <p class="order__mail">
-    E-Mail: <a href={mailto}>{site.contact.email}</a>
+    {t('order.email')} <a href={mailto}>{site.contact.email}</a>
   </p>
   <p class="order__legal">
-    <a href={path('withdrawal', locale)}>Widerrufsbelehrung und Muster-Widerrufsformular</a>
+    <a href={path('withdrawal', locale)}>{t('order.withdrawal')}</a>
   </p>
 </div>
 

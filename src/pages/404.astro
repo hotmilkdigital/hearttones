@@ -7,26 +7,13 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
-import { enPublished, mainNav, path, type Locale } from '../data/routes';
+import { enPublished, mainNav, path } from '../data/routes';
 import { site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+import { useT } from '../i18n/t';
 
-const copy = {
-  de: {
-    eyebrow: 'Fehler 404',
-    heading: 'Seite nicht gefunden',
-    text: 'Diese Seite gibt es nicht oder nicht mehr.',
-    more: 'Vielleicht finden Sie hier, was Sie suchen:',
-    home: 'Zur Startseite',
-  },
-  en: {
-    eyebrow: 'Error 404',
-    heading: 'Page not found',
-    text: 'This page does not exist or is no longer available.',
-    more: 'Perhaps you will find what you are looking for here:',
-    home: 'Go to the homepage',
-  },
-} as const satisfies Record<Locale, Record<string, string>>;
+const de = useT('de');
+const en = useT('en');
 
 const blocks = [
   { locale: 'de' as const, links: true },
@@ -35,31 +22,31 @@ const blocks = [
 ---
 
 <BaseLayout
-  title={`Seite nicht gefunden · Page not found – ${site.brand}`}
-  description="Diese Seite gibt es nicht oder nicht mehr. – This page does not exist or is no longer available."
+  title={`${de('notFound.heading')} · ${en('notFound.heading')} – ${site.brand}`}
+  description={`${de('notFound.text')} – ${en('notFound.text')}`}
   noindex
 >
   <Section tone="light" class="notfound" aria-labelledby={titleId(ids.notFound)}>
     {
       blocks.map(({ locale, links }) => {
-        const t = copy[locale];
+        const t = useT(locale);
         const Heading = locale === 'de' ? 'h1' : 'h2';
         const headingId = locale === 'de' ? titleId(ids.notFound) : titleId(`${ids.notFound}-${locale}`);
         return (
           <div class="notfound__block" lang={locale} aria-labelledby={headingId} role="group">
-            <p class="eyebrow notfound__eyebrow">{t.eyebrow}</p>
+            <p class="eyebrow notfound__eyebrow">{t('notFound.eyebrow')}</p>
             <Heading id={headingId} class="notfound__title">
-              {t.heading}
+              {t('notFound.heading')}
             </Heading>
             <p class="lead notfound__text">
-              {t.text}
-              {links && ` ${t.more}`}
+              {t('notFound.text')}
+              {links && ` ${t('notFound.more')}`}
             </p>
             {links && (
               <ul class="notfound__links">
                 <li>
                   <a class="btn btn--primary" href={path('home', locale)}>
-                    {t.home}
+                    {t('notFound.home')}
                   </a>
                 </li>
                 {mainNav.map((item) => (

@@ -9,20 +9,22 @@ import Placeholder from '../components/Placeholder.astro';
 import { externalLinkTargets, youtubeHosts, youtubeHostsCheckedOn } from '../data/privacy';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 ---
 
 <LegalPage
   locale={locale}
   routeKey="privacy"
-  title={`Datenschutz – ${site.brand}`}
-  heading="Datenschutz"
-  description={`Datenschutzerklärung von ${site.url.replace('https://', '')}: keine Cookies, keine Analyse, YouTube-Videos erst nach Klick.`}
+  title={t('privacy.title', { brand: site.brand })}
+  heading={t('privacy.heading')}
+  description={t('privacy.description', { domain: site.url.replace('https://', '') })}
   status="Endgültiger Text der Datenschutzerklärung – von Robert"
 >
   <h2>1. Verantwortlicher</h2>

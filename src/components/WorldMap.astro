@@ -19,6 +19,7 @@ import { path, type Locale } from '../data/routes';
 import { countryId, hash, ids, mapTipId, trackId } from '../data/anchors';
 import { teamPins } from '../data/team-pins';
 import { MAP_HEIGHT, MAP_WIDTH, countryPath, landPath, project } from '../lib/world-map';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
@@ -29,8 +30,10 @@ interface Props {
 const {
   locale = 'de',
   interactive = true,
-  label = `Weltkarte mit den ${Object.keys(countries).length} Herkunftsländern der Lieder`,
+  label,
 } = Astro.props;
+const t = useT(locale);
+const q = (s: string) => `${t('common.quoteOpen')}${s}${t('common.quoteClose')}`;
 
 const albumUrl = (album: Album) => path(album.id === 'vol-1' ? 'vol1' : 'vol2', locale);
 
@@ -38,20 +41,20 @@ const markers = (Object.keys(countries) as CountryCode[]).map((code) => {
   const country = countries[code];
   const refs = tracksForCountry(code).filter((r) => r.primary);
   const [x, y] = project(country.lon, country.lat);
-  const name = countryName(code);
+  const name = countryName(code, locale);
   const songs = refs.map(({ album, track }) => ({
     title: track.title,
     titleAlt: track.titleAlt,
     lang: track.lang,
     album: album.shortTitle,
-    lineup: lineupText(track),
-    origin: track.countries.length > 1 ? track.countries.map((c) => countryName(c)).join(' / ') : null,
+    lineup: lineupText(track, locale),
+    origin: track.countries.length > 1 ? track.countries.map((c) => countryName(c, locale)).join(' / ') : null,
   }));
   const href =
     refs.length === 1
       ? `${albumUrl(refs[0]!.album)}#${trackId(refs[0]!.album.id, refs[0]!.track.no)}`
       : hash(countryId(code));
-  const ariaLabel = `${name}: ${songs.map((s) => `„${s.title}“ (${s.album.replace(' ', ' ')})`).join(', ')}`;
+  const ariaLabel = `${name}: ${songs.map((s) => `${q(s.title)} (${s.album.replace(' ', ' ')})`).join(', ')}`;
   return { code, x, y, name, songs, href, ariaLabel, tipId: mapTipId(code) };
 });
 
@@ -71,7 +74,7 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
   {
     interactive && (
       <a class="map__skip" href={hash(ids.countries)}>
-        Karte überspringen – zur Länderliste
+        {t('map.skip')}
       </a>
     )
   }
@@ -79,7 +82,7 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
     class="map__svg"
     viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
     role={interactive ? 'group' : 'img'}
-    aria-label={label}
+    aria-label={label ?? t('map.label', { n: Object.keys(countries).length })}
   >
     <path class="map__land" d={landPath} aria-hidden="true"></path>
     <g class="map__featured" aria-hidden="true">
@@ -115,18 +118,18 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
 
   {
     team.length > 0 && (
-      <ul class="map__legend" aria-label="Legende">
+      <ul class="map__legend" aria-label={t('map.legend')}>
         <li>
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
             <circle class="marker__dot" cx="8" cy="8" r="5.5" />
           </svg>
-          Herkunftsland eines Liedes
+          {t('map.legendCountry')}
         </li>
         <li>
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
             <polygon class="marker__diamond" points="8,1.5 14.5,8 8,14.5 1.5,8" />
           </svg>
-          Hinter den Aufnahmen: Produktion, Mix und Mastering
+          {t('map.legendTeam')}
         </li>
       </ul>
     )
@@ -141,7 +144,7 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
             {m.songs.map((s) => (
               <li>
                 <span class="map__tip-title">
-                  „<span lang={s.lang}>{s.title}</span>“
+                  {t('common.quoteOpen')}<span lang={s.lang}>{s.title}</span>{t('common.quoteClose')}
                   {s.titleAlt && <span lang="mn"> / {s.titleAlt}</span>}
                 </span>{' '}
                 <span class="map__tip-album">{s.album}</span>
@@ -150,7 +153,7 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
               </li>
             ))}
           </ul>
-          <p class="map__tip-hint">{m.songs.length === 1 ? 'Zum Lied →' : 'Zu den Liedern →'}</p>
+          <p class="map__tip-hint">{m.songs.length === 1 ? t('map.toSong') : t('map.toSongs')}</p>
         </div>
       ))
   }

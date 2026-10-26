@@ -11,12 +11,14 @@ import { countries } from '../../data/countries';
 import { path, type Locale } from '../../data/routes';
 import { singles, singlesArtist } from '../../data/singles';
 import { ids, titleId, hash } from '../../data/anchors';
+import { useT } from '../../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 // Derived from the data so the line can never drift from §5.4 (26 · 24 · 46); check-data asserts the values.
 const trackCount = albums.reduce((n, a) => n + a.tracks.length, 0);
@@ -30,21 +32,20 @@ const nextSingle = singles[0]!;
   <div class="hero__grid">
     <div class="hero__text">
       <a class="hero__pill" href={hash(ids.newMusic)}>
-        <span class="badge-soon">Demnächst</span>
-        <span>Neue Musik: {nextSingle.title} ({singlesArtist})&nbsp;<span aria-hidden="true">→</span></span>
+        <span class="badge-soon">{t('common.soon')}</span>
+        <span>{t('hero.pill', { single: nextSingle.title, artist: singlesArtist })}&nbsp;<span aria-hidden="true">→</span></span>
       </a>
-      <p class="eyebrow">Lullabies from around the world</p>
-      <h1 id={titleId(ids.hero)}>Schlaflieder aus aller Welt</h1>
+      <p class="eyebrow">{t('hero.eyebrow')}</p>
+      <h1 id={titleId(ids.hero)}>{t('hero.h1')}</h1>
       <p class="lead hero__intro">
-        Zwei Alben mit Wiegenliedern, gesungen und gespielt von Musiker:innen aus aller Welt. Zum Einschlafen für Kinder
-        – und zum Zuhören für Eltern.
+        {t('hero.intro')}
       </p>
       <p class="stats hero__stats">
-        {trackCount}&nbsp;Lieder · {countryCount}&nbsp;Länder · {performerCount}&nbsp;Musiker:innen
+        {t('common.stats', { tracks: trackCount, countries: countryCount, performers: performerCount })}
       </p>
       <div class="hero__actions">
-        <a class="btn btn--light" href={hash(ids.player)}>Reinhören</a>
-        <a class="btn btn--outline" href={path('journey', locale)}>Die Reise entdecken</a>
+        <a class="btn btn--light" href={hash(ids.player)}>{t('player.heading')}</a>
+        <a class="btn btn--outline" href={path('journey', locale)}>{t('hero.journey')}</a>
       </div>
     </div>
     <div class="hero__art">

@@ -9,27 +9,31 @@ import Logo from './Logo.astro';
 import { enPublished, path, type Locale, type RouteKey } from '../data/routes';
 import { site } from '../data/site';
 import { ids } from '../data/anchors';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 const pages: { key: RouteKey; label: string }[] = [
-  { key: 'music', label: 'Musik' },
-  { key: 'journey', label: 'Die Reise' },
-  { key: 'artists', label: 'Künstler:innen' },
-  { key: 'press', label: 'Presse' },
-  { key: 'production', label: 'Produktion' },
-  { key: 'about', label: 'Über Philipp' },
+  { key: 'music', label: t('nav.music') },
+  { key: 'journey', label: t('nav.journey') },
+  { key: 'artists', label: t('nav.artists') },
+  { key: 'press', label: t('nav.press') },
+  { key: 'production', label: t('nav.production') },
+  { key: 'about', label: t('nav.about') },
 ];
 
 const legal: { key: RouteKey; label: string }[] = [
-  { key: 'imprint', label: 'Impressum' },
-  { key: 'privacy', label: 'Datenschutz' },
-  { key: 'withdrawal', label: 'Widerruf' },
+  { key: 'imprint', label: t('nav.imprint') },
+  { key: 'privacy', label: t('nav.privacy') },
+  { key: 'withdrawal', label: t('nav.withdrawal') },
 ];
+
+const other: Locale = locale === 'de' ? 'en' : 'de';
 ---
 
 <footer class="footer" data-tone="taupe">
@@ -41,7 +45,7 @@ const legal: { key: RouteKey; label: string }[] = [
     </div>
 
     <div class="footer__col">
-      <h2 class="footer__title">Kontakt</h2>
+      <h2 class="footer__title">{t('footer.contact')}</h2>
       <p>
         {site.owner.fullName}<br />
         {site.contact.area}
@@ -54,7 +58,7 @@ const legal: { key: RouteKey; label: string }[] = [
     </div>
 
     <nav class="footer__col" aria-labelledby={ids.footerPages}>
-      <h2 class="footer__title" id={ids.footerPages}>Seiten</h2>
+      <h2 class="footer__title" id={ids.footerPages}>{t('footer.pages')}</h2>
       <ul class="footer__links">
         {
           pages.map((p) => (
@@ -68,7 +72,7 @@ const legal: { key: RouteKey; label: string }[] = [
   </div>
 
   <div class="container footer__bottom">
-    <ul class="footer__legal" aria-label="Rechtliches">
+    <ul class="footer__legal" aria-label={t('footer.legal')}>
       {
         legal.map((p) => (
           <li>
@@ -79,8 +83,8 @@ const legal: { key: RouteKey; label: string }[] = [
       {
         enPublished && (
           <li>
-            <a href={path('home', 'en')} lang="en" hreflang="en">
-              English
+            <a href={path('home', other)} lang={other} hreflang={other}>
+              {t('footer.otherLanguage')}
             </a>
           </li>
         )

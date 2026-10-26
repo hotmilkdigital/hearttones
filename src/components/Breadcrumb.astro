@@ -1,5 +1,6 @@
 ---
 import type { Locale } from '../data/routes';
+import { useT } from '../i18n/t';
 /** Breadcrumb trail; the last item is the current page. */
 interface Props {
   locale?: Locale;
@@ -7,9 +8,10 @@ interface Props {
 }
 
 const { locale = 'de', items } = Astro.props;
+const t = useT(locale);
 ---
 
-<nav class="breadcrumb" aria-label="Sie sind hier">
+<nav class="breadcrumb" aria-label={t('breadcrumb.label')}>
   <ol>
     {
       items.map((item, i) => (

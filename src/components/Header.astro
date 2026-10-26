@@ -11,12 +11,14 @@
 import Logo from './Logo.astro';
 import { enPublished, mainNav, path, routes, type Locale, type RouteKey } from '../data/routes';
 import { ids } from '../data/anchors';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 const current = (Object.keys(routes) as RouteKey[]).find((k) => routes[k][locale] === Astro.url.pathname);
 
 const sections: Partial<Record<RouteKey, RouteKey[]>> = {
@@ -37,7 +39,7 @@ const langHref = (l: Locale) => (current ? path(current, l) : path('home', l));
 
 <header class="header" data-tone="light" data-header>
   <div class="container header__bar">
-    <Logo variant="cream" href={path('home', locale)} label="Heart Tones – Startseite" height={64} class="header__logo" />
+    <Logo variant="cream" href={path('home', locale)} label={t('header.logo')} height={64} class="header__logo" />
 
     <button
       type="button"
@@ -51,10 +53,10 @@ const langHref = (l: Locale) => (current ? path(current, l) : path('home', l));
         <path class="header__bars" d="M3 6h16M3 11h16M3 16h16" />
         <path class="header__close" d="M5 5l12 12M17 5L5 17" />
       </svg>
-      Menü
+      {t('header.menu')}
     </button>
 
-    <nav class="header__nav" id={ids.menu} aria-label="Hauptnavigation" data-menu>
+    <nav class="header__nav" id={ids.menu} aria-label={t('header.nav')} data-menu>
       <ul class="header__list">
         {
           items.map((item) => (

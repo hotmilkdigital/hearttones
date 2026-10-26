@@ -23,6 +23,8 @@ import { roleLabel } from '../data/roles';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { ids, titleId, hash } from '../data/anchors';
+import { useT } from '../i18n/t';
+import { formatDate } from '../i18n/format';
 
 interface Props {
   locale?: Locale;
@@ -30,29 +32,33 @@ interface Props {
 }
 
 const { locale = 'de', album } = Astro.props;
+const t = useT(locale);
 
 const nb = (s: string) => s.replace(/(Vol\.|HTR|LC-?|Nr\.) /g, '$1 ');
 const seriesTitle = 'Lullabies From Around The World';
 const countryCount = new Set(album.tracks.map((t) => t.countries[0])).size;
 const performers = albumPerformers(album);
-const released = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long' }).format(new Date(album.releaseDate));
+const released = formatDate(album.releaseDate, locale);
 
 const facts = [
-  { term: 'Künstler', detail: album.artist },
-  { term: 'Label', detail: album.label },
-  { term: 'Katalognummer', detail: nb(album.catalogueNo) },
-  { term: 'Labelcode', detail: album.labelCode },
-  { term: 'Erschienen', detail: released },
-  { term: 'Spielzeit', detail: `${formatDuration(albumDuration(album))} · ${album.tracks.length} Lieder · ${countryCount} Länder` },
+  { term: t('album.factArtist'), detail: album.artist },
+  { term: t('album.factLabel'), detail: album.label },
+  { term: t('album.factCatalogue'), detail: nb(album.catalogueNo) },
+  { term: t('album.factLabelCode'), detail: album.labelCode },
+  { term: t('album.factReleased'), detail: released },
+  {
+    term: t('album.factRunningTime'),
+    detail: t('album.runningTime', { duration: formatDuration(albumDuration(album)), tracks: album.tracks.length, countries: countryCount }),
+  },
 ];
 
 const trackRef = (nos: number[]) =>
-  nos.map((n) => `Nr. ${n} („${album.tracks.find((t) => t.no === n)?.title}“)`).join(', ');
+  nos.map((n) => t('album.trackRef', { n, title: album.tracks.find((tr) => tr.no === n)?.title ?? '' })).join(', ');
 
 const creditItem = (c: Credit) => ({
-  term: c.tracks ? `${roleLabel(c.role)} ${trackRef(c.tracks)}` : roleLabel(c.role),
+  term: c.tracks ? `${roleLabel(c.role, locale)} ${trackRef(c.tracks)}` : roleLabel(c.role, locale),
   detail: c.exceptTracks
-    ? `${c.names.join(', ')} (außer Nr. ${c.exceptTracks.join(', ')})`
+    ? t('album.exceptTracks', { names: c.names.join(', '), list: c.exceptTracks.join(', ') })
     : c.names.join(', '),
 });
 
@@ -61,8 +67,8 @@ const performerItems = performers.map((p) => {
   const person: Person = people[p.id];
   return {
     term: p.name,
-    termNote: person.diedYear ? `verstorben ${person.diedYear}` : undefined,
-    detail: [p.roles.map((r) => roleLabel(r)).join(', '), `Nr. ${p.tracks.join(', ')}`].filter(Boolean).join(' · '),
+    termNote: person.diedYear ? t('common.died', { year: person.diedYear }) : undefined,
+    detail: [p.roles.map((r) => roleLabel(r, locale)).join(', '), t('album.trackList', { list: p.tracks.join(', ') })].filter(Boolean).join(' · '),
     link: person.website
       ? { href: person.website, text: new URL(person.website).hostname.replace(/^www\./, '') }
       : undefined,
@@ -75,8 +81,15 @@ const quote = album.id === 'vol-1' ? pressQuotes.find((q) => q.id === 'schlaf-me
 const coverImage = clearedCover(album);
 const ogCover = coverImage ? await getImage({ src: coverImage, width: 1200, format: 'jpg', quality: 85 }) : null;
 
-const pageTitle = `${seriesTitle} ${album.shortTitle} (${album.year}) – ${site.brand}`;
-const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} Schlaflieder aus ${countryCount} Ländern mit ${performers.length} Musiker:innen. Titelliste, Mitwirkende und ${album.status === 'outOfPrint' ? 'Streaming-Links' : 'Bestellung der CD'}.`;
+const pageTitle = t('album.title', { vol: album.shortTitle, year: album.year, brand: site.brand });
+const description = t('album.description', {
+  brand: site.brand,
+  vol: album.shortTitle,
+  tracks: album.tracks.length,
+  countries: countryCount,
+  performers: performers.length,
+  what: album.status === 'outOfPrint' ? t('album.descriptionStreaming') : t('album.descriptionOrder'),
+});
 ---
 
 <BaseLayout
@@ -92,14 +105,14 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
   <Section tone="light" class="album-head" aria-labelledby={titleId(ids.album)}>
     <Breadcrumb locale={locale}
       items={[
-        { label: 'Start', href: path('home', locale) },
-        { label: 'Musik', href: path('music', locale) },
+        { label: t('nav.home'), href: path('home', locale) },
+        { label: t('nav.music'), href: path('music', locale) },
         { label: nb(album.shortTitle) },
       ]}
     />
     <div class="album-head__grid">
       <div class="album-head__text">
-        <p class="eyebrow album-head__eyebrow">{site.brand} · Album · {album.year}</p>
+        <p class="eyebrow album-head__eyebrow">{t('album.eyebrow', { brand: site.brand, year: album.year })}</p>
         <h1 id={titleId(ids.album)}>
           {seriesTitle} <span class="album-head__vol">{nb(album.shortTitle)}</span>
         </h1>
@@ -109,7 +122,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
         {
           album.status === 'outOfPrint' ? (
             <div class="album-head__status">
-              <p class="album-head__status-text">CD vergriffen – als Stream erhältlich</p>
+              <p class="album-head__status-text">{t('album.outOfPrint')}</p>
               <div class="album-head__actions">
                 {album.links.map((l) => (
                   <a class="btn btn--outline" href={l.href}>
@@ -122,7 +135,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
             <div class="album-head__status">
               <div class="album-head__actions">
                 <a class="btn btn--primary" href={hash(ids.order)}>
-                  CD per E-Mail bestellen
+                  {t('album.orderByEmail')}
                 </a>
                 {album.links.map((l) => (
                   <a class="btn btn--outline" href={l.href}>
@@ -135,7 +148,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
         }
 
         <p class="album-head__studio">
-          Zum größten Teil aufgenommen sowie gemischt und gemastert im <a href={site.partner.url}>Hot Milk Studio</a> Berlin.
+          {t.split('album.studio').map((s, i) => (i % 2 ? <a href={site.partner.url}>Hot Milk Studio</a> : s))}
         </p>
       </div>
 
@@ -146,20 +159,20 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
     </div>
   </Section>
 
-  <AudioPlayer locale={locale} albumIds={[album.id]} id={ids.tracks} heading="Die Lieder" showWriting showAside={false} />
+  <AudioPlayer locale={locale} albumIds={[album.id]} id={ids.tracks} heading={t('album.songs')} showWriting showAside={false} />
 
   <Section tone="paper" aria-labelledby={titleId(ids.performers)}>
     <div class="people">
       <div>
-        <h2 id={titleId(ids.performers)}>Mitwirkende</h2>
+        <h2 id={titleId(ids.performers)}>{t('album.performers')}</h2>
         <p class="people__intro">
-          {performers.length} Musiker:innen und Ensembles.
+          {t('album.performersCount', { n: performers.length })}
         </p>
         <CreditList items={performerItems} class="people__list" />
-        <p class="people__more"><a href={path('artists', locale)}>Alle Künstler:innen beider Alben</a></p>
+        <p class="people__more"><a href={path('artists', locale)}>{t('album.allArtists')}</a></p>
       </div>
       <div>
-        <h2 id={titleId(ids.credits)}>Produktion und Gestaltung</h2>
+        <h2 id={titleId(ids.credits)}>{t('album.credits')}</h2>
         <CreditList items={album.credits.map(creditItem)} class="people__list" />
         {album.thanks && <p class="people__thanks">{album.thanks}</p>}
       </div>
@@ -168,15 +181,15 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
 
   {
     quote && (
-      <Section tone="sand" aria-label="Presse">
+      <Section tone="sand" aria-label={t('nav.press')}>
         <figure class="quote">
           <blockquote>
-            <p>„{quote.quote}“</p>
+            <p>{t('common.quoteOpen')}{quote.quote}{t('common.quoteClose')}</p>
           </blockquote>
           <figcaption>
-            „{quote.headline}“,{' '}
+            {t('common.quoteOpen')}{locale === 'de' ? quote.headline : <span lang="de">{quote.headline}</span>}{t('common.quoteClose')},{' '}
             {quote.source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />} ·{' '}
-            <a href={path('press', locale)}>Presse</a>
+            <a href={path('press', locale)}>{t('nav.press')}</a>
           </figcaption>
         </figure>
       </Section>
@@ -189,7 +202,7 @@ const description = `${site.brand} ${album.shortTitle}: ${album.tracks.length} S
         <Section tone="sand" aria-labelledby={titleId(ids.order)}>
           <OrderBlock locale={locale} album={album} />
         </Section>
-        <Section tone="light" aria-label="Förderung">
+        <Section tone="light" aria-label={t('album.fundingLabel')}>
           <FundingNotice locale={locale} />
         </Section>
       </>

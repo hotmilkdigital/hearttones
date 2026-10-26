@@ -11,33 +11,34 @@ import { path, type Locale } from '../data/routes';
 import { singles, singlesArtist } from '../data/singles';
 import { site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 ---
 
 <BaseLayout
   locale={locale}
   routeKey="singles"
-  title={`${singlesArtist} – neue Singles | ${site.brand}`}
-  description={`${singlesArtist}: die neuen Singles „World Peace Now!“ und „Bombs Away!“ – Komposition und Keyboards: ${site.owner.fullName}. Die Veröffentlichung folgt.`}
+  title={t('singles.title', { artist: singlesArtist, brand: site.brand })}
+  description={t('singles.description', { artist: singlesArtist, fullName: site.owner.fullName })}
 >
   <Section tone="light" aria-labelledby={titleId(ids.singles)}>
     <Breadcrumb locale={locale}
-      items={[{ label: 'Start', href: path('home', locale) }, { label: 'Musik', href: path('music', locale) }, { label: singlesArtist }]}
+      items={[{ label: t('nav.home'), href: path('home', locale) }, { label: t('nav.music'), href: path('music', locale) }, { label: singlesArtist }]}
     />
-    <p class="badge-soon">Demnächst</p>
+    <p class="badge-soon">{t('common.soon')}</p>
     <h1 id={titleId(ids.singles)} class="singles__title">{singlesArtist}</h1>
     <p class="lead singles__intro">
-      Zwei neue Stücke des {singlesArtist} – Komposition und Keyboards: {site.owner.fullName}, gemischt und gemastert im
-      Hot Milk Studio. Die Veröffentlichung folgt.
+      {t('newMusic.intro', { artist: singlesArtist, fullName: site.owner.fullName })}
     </p>
   </Section>
 
-  <Section tone="night" aria-label="Singles">
+  <Section tone="night" aria-label={t('singles.label')}>
     <div class="singles__grid">
       {singles.map((single) => <SingleCard locale={locale} single={single} headingLevel="h2" />)}
     </div>

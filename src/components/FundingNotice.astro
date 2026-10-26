@@ -9,6 +9,7 @@ import initiativeMusik from '../assets/funding/initiative-musik.jpg';
 import neustartKultur from '../assets/funding/neustart-kultur.png';
 import { fundingNotice } from '../data/site';
 import type { Locale } from '../data/routes';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
@@ -16,12 +17,13 @@ interface Props {
 }
 
 const { locale = 'de', class: className } = Astro.props;
+const t = useT(locale);
 ---
 
 <div class:list={['funding', className]} lang={locale}>
   <div class="funding__logos">
-    <Image src={initiativeMusik} alt="Logo Initiative Musik gGmbH" height={48} densities={[1, 2]} class="funding__logo" />
-    <Image src={neustartKultur} alt="Logo Neustart Kultur" height={56} densities={[1, 2]} class="funding__logo" />
+    <Image src={initiativeMusik} alt={t('funding.logoInitiativeMusik')} height={48} densities={[1, 2]} class="funding__logo" />
+    <Image src={neustartKultur} alt={t('funding.logoNeustartKultur')} height={56} densities={[1, 2]} class="funding__logo" />
   </div>
   <p class="funding__text">{fundingNotice[locale]}</p>
 </div>

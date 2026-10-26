@@ -10,25 +10,26 @@ import { path, type Locale } from '../../data/routes';
 import { singles, singlesArtist } from '../../data/singles';
 import { site } from '../../data/site';
 import { ids, titleId } from '../../data/anchors';
+import { useT } from '../../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 ---
 
 <Section tone="night" id={ids.newMusic} aria-labelledby={titleId(ids.newMusic)}>
-  <p class="badge-soon">Demnächst</p>
-  <h2 id={titleId(ids.newMusic)} class="new__title">Neue Musik</h2>
+  <p class="badge-soon">{t('common.soon')}</p>
+  <h2 id={titleId(ids.newMusic)} class="new__title">{t('newMusic.heading')}</h2>
   <p class="new__intro">
-    Zwei neue Stücke des {singlesArtist} – Komposition und Keyboards: {site.owner.fullName}, gemischt und gemastert im Hot
-    Milk Studio. Die Veröffentlichung folgt.
+    {t('newMusic.intro', { artist: singlesArtist, fullName: site.owner.fullName })}
   </p>
   <div class="new__grid">
     {singles.map((single) => <SingleCard locale={locale} single={single} showCredits={false} />)}
   </div>
-  <p class="new__more"><a href={path('singles', locale)}>Alle Mitwirkenden der beiden Singles</a></p>
+  <p class="new__more"><a href={path('singles', locale)}>{t('newMusic.more')}</a></p>
 </Section>
 
 <style>

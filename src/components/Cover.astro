@@ -8,6 +8,7 @@ import { Picture } from 'astro:assets';
 import type { Album } from '../data/albums';
 import { clearedCover } from '../lib/covers';
 import type { Locale } from '../data/routes';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const { locale = 'de', album, width, sizes, shadow = 'dark', loading = 'lazy', class: className } = Astro.props;
+const t = useT(locale);
 const image = clearedCover(album);
 // 1×, ~1.5× and 2× of the layout width so phones (≈1.75 DPR) get a close match.
 const widths = image ? [width, Math.round(width * 1.5), width * 2].filter((w) => w <= image.width) : [];
@@ -42,7 +44,7 @@ const widths = image ? [width, Math.round(width * 1.5), width * 2].filter((w) =>
       class:list={['cover', `cover--${shadow}`, className]}
     />
   ) : (
-    <div class:list={['cover', 'cover--placeholder', `cover--${shadow}`, className]} role="img" aria-label={`Cover von ${album.artist} ${album.shortTitle}: ${album.title}`}>
+    <div class:list={['cover', 'cover--placeholder', `cover--${shadow}`, className]} role="img" aria-label={t('cover.placeholder', { artist: album.artist, shortTitle: album.shortTitle, title: album.title })}>
       <span class="cover__title">{album.title}</span>
       <span class="cover__vol">{album.shortTitle}</span>
     </div>

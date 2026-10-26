@@ -13,12 +13,14 @@ import { mailSubjects } from '../data/production';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSubjects.press)}`;
 ---
@@ -26,28 +28,28 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
 <BaseLayout
   locale={locale}
   routeKey="press"
-  title={`Presse: Rezensionen und Berichte | ${site.brand}`}
-  description={`Presse zu ${site.brand} und Lullabies From Around The World: Rezensionen und Berichte über die Schlaflieder aus aller Welt.`}
+  title={t('press.title', { brand: site.brand })}
+  description={t('press.description', { brand: site.brand })}
 >
   <Section tone="light" aria-labelledby={titleId(ids.press)}>
-    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Musik', href: path('music', locale) }, { label: 'Presse' }]} />
-    <h1 id={titleId(ids.press)}>Presse</h1>
+    <Breadcrumb locale={locale} items={[{ label: t('nav.home'), href: path('home', locale) }, { label: t('nav.music'), href: path('music', locale) }, { label: t('nav.press') }]} />
+    <h1 id={titleId(ids.press)}>{t('nav.press')}</h1>
     <p class="lead press__intro">
-      Stimmen zu <a href={path('vol1', locale)}>Lullabies From Around The World Vol.&nbsp;1</a>.
+      {t.split('press.lead').map((s, i) => (i % 2 ? <a href={path('vol1', locale)}>{t('press.leadLink')}</a> : s))}
     </p>
   </Section>
 
   <Section tone="sand" aria-labelledby={titleId(ids.quotes)}>
-    <h2 id={titleId(ids.quotes)} class="visually-hidden">Pressestimmen</h2>
+    <h2 id={titleId(ids.quotes)} class="visually-hidden">{t('press.quotesHeading')}</h2>
     <div class="press__quotes">
       {
         pressQuotes.map((q) => (
           <figure class="press__quote">
             <blockquote>
-              <p>„{q.quote}“</p>
+              <p>{t('common.quoteOpen')}{q.quote}{t('common.quoteClose')}</p>
             </blockquote>
             <figcaption>
-              „{q.headline}“, {q.source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />} · Rezension zu Vol.&nbsp;1
+              {t('common.quoteOpen')}{locale === 'de' ? q.headline : <span lang="de">{q.headline}</span>}{t('common.quoteClose')}, {q.source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />} · {t('press.reviewOf')}
             </figcaption>
           </figure>
         ))
@@ -58,7 +60,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
   <Section tone="light" aria-labelledby={titleId(ids.mentions)}>
     <div class="press__two">
       <div>
-        <h2 id={titleId(ids.mentions)}>Weitere Presse</h2>
+        <h2 id={titleId(ids.mentions)}>{t('press.more')}</h2>
         <ul class="press__mentions">
           {
             pressMentions.map((m) => (
@@ -72,9 +74,9 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
         <p class="press__check"><Placeholder text="Belege und Links zu den Beiträgen prüfen" /></p>
       </div>
       <div>
-        <h2 id={titleId(ids.pressContact)}>Pressekontakt</h2>
+        <h2 id={titleId(ids.pressContact)}>{t('press.contact')}</h2>
         <p class="press__p">
-          Anfragen zu Interviews, Rezensionsexemplaren und Material richten Sie bitte per E-Mail an {site.owner.fullName}.
+          {t('press.contactText', { fullName: site.owner.fullName })}
         </p>
         <p class="press__actions">
           <a class="btn btn--primary" href={mailto}>{site.contact.email}</a>

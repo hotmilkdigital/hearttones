@@ -11,6 +11,8 @@ import type { Album } from '../data/albums';
 import { path, type Locale } from '../data/routes';
 import { order } from '../data/site';
 import { albumCardId, ids } from '../data/anchors';
+import { useT } from '../i18n/t';
+import { formatEur } from '../i18n/format';
 
 interface Props {
   locale?: Locale;
@@ -19,15 +21,15 @@ interface Props {
 }
 
 const { locale = 'de', album, headingLevel: Heading = 'h3' } = Astro.props;
+const t = useT(locale);
 
 const url = path(album.id === 'vol-1' ? 'vol1' : 'vol2', locale);
 const nb = (s: string) => s.replace(/(Vol\.|HTR|§) /g, '$1 ');
-const eur = (v: number) =>
-  new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: Number.isInteger(v) ? 0 : 2 }).format(v);
+const eur = (v: number) => formatEur(v, locale);
 const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${album.catalogueNo}`);
 ---
 
-<article class="album-card" aria-labelledby={`card-${album.id}`}>
+<article class="album-card" aria-labelledby={albumCardId(album.id)}>
   <div class="album-card__top">
     <a href={url} class="album-card__cover" tabindex="-1" aria-hidden="true">
       <Cover locale={locale} album={album} width={160} sizes="160px" shadow="light" />
@@ -42,7 +44,7 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
       {
         album.status === 'outOfPrint' ? (
           <>
-            <p class="album-card__status">CD vergriffen – als Stream erhältlich</p>
+            <p class="album-card__status">{t('album.outOfPrint')}</p>
             <p class="album-card__links">
               {album.links.map((l) => (
                 <a href={l.href}>{l.label}</a>
@@ -53,7 +55,7 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
           <>
             <div class="album-card__actions">
               <a class="btn btn--primary" href={`${url}#${ids.order}`}>
-                CD per E-Mail bestellen
+                {t('album.orderByEmail')}
               </a>
               {album.links.map((l) => (
                 <a class="btn btn--outline" href={l.href}>
@@ -62,8 +64,8 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
               ))}
             </div>
             <p class="album-card__price">
-              {eur(order.priceEur)} zzgl. Versand ({eur(order.shippingDeEur)} Deutschland, {eur(order.shippingIntlEur)}{' '}
-              international) · {nb(order.taxNote)}
+              {t('albumCard.price', { price: eur(order.priceEur), shippingDe: eur(order.shippingDeEur), shippingIntl: eur(order.shippingIntlEur) })} ·{' '}
+              {locale === 'de' ? nb(order.taxNote) : <span lang="de">{nb(order.taxNote)}</span>}
             </p>
           </>
         )

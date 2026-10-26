@@ -10,12 +10,14 @@ import { countries } from '../../data/countries';
 import { path, type Locale } from '../../data/routes';
 import { anyAudioPlayable } from '../../lib/audio';
 import { ids, titleId } from '../../data/anchors';
+import { useT } from '../../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 const count = Object.keys(countries).length;
 const audio = anyAudioPlayable();
@@ -24,18 +26,17 @@ const audio = anyAudioPlayable();
 <Section tone="sand" id={ids.journey} aria-labelledby={titleId(ids.journey)}>
   <div class="journey">
     <div class="journey__text">
-      <h2 id={titleId(ids.journey)}>Die Reise</h2>
+      <h2 id={titleId(ids.journey)}>{t('nav.journey')}</h2>
       <p class="journey__p">
-        Von Haiti bis in die Mongolei, von Dänemark bis Südafrika: Die Lieder kommen aus {count}&nbsp;Ländern – gesungen und
-        gespielt von Menschen, die sie von dort mitgebracht haben.
+        {t('journey.intro1', { count })}
       </p>
       <p class="journey__p">
-        Auf der Karte finden Sie alle {count}&nbsp;Länder – mit Lied, Musiker:innen{audio ? ' und einer Hörprobe' : ''}.
+        {t('journey.intro2', { count, audio: audio ? t('journey.intro2Audio') : '' })}
       </p>
-      <a class="btn btn--primary journey__btn" href={path('journey', locale)}>Zur Karte</a>
+      <a class="btn btn--primary journey__btn" href={path('journey', locale)}>{t('journeyTeaser.button')}</a>
     </div>
     <div class="journey__map">
-      <WorldMap locale={locale} interactive={false} label={`Weltkarte mit ${count} Markierungen für die Herkunftsländer der Lieder`} />
+      <WorldMap locale={locale} interactive={false} label={t('journeyTeaser.mapLabel', { count })} />
     </div>
   </div>
 </Section>

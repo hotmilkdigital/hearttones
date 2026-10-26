@@ -3,17 +3,19 @@
 import { pressOutlets } from '../../data/press';
 import { path, type Locale } from '../../data/routes';
 import { ids, titleId } from '../../data/anchors';
+import { useT } from '../../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 ---
 
 <section class="press" data-tone="light" aria-labelledby={titleId(ids.pressStrip)}>
   <div class="container press__inner">
-    <h2 id={titleId(ids.pressStrip)} class="eyebrow press__label"><a href={path('press', locale)}>Presse</a></h2>
+    <h2 id={titleId(ids.pressStrip)} class="eyebrow press__label"><a href={path('press', locale)}>{t('nav.press')}</a></h2>
     <ul class="press__list">
       {pressOutlets.map((o) => <li>{o}</li>)}
     </ul>

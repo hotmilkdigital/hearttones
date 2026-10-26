@@ -20,12 +20,15 @@ import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { works } from '../data/works';
 import { ids, titleId, workId } from '../data/anchors';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
+const q = (s: string) => `${t('common.quoteOpen')}${s}${t('common.quoteClose')}`;
 
 // From Philipp's questionnaire answers (00_Projektstatus).
 const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavinet', 'Moog und Talkbox', 'Vibraphon', 'Bass', 'Percussion'];
@@ -38,7 +41,7 @@ const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavin
  */
 const portrait: { image: ImageMetadata; alt: string; credit: string | null } | null = {
   image: portraitPhoto,
-  alt: 'Philipp von Rothkirch spielt Klavier, sein kleiner Sohn liegt auf dem Klavier und lehnt den Kopf an seine Stirn',
+  alt: t('about.portraitAlt'),
   credit: 'Michael von Rothkirch',
 };
 // Never wider than the column (340 px) or the source; 1×/2×/3× within the source's 1080 px.
@@ -49,17 +52,17 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
   locale={locale}
   routeKey="about"
   ogType="profile"
-  title={`${site.owner.fullName} – Komponist und Produzent | ${site.brand}`}
-  description={`${site.owner.fullName}: Komponist, Produzent und Musiker in Berlin-Kreuzberg, Gründer von ${site.brand} und den Lullabies From Around The World.`}
+  title={t('about.title', { fullName: site.owner.fullName, brand: site.brand })}
+  description={t('about.description', { fullName: site.owner.fullName, brand: site.brand })}
 >
   <!-- 1 Intro -->
   <Section tone="light" aria-labelledby={titleId(ids.about)}>
-    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Über Philipp' }]} />
+    <Breadcrumb locale={locale} items={[{ label: t('nav.home'), href: path('home', locale) }, { label: t('nav.about') }]} />
     <div class="intro">
       <div class="intro__text">
-        <p class="eyebrow intro__eyebrow">Über Philipp</p>
+        <p class="eyebrow intro__eyebrow">{t('nav.about')}</p>
         <h1 id={titleId(ids.about)}>{site.owner.fullName}</h1>
-        <p class="lead intro__lead">Komponist, Produzent und Musiker in Berlin-Kreuzberg.</p>
+        <p class="lead intro__lead">{t('about.lead')}</p>
         <!-- Block A, 01_Brief/08_Ueber-Philipp_Kurzbio.md (Philipp's approval pending) -->
         <p class="intro__more">
           Philipp von Rothkirch stammt aus Niedersachsen und lebt seit 2000 in Berlin. Als Keyboarder mit einer Vorliebe für
@@ -84,10 +87,10 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
               fetchpriority="high"
               class="intro__img"
             />
-            <figcaption>Foto: {portrait.credit ?? <Placeholder text="Fotograf:in" />}</figcaption>
+            <figcaption>{portrait.credit ? t('common.photo', { name: portrait.credit }) : <>{t('common.photo', { name: '' })}<Placeholder text="Fotograf:in" /></>}</figcaption>
           </figure>
         ) : (
-          <div class="intro__portrait" role="img" aria-label="Platzhalter für ein Porträt">
+          <div class="intro__portrait" role="img" aria-label={t('about.portraitPlaceholder')}>
             <Placeholder text="Porträt Philipp von Rothkirch – Fotoshooting ausstehend" />
           </div>
         )
@@ -101,20 +104,20 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
       <figure class="story__photo">
         <Image
           src={familyPhoto}
-          alt="Philipp von Rothkirch und Robert Cummings mit ihren Kindern, 2011"
+          alt={t('photo.familyAlt')}
           widths={[420, 840, 1280]}
           sizes="(max-width: 760px) 100vw, 420px"
           class="story__img"
         />
         <figcaption>
-          Philipp von Rothkirch und Robert Cummings mit ihren Kindern, 2011 · Foto: Benedikt Stehle
+          {t('photo.familyAlt')} · {t('common.photo', { name: 'Benedikt Stehle' })}
         </figcaption>
       </figure>
       <div class="story__text">
-        <p class="eyebrow story__eyebrow">Wie alles begann</p>
-        <h2 id={titleId(ids.story)}>Zwei Kinder, ein Tag Abstand</h2>
+        <p class="eyebrow story__eyebrow">{t('story.eyebrow')}</p>
+        <h2 id={titleId(ids.story)}>{t('story.heading')}</h2>
 
-        <h3 class="story__sub">Wie Philipp und Robert sich kennenlernten</h3>
+        <h3 class="story__sub">{t('about.metHeading')}</h3>
         <p>
           Philipp von Rothkirch wohnt in Berlin-Kreuzberg. Eine Straße weiter, in der
           Wartenburgstraße, lag von 2009 bis 2022 das Hot Milk Studio, in einer typischen Berliner Souterrainwohnung. Eines
@@ -123,19 +126,13 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
           befreundet.
         </p>
 
-        <h3 class="story__sub">Die Idee zu den Schlafliedern</h3>
-        <p>
-          Die Idee zu den Schlafliedern kam mit der Geburt von Philipps Sohn. Nur einen Tag zuvor war die Tochter von Robert
-          Cummings zur Welt gekommen – dem Koproduzenten, mit dem Philipp beide Alben produziert hat.
-        </p>
-        <p>
-          Daraus wurde ein Projekt: eine Einschlaf-CD für Kinder, die auch Eltern gerne hören, und eine Reise durch die
-          Vielfalt der Musik der Welt.
-        </p>
+        <h3 class="story__sub">{t('about.ideaHeading')}</h3>
+        <p>{t('story.p1')}</p>
+        <p>{t('story.p2')}</p>
         <p class="story__links">
           <a href={path('vol1', locale)}>Vol.&nbsp;1 (2011)</a>
           <a href={path('vol2', locale)}>Vol.&nbsp;2 (2023)</a>
-          <a href={path('journey', locale)}>Die Reise</a>
+          <a href={path('journey', locale)}>{t('nav.journey')}</a>
         </p>
       </div>
     </div>
@@ -145,8 +142,8 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
   <Section tone="light" aria-labelledby={titleId(ids.instruments)}>
     <div class="craft">
       <div class="craft__text">
-        <h2 id={titleId(ids.instruments)}>Instrumente und Arbeitsweise</h2>
-        <ul class="craft__instruments" aria-label="Instrumente">
+        <h2 id={titleId(ids.instruments)}>{t('about.instrumentsHeading')}</h2>
+        <ul class="craft__instruments" aria-label={t('about.instrumentsLabel')}>
           {instruments.map((i) => <li>{i}</li>)}
         </ul>
         <!-- Block B, 01_Brief/08 -->
@@ -174,32 +171,32 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
       <figure class="craft__photo">
         <Image
           src={pianoPhoto}
-          alt="Philipp von Rothkirch am Flügel im Hot Milk Studio, Mikrofone über den Saiten"
+          alt={t('photo.pianoAlt')}
           widths={[560, 1120, 1600]}
           sizes="(max-width: 760px) 100vw, 560px"
           class="craft__img"
         />
-        <figcaption>Philipp von Rothkirch im Hot Milk Studio · Foto: Robert Cummings</figcaption>
+        <figcaption>{t('about.pianoCaption')} · {t('common.photo', { name: 'Robert Cummings' })}</figcaption>
       </figure>
     </div>
   </Section>
 
   <!-- 4 Ausgewählte Arbeiten -->
   <Section tone="night" id={ids.works} aria-labelledby={titleId(ids.works)}>
-    <h2 id={titleId(ids.works)}>Ausgewählte Arbeiten</h2>
-    <p class="works__intro">Kompositionen und Produktionen für andere Künstler:innen.</p>
+    <h2 id={titleId(ids.works)}>{t('about.works')}</h2>
+    <p class="works__intro">{t('common.worksIntro')}</p>
     <div class="works">
       {
         works.map((w) => (
-          <article class="work" aria-labelledby={`work-${w.id}`}>
+          <article class="work" aria-labelledby={workId(w.id)}>
             <ConsentVideo locale={locale}
               youtubeId={w.youtubeId}
-              title={`${w.artist} – „${w.title}“`}
-              posterTitle={`„${w.title}“`}
+              title={`${w.artist} – ${q(w.title)}`}
+              posterTitle={q(w.title)}
               subtitle={w.artist}
             />
             <h3 id={workId(w.id)} class="work__title">
-              „{w.title}“
+              {t('common.quoteOpen')}{w.title}{t('common.quoteClose')}
             </h3>
             <p class="work__meta">
               {w.artist} · {w.year ?? <Placeholder text="Jahr" />}
@@ -222,14 +219,13 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
   <!-- 5 Produktion -->
   <Section tone="taupe" aria-labelledby={titleId(ids.enquiry)}>
     <div class="cta">
-      <h2 id={titleId(ids.enquiry)}>Produktion anfragen</h2>
+      <h2 id={titleId(ids.enquiry)}>{t('production.enquire')}</h2>
       <p class="cta__text">
-        Sie singen und brauchen ein Instrumental, ein Arrangement oder eine fertige Produktion? Philipp von Rothkirch arbeitet in
-        Partnerschaft mit dem Hot Milk Studio in Berlin. {site.contact.availability}.
+        {t('about.cta', { availability: site.contact.availability })}
       </p>
       <div class="cta__actions">
-        <a class="btn btn--light" href={path('contact', locale)}>Produktion anfragen</a>
-        <a class="btn btn--outline" href={path('production', locale)}>Mehr zur Produktion</a>
+        <a class="btn btn--light" href={path('contact', locale)}>{t('production.enquire')}</a>
+        <a class="btn btn--outline" href={path('production', locale)}>{t('production.more')}</a>
       </div>
     </div>
   </Section>

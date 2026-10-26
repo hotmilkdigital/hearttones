@@ -15,12 +15,15 @@ import { roleLabel, type Role } from '../data/roles';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { artistsAlbumId, hash, ids, titleId, trackId } from '../data/anchors';
+import { useT } from '../i18n/t';
+import { compareText, formatList } from '../i18n/format';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 interface Entry {
   id: PersonId;
@@ -48,7 +51,7 @@ const groups = albums.map((album) => {
       byId.set(p.person, e);
     }
   }
-  const entries = [...byId.values()].sort((a, b) => a.person.name.localeCompare(b.person.name, 'de'));
+  const entries = [...byId.values()].sort((a, b) => compareText(locale)(a.person.name, b.person.name));
   return { album, entries };
 });
 
@@ -58,25 +61,23 @@ const total = new Set(groups.flatMap((g) => g.entries.map((e) => e.id))).size;
 const deceased = (Object.values(people) as Person[])
   .filter((p) => p.diedYear)
   .sort((a, b) => a.diedYear! - b.diedYear!)
-  .map((p) => `${p.name} (verstorben ${p.diedYear})`);
-const memorial =
-  deceased.length > 0
-    ? `In Erinnerung an ${deceased.length > 1 ? `${deceased.slice(0, -1).join(', ')} und ${deceased.at(-1)}` : deceased[0]}.`
-    : null;
+  .map((p) => t('artists.nameDied', { name: p.name, year: p.diedYear! }));
+const memorial = deceased.length > 0 ? t('artists.memorial', { list: formatList(deceased, locale) }) : null;
 ---
 
 <BaseLayout
   locale={locale}
   routeKey="artists"
-  title={`Künstler:innen der Lullabies From Around The World | ${site.brand}`}
-  description={`Die ${total} Musiker:innen und Ensembles auf Lullabies From Around The World Vol. 1 und Vol. 2 – mit Liedern, Instrumenten und Ländern.`}
+  title={t('artists.title', { brand: site.brand })}
+  description={t('artists.description', { n: total })}
 >
   <Section tone="light" aria-labelledby={titleId(ids.artists)}>
-    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Musik', href: path('music', locale) }, { label: 'Künstler:innen' }]} />
-    <h1 id={titleId(ids.artists)}>Künstler:innen</h1>
+    <Breadcrumb locale={locale} items={[{ label: t('nav.home'), href: path('home', locale) }, { label: t('nav.music'), href: path('music', locale) }, { label: t('nav.artists') }]} />
+    <h1 id={titleId(ids.artists)}>{t('nav.artists')}</h1>
     <p class="lead artists__intro">
-      {total}&nbsp;Musiker:innen und Ensembles haben die Lieder auf <a href={path('vol1', locale)}>Vol.&nbsp;1</a> und{' '}
-      <a href={path('vol2', locale)}>Vol.&nbsp;2</a> gesungen und gespielt.
+      {t.split('artists.intro', { n: total }).map((s, i) =>
+        i % 2 ? <a href={path(s === 'vol1' ? 'vol1' : 'vol2', locale)}>{s === 'vol1' ? 'Vol. 1' : 'Vol. 2'}</a> : s,
+      )}
     </p>
     <p class="artists__jump">
       {
@@ -96,42 +97,44 @@ const memorial =
           {nb(album.shortTitle)} <span class="artists__year">· {album.year}</span>
         </h2>
         <p class="artists__count">
-          {entries.length}&nbsp;Musiker:innen und Ensembles auf <a href={albumUrl(album)}>Lullabies From Around The World {nb(album.shortTitle)}</a>
+          {t.split('artists.count', { n: entries.length }).map((s, i) =>
+            i % 2 ? <a href={albumUrl(album)}>Lullabies From Around The World {nb(album.shortTitle)}</a> : s,
+          )}
         </p>
-        <ul class="artists" aria-label={`Musiker:innen und Ensembles auf ${album.shortTitle}`}>
+        <ul class="artists" aria-label={t('artists.listLabel', { vol: album.shortTitle })}>
           {entries.map((e) => (
             <li class="artist">
               <h3 class="artist__name">
                 {e.person.name}
-                {e.person.diedYear && <span class="artist__died">verstorben {e.person.diedYear}</span>}
+                {e.person.diedYear && <span class="artist__died">{t('common.died', { year: e.person.diedYear })}</span>}
               </h3>
               {(e.creditedAs || e.person.alsoCredited) && (
                 <p class="artist__aka">
-                  {e.creditedAs ? `auf ${nb(album.shortTitle)} als ${e.creditedAs}` : `auch: ${e.person.alsoCredited}`}
+                  {e.creditedAs ? t('artists.creditedAs', { vol: nb(album.shortTitle), name: e.creditedAs }) : t('artists.alsoCredited', { name: e.person.alsoCredited! })}
                 </p>
               )}
               <p class="artist__roles">
-                {e.person.kind === 'ensemble' && <span class="artist__tag">Ensemble</span>}
-                {e.roles.map((r) => roleLabel(r)).join(', ')}
+                {e.person.kind === 'ensemble' && <span class="artist__tag">{t('artists.ensemble')}</span>}
+                {e.roles.map((r) => roleLabel(r, locale)).join(', ')}
               </p>
               <ul class="artist__songs">
                 {e.songs.map((track) => (
                   <li>
                     <a href={`${albumUrl(album)}#${trackId(album.id, track.no)}`}>
-                      „<span lang={track.lang}>{track.title}</span>“
+                      {t('common.quoteOpen')}<span lang={track.lang}>{track.title}</span>{t('common.quoteClose')}
                     </a>{' '}
-                    <span class="artist__meta">{track.countries.map((c) => countryName(c)).join(' / ')}</span>
+                    <span class="artist__meta">{track.countries.map((c) => countryName(c, locale)).join(' / ')}</span>
                   </li>
                 ))}
               </ul>
               {e.person.website && (
                 <p class="artist__web">
-                  Website: <a href={e.person.website} rel="noopener">{domain(e.person.website)}</a>
+                  {t('artists.website')} <a href={e.person.website} rel="noopener">{domain(e.person.website)}</a>
                 </p>
               )}
               {e.id === 'philipp-v-rothkirch' && (
                 <p class="artist__more">
-                  <a href={path('about', locale)}>Mehr über Philipp von Rothkirch</a>
+                  <a href={path('about', locale)}>{t('artists.moreAbout')}</a>
                 </p>
               )}
             </li>

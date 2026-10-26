@@ -12,59 +12,60 @@ import { productionIntro, services } from '../../data/production';
 import { site } from '../../data/site';
 import { works } from '../../data/works';
 import { ids, titleId } from '../../data/anchors';
+import { useT } from '../../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 ---
 
 <Section tone="paper" id={ids.production} class="production" aria-labelledby={titleId(ids.production)}>
   <div class="production__grid">
     <div class="production__main">
-      <h2 id={titleId(ids.production)}>Produktion</h2>
+      <h2 id={titleId(ids.production)}>{t('production.heading')}</h2>
       <p class="production__intro">{productionIntro}</p>
       <ul class="production__services">
         {services.map((s) => <li>{s}</li>)}
       </ul>
       <div class="production__actions">
-        <a class="btn btn--primary" href={path('contact', locale)}>Produktion anfragen</a>
-        <a class="btn btn--outline" href={path('production', locale)}>Mehr zur Produktion</a>
+        <a class="btn btn--primary" href={path('contact', locale)}>{t('production.enquire')}</a>
+        <a class="btn btn--outline" href={path('production', locale)}>{t('production.more')}</a>
       </div>
     </div>
 
     <div class="production__side">
       <div class="production__refs">
-        <h3>Referenzen</h3>
+        <h3>{t('production.references')}</h3>
         <ul>
           {
             works.map((w) => (
               <li>
-                <strong>{w.artist}</strong> – „{w.title}“{w.year ? ` (${w.year})` : ''}, {w.shortRole}
+                <strong>{w.artist}</strong> – {t('common.quoteOpen')}{w.title}{t('common.quoteClose')}{w.year ? ` (${w.year})` : ''}, {w.shortRole}
               </li>
             ))
           }
         </ul>
-        <p class="production__refs-more"><a href={`${path('about', locale)}#${ids.works}`}>Videos und Credits</a></p>
+        <p class="production__refs-more"><a href={`${path('about', locale)}#${ids.works}`}>{t('production.videosAndCredits')}</a></p>
       </div>
 
       <div class="production__partner" data-tone="taupe">
         <Image
           src={pianoPhoto}
-          alt="Philipp von Rothkirch am Flügel im Hot Milk Studio, Mikrofone über den Saiten"
+          alt={t('photo.pianoAlt')}
           widths={[520, 800, 1040]}
           sizes="(max-width: 760px) 100vw, 520px"
           class="production__img"
         />
         <div class="production__partner-body">
-          <h3>In Partnerschaft mit Hot Milk Studio</h3>
+          <h3>{t('production.partnerHeading')}</h3>
           <p>
-            Vorproduktion in Kreuzberg, Aufnahme und Postproduktion im Hot Milk Studio in Berlin – dort wurden beide Alben zum
-            größten Teil aufgenommen sowie gemischt und gemastert.
+            {t('production.homePartner')}
           </p>
           <p class="production__link"><a href={site.partner.url}>hotmilkstudio.de</a></p>
-          <p class="production__credit">Foto: Robert Cummings</p>
+          <p class="production__credit">{t('common.photo', { name: 'Robert Cummings' })}</p>
         </div>
       </div>
     </div>

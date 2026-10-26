@@ -11,19 +11,21 @@ import Production from '../components/home/Production.astro';
 import PressStrip from '../components/home/PressStrip.astro';
 import { site } from '../data/site';
 import type { Locale } from '../data/routes';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 ---
 
 <BaseLayout
   locale={locale}
   routeKey="home"
-  title={`${site.brand} – Schlaflieder aus aller Welt`}
-  description="Zwei Alben mit Wiegenliedern aus 24 Ländern, gesungen und gespielt von 46 Musiker:innen. Zum Einschlafen für Kinder – und zum Zuhören für Eltern."
+  title={t('home.title', { brand: site.brand })}
+  description={t('home.description')}
 >
   <Hero locale={locale} />
   <AudioPlayer locale={locale} />

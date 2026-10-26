@@ -15,38 +15,40 @@ import { path, type RouteKey, type Locale } from '../data/routes';
 import { singles, singlesArtist } from '../data/singles';
 import { site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 const trackCount = albums.reduce((n, a) => n + a.tracks.length, 0);
 const countryCount = Object.keys(countries).length;
 const performerCount = new Set(albums.flatMap((a) => a.tracks.flatMap((t) => t.lineup.map((p) => p.person)))).size;
 
 const more: { key: RouteKey; title: string; text: string }[] = [
-  { key: 'journey', title: 'Die Reise', text: `Alle ${countryCount} Herkunftsländer der Lieder auf einer Weltkarte.` },
-  { key: 'artists', title: 'Künstler:innen', text: `Die ${performerCount} Musiker:innen und Ensembles beider Alben.` },
-  { key: 'press', title: 'Presse', text: 'Rezensionen und Berichte zu den Schlafliedern.' },
+  { key: 'journey', title: t('nav.journey'), text: t('music.tileJourney', { n: countryCount }) },
+  { key: 'artists', title: t('nav.artists'), text: t('music.tileArtists', { n: performerCount }) },
+  { key: 'press', title: t('nav.press'), text: t('music.tilePress') },
 ];
 ---
 
 <BaseLayout
   locale={locale}
   routeKey="music"
-  title={`Musik: Lullabies und Berlin Peace Collective | ${site.brand}`}
-  description={`Die Musik von ${site.brand}: Lullabies From Around The World Vol. 1 und Vol. 2 sowie die neuen Singles des Berlin Peace Collective.`}
+  title={t('music.title', { brand: site.brand })}
+  description={t('music.description', { brand: site.brand })}
 >
   <Section tone="light" aria-labelledby={titleId(ids.music)}>
-    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Musik' }]} />
-    <h1 id={titleId(ids.music)}>Musik</h1>
+    <Breadcrumb locale={locale} items={[{ label: t('nav.home'), href: path('home', locale) }, { label: t('nav.music') }]} />
+    <h1 id={titleId(ids.music)}>{t('nav.music')}</h1>
     <p class="lead music__intro">
-      Zwei Alben mit Wiegenliedern aus aller Welt – und neue Musik des {singlesArtist}.
+      {t('music.lead', { artist: singlesArtist })}
     </p>
     <p class="stats music__stats">
-      {trackCount}&nbsp;Lieder · {countryCount}&nbsp;Länder · {performerCount}&nbsp;Musiker:innen
+      {t('common.stats', { tracks: trackCount, countries: countryCount, performers: performerCount })}
     </p>
 
     <h2 class="music__h2">Lullabies From Around The World</h2>
@@ -56,20 +58,19 @@ const more: { key: RouteKey; title: string; text: string }[] = [
   </Section>
 
   <Section tone="night" aria-labelledby={titleId(ids.singlesTeaser)}>
-    <p class="badge-soon">Demnächst</p>
+    <p class="badge-soon">{t('common.soon')}</p>
     <h2 id={titleId(ids.singlesTeaser)} class="music__bpc-title">{singlesArtist}</h2>
     <p class="music__bpc-intro">
-      Zwei neue Stücke – Komposition und Keyboards: {site.owner.fullName}, gemischt und gemastert im Hot Milk Studio. Die
-      Veröffentlichung folgt.
+      {t('music.singlesIntro', { fullName: site.owner.fullName })}
     </p>
     <div class="music__singles">
       {singles.map((single) => <SingleCard locale={locale} single={single} showCredits={false} />)}
     </div>
-    <p class="music__more-link"><a href={path('singles', locale)}>Zu den Singles mit allen Mitwirkenden</a></p>
+    <p class="music__more-link"><a href={path('singles', locale)}>{t('music.singlesLink')}</a></p>
   </Section>
 
   <Section tone="sand" aria-labelledby={titleId(ids.more)}>
-    <h2 id={titleId(ids.more)}>Mehr entdecken</h2>
+    <h2 id={titleId(ids.more)}>{t('music.more')}</h2>
     <ul class="music__more">
       {
         more.map((m) => (

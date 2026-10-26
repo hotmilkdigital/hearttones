@@ -8,20 +8,22 @@ import Placeholder from '../components/Placeholder.astro';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { ids } from '../data/anchors';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 ---
 
 <LegalPage
   locale={locale}
   routeKey="withdrawal"
-  title={`Widerrufsbelehrung – ${site.brand}`}
-  heading="Widerrufsbelehrung"
-  description="Widerrufsbelehrung und Muster-Widerrufsformular für die Bestellung der CD Lullabies From Around The World Vol. 2."
+  title={t('withdrawal.title', { brand: site.brand })}
+  heading={t('withdrawal.heading')}
+  description={t('withdrawal.description')}
   status="Endgültiger Text der Widerrufsbelehrung – von Robert"
 >
   <p>

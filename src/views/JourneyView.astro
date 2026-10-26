@@ -23,12 +23,15 @@ import { site } from '../data/site';
 import { anyAudioPlayable } from '../lib/audio';
 import { teamPins } from '../data/team-pins';
 import { continentId, countryId, ids, titleId, trackId } from '../data/anchors';
+import { useT } from '../i18n/t';
+import { compareText } from '../i18n/format';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 const countryCount = Object.keys(countries).length;
 const continentOrder: Continent[] = ['africa', 'americas', 'asia', 'europe', 'oceania'];
@@ -40,15 +43,15 @@ const nb = (s: string) => s.replace('Vol. ', 'Vol. ');
 const groups = continentOrder.map((continent) => {
   const codes = (Object.keys(countries) as CountryCode[])
     .filter((code) => countries[code].continent === continent)
-    .sort((a, b) => countryName(a).localeCompare(countryName(b), 'de'));
+    .sort((a, b) => compareText(locale)(countryName(a, locale), countryName(b, locale)));
   return {
     continent,
-    label: continentLabels[continent].de,
+    label: continentLabels[continent][locale],
     countries: codes.map((code) => {
       const refs = tracksForCountry(code);
       return {
         code,
-        name: countryName(code),
+        name: countryName(code, locale),
         primary: refs.filter((r) => r.primary),
         secondary: refs.filter((r) => !r.primary),
       };
@@ -62,34 +65,32 @@ const audio = anyAudioPlayable();
 <BaseLayout
   locale={locale}
   routeKey="journey"
-  title={`Die Reise: Schlaflieder aus ${countryCount} Ländern – ${site.brand}`}
-  description={`Eine Weltkarte mit allen ${countryCount} Herkunftsländern der Lieder von Lullabies From Around The World Vol. 1 und Vol. 2 – mit Lied, Album und Musiker:innen.`}
+  title={t('journey.title', { n: countryCount, brand: site.brand })}
+  description={t('journey.description', { n: countryCount })}
 >
   <Section tone="light" aria-labelledby={titleId(ids.journey)}>
-    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Die Reise' }]} />
-    <h1 id={titleId(ids.journey)}>Die Reise</h1>
+    <Breadcrumb locale={locale} items={[{ label: t('nav.home'), href: path('home', locale) }, { label: t('nav.journey') }]} />
+    <h1 id={titleId(ids.journey)}>{t('nav.journey')}</h1>
     <div class="reise__intro">
       <p class="lead">
-        Von Haiti bis in die Mongolei, von Dänemark bis Südafrika: Die Lieder kommen aus {countryCount}&nbsp;Ländern –
-        gesungen und gespielt von Menschen, die sie von dort mitgebracht haben.
+        {t('journey.intro1', { count: countryCount })}
       </p>
       <p>
-        Auf der Karte finden Sie alle {countryCount}&nbsp;Länder – mit Lied, Musiker:innen{audio ? ' und einer Hörprobe' : ''}.
+        {t('journey.intro2', { count: countryCount, audio: audio ? t('journey.intro2Audio') : '' })}
       </p>
     </div>
   </Section>
 
   <Section tone="night" class="reise__map-section" aria-labelledby={titleId(ids.map)}>
-    <h2 id={titleId(ids.map)} class="visually-hidden">Weltkarte</h2>
+    <h2 id={titleId(ids.map)} class="visually-hidden">{t('journey.mapHeading')}</h2>
     <WorldMap locale={locale} />
     <p class="reise__map-note">
-      Zeigen Sie auf einen Punkt oder wählen Sie ihn mit der Tastatur aus, um Lied und Musiker:innen zu sehen. Alle Angaben
-      finden Sie auch in der Liste unten.
+      {t('journey.mapNote')}
     </p>
   </Section>
 
   <Section tone="light" id={ids.countries} aria-labelledby={titleId(ids.countries)} tabindex="-1">
-    <h2 id={titleId(ids.countries)}>Alle {countryCount} Länder</h2>
+    <h2 id={titleId(ids.countries)}>{t('journey.allCountries', { n: countryCount })}</h2>
     {
       groups.map((group) => (
         <section class="continent" aria-labelledby={continentId(group.continent)}>
@@ -106,30 +107,30 @@ const audio = anyAudioPlayable();
                   {c.primary.map(({ album, track }) => (
                     <li>
                       <a class="country__song" href={trackUrl(album, track)}>
-                        „<span lang={track.lang}>{track.title}</span>
+                        {t('common.quoteOpen')}<span lang={track.lang}>{track.title}</span>
                         {track.titleAlt && (
                           <>
                             {' / '}
                             <span lang={track.titleAltLang}>{track.titleAlt}</span>
                           </>
                         )}
-                        “
+                        {t('common.quoteClose')}
                       </a>
                       <span class="country__meta">
-                        {nb(album.shortTitle)} · Nr.&nbsp;{track.no} · {formatDuration(track.durationSec)}
-                        {track.countries.length > 1 && <> · {track.countries.map((cc) => countryName(cc)).join(' / ')}</>}
+                        {nb(album.shortTitle)} · {t('common.no', { n: track.no })} · {formatDuration(track.durationSec)}
+                        {track.countries.length > 1 && <> · {track.countries.map((cc) => countryName(cc, locale)).join(' / ')}</>}
                       </span>
-                      <span class="country__lineup">{lineupText(track)}</span>
+                      <span class="country__lineup">{lineupText(track, locale)}</span>
                     </li>
                   ))}
                 </ul>
                 {c.secondary.length > 0 && (
                   <p class="country__also">
-                    Außerdem:{' '}
+                    {t('journey.also')}{' '}
                     {c.secondary.map(({ album, track }, i) => (
                       <>
                         {i > 0 && ', '}
-                        <a href={trackUrl(album, track)}>„{track.title}“</a> ({track.countries.map((cc) => countryName(cc)).join(' / ')}, {nb(album.shortTitle)})
+                        <a href={trackUrl(album, track)}>{t('common.quoteOpen')}{track.title}{t('common.quoteClose')}</a> ({track.countries.map((cc) => countryName(cc, locale)).join(' / ')}, {nb(album.shortTitle)})
                       </>
                     ))}
                   </p>
@@ -142,7 +143,7 @@ const audio = anyAudioPlayable();
     }
 
     <section class="continent" aria-labelledby={titleId(ids.team)}>
-      <h3 id={titleId(ids.team)} class="continent__title">Hinter den Aufnahmen</h3>
+      <h3 id={titleId(ids.team)} class="continent__title">{t('journey.team')}</h3>
       <div class="continent__grid">
         {
           teamPins.map((t) => (

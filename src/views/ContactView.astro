@@ -11,34 +11,37 @@ import { mailSubjects } from '../data/production';
 import { path, type Locale } from '../data/routes';
 import { order, site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
+import { useT } from '../i18n/t';
+import { formatEur } from '../i18n/format';
 
 interface Props {
   locale?: Locale;
 }
 
 const { locale = 'de' } = Astro.props;
+const t = useT(locale);
 
 const mail = (subject?: string) =>
   `mailto:${site.contact.email}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}`;
 
 const concerns = [
   {
-    title: 'Produktion',
-    text: 'Instrumental, Arrangement oder fertige Produktion – erzählen Sie kurz von Ihrem Projekt.',
+    title: t('nav.production'),
+    text: t('contact.productionText'),
     href: mail(mailSubjects.production),
-    action: 'Produktion anfragen',
+    action: t('production.enquire'),
   },
   {
-    title: 'CD Vol. 2 bestellen',
-    text: 'Bestellung per E-Mail – Preis, Versand und Zahlung stehen auf der Albumseite.',
+    title: t('contact.orderTitle'),
+    text: t('contact.orderText'),
     href: `${path('vol2', locale)}#${ids.order}`,
-    action: 'Zur Bestellung',
+    action: t('contact.orderAction'),
   },
   {
-    title: 'Presse',
-    text: 'Interviews, Rezensionsexemplare und Material.',
+    title: t('nav.press'),
+    text: t('contact.pressText'),
     href: mail(mailSubjects.press),
-    action: 'Presseanfrage senden',
+    action: t('contact.pressAction'),
   },
 ];
 ---
@@ -46,15 +49,15 @@ const concerns = [
 <BaseLayout
   locale={locale}
   routeKey="contact"
-  title={`Kontakt | ${site.brand}`}
-  description={`Kontakt zu ${site.owner.fullName} und ${site.brand}: E-Mail und Telefon, Erstgespräch nach Vereinbarung, CD-Bestellung Vol. 2.`}
+  title={t('contact.title', { brand: site.brand })}
+  description={t('contact.description', { fullName: site.owner.fullName, brand: site.brand })}
 >
   <Section tone="light" aria-labelledby={titleId(ids.contact)}>
-    <Breadcrumb locale={locale} items={[{ label: 'Start', href: path('home', locale) }, { label: 'Kontakt' }]} />
+    <Breadcrumb locale={locale} items={[{ label: t('nav.home'), href: path('home', locale) }, { label: t('nav.contact') }]} />
     <div class="contact">
       <div class="contact__text">
-        <h1 id={titleId(ids.contact)}>Kontakt</h1>
-        <p class="lead contact__lead">Schreiben Sie eine E-Mail oder rufen Sie an. {site.contact.availability}.</p>
+        <h1 id={titleId(ids.contact)}>{t('nav.contact')}</h1>
+        <p class="lead contact__lead">{t('contact.lead', { availability: site.contact.availability })}</p>
       </div>
       <div class="contact__card" data-tone="taupe">
         <p class="contact__name">{site.owner.fullName}</p>
@@ -69,12 +72,12 @@ const concerns = [
   </Section>
 
   <Section tone="sand" aria-labelledby={titleId(ids.topics)}>
-    <h2 id={titleId(ids.topics)}>Ihr Anliegen</h2>
+    <h2 id={titleId(ids.topics)}>{t('contact.topics')}</h2>
     <ul class="concerns">
       {
         concerns.map((c) => (
           <li class="concern">
-            <h3>{c.title.replace('Vol. ', 'Vol. ')}</h3>
+            <h3>{c.title}</h3>
             <p>{c.text}</p>
             <a class="btn btn--outline" href={c.href}>
               {c.action}
@@ -84,8 +87,7 @@ const concerns = [
       }
     </ul>
     <p class="contact__legal">
-      Die Postanschrift finden Sie im <a href={path('imprint', locale)}>Impressum</a>. Vol.&nbsp;2 kostet{' '}
-      {order.priceEur}&nbsp;€ pro CD zzgl. Versand.
+      {t.split('contact.postal', { price: formatEur(order.priceEur, locale) }).map((s, i) => (i % 2 ? <a href={path('imprint', locale)}>{t('contact.imprintLink')}</a> : s))}
     </p>
   </Section>
 </BaseLayout>

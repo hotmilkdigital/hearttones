@@ -15,6 +15,7 @@ import { enPublished, routes, type Locale, type RouteKey } from '../data/routes'
 import { site, isIndexable, ogDefaultApproved } from '../data/site';
 import { siteGraph } from '../lib/schema';
 import { ids, hash } from '../data/anchors';
+import { useT } from '../i18n/t';
 
 interface Props {
   title: string;
@@ -45,7 +46,8 @@ const {
 } = Astro.props;
 
 const canonical = noindex ? null : new URL(Astro.url.pathname, site.url).href;
-const skipLabel = locale === 'de' ? 'Zum Inhalt springen' : 'Skip to content';
+const t = useT(locale);
+const skipLabel = t('layout.skip');
 
 // Social image: page image as 1200px JPEG, otherwise the default card.
 const og = image
@@ -56,7 +58,7 @@ const ogWidth = og.attributes.width ?? (image ? 1200 : defaultOgImage.width);
 const ogHeight = og.attributes.height ?? defaultOgImage.height;
 const ogAlt = image
   ? (imageAlt ?? title)
-  : `${site.brand} – Schlaflieder aus aller Welt: illustrierter Globus als Nachtlicht`;
+  : t('layout.ogAlt', { brand: site.brand });
 
 const alternates =
   enPublished && routeKey && !noindex

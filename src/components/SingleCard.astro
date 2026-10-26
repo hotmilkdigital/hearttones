@@ -8,6 +8,7 @@ import type { Single } from '../data/singles';
 import { roleLabel } from '../data/roles';
 import { singleId, titleId } from '../data/anchors';
 import type { Locale } from '../data/routes';
+import { useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
@@ -17,17 +18,19 @@ interface Props {
 }
 
 const { locale = 'de', single, headingLevel: Heading = 'h3', showCredits = true } = Astro.props;
+const t = useT(locale);
 
 const credits = single.credits.map((c) => ({
   name: c.members ? `${c.name} (${c.members.join(', ')})` : c.name,
-  roles: [c.roles.map((r) => roleLabel(r)).join(', '), c.note?.de].filter(Boolean).join(' · '),
+  roles: [c.roles.map((r) => roleLabel(r, locale)).join(', '), c.note?.[locale] ?? c.note?.de].filter(Boolean).join(' · '),
 }));
+const teaser = single.teaser[locale] ?? single.teaser.de;
 ---
 
 <article class="single" id={singleId(single.slug)} aria-labelledby={titleId(singleId(single.slug))}>
   <Heading id={titleId(singleId(single.slug))} class="single__title">{single.title}</Heading>
-  <p class="single__meta">{single.artist} · Single · Veröffentlichung folgt</p>
-  {single.teaser.de && <p class="single__teaser">{single.teaser.de}</p>}
+  <p class="single__meta">{t('single.meta', { artist: single.artist })}</p>
+  {teaser && <p class="single__teaser">{teaser}</p>}
 
   {
     showCredits && (
@@ -42,7 +45,7 @@ const credits = single.credits.map((c) => ({
     )
   }
 
-  <p class="single__soon">Erscheint demnächst</p>
+  <p class="single__soon">{t('single.soon')}</p>
 </article>
 
 <style>
