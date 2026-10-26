@@ -47,7 +47,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
         pressQuotes.map((q) => (
           <figure class="press__quote">
             <blockquote>
-              <p>{t('common.quoteOpen')}{loc(q.quote, locale)}{t('common.quoteClose')}</p>
+              <p>{t('common.quoteOpen')}{loc(q.quote, locale)}{t('common.quoteClose')}{t('press.translated') && <> {t('press.translated')}</>}</p>
             </blockquote>
             <figcaption>
               {t('common.quoteOpen')}{locale === 'de' ? q.headline : <span lang="de">{q.headline}</span>}{t('common.quoteClose')}, {q.source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />} · {t('press.reviewOf')}

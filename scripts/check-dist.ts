@@ -62,8 +62,10 @@ for (const { url, html } of pages) {
 
   if (!title) errors.push(`${url}: missing <title>`);
   if (!description) errors.push(`${url}: missing meta description`);
-  titles.set(title, [...(titles.get(title) ?? []), url]);
-  descriptions.set(description, [...(descriptions.get(description) ?? []), url]);
+  // Unique per language: an EN page may share its title with the German page it translates (hreflang pair).
+  const lang = url.startsWith('/en/') ? 'en' : 'de';
+  titles.set(`${lang}|${title}`, [...(titles.get(`${lang}|${title}`) ?? []), url]);
+  descriptions.set(`${lang}|${description}`, [...(descriptions.get(`${lang}|${description}`) ?? []), url]);
   if (description && (description.length < 50 || description.length > 170))
     warn.push(`${url}: description is ${description.length} characters (aim for 50–170)`);
   if (title.length > 70) warn.push(`${url}: title is ${title.length} characters (may be cut in results)`);
@@ -135,9 +137,12 @@ for (const { url, html } of pages) {
     for (let i = 0; i < 5; i++) visible = visible.replace(/<(\w+)\b[^>]*\blang="de"[^>]*>(?:(?!<\1\b)[\s\S])*?<\/\1>/g, ' ');
     const attrText = [...visible.matchAll(/\b(?:alt|aria-label|title|content)="([^"]*)"/g)].map((m) => m[1]).join(' | ');
     const plain = decode(`${visible.replace(/<[^>]+>/g, ' ')} | ${attrText}`).replace(/\s+/g, ' ');
-    const german = /\b(und|der|die|das|mit|für|nicht|oder|zur|zum|im|bei|Sie|Ihr|Ihre|Lieder|Länder|Musiker:innen|Künstler:innen|Seite|Startseite|Foto|verstorben|Nr\.)(?=[\s.,:;!?)]|$)|\b\w*(?<!Böckelm|Wartenburgstr|Ciocărl)(?:ä|ö|ü|ß)\w*/g;
+    const german = /\b(und|der|die|das|mit|für|nicht|oder|zur|zum|im|bei|Sie|Ihr|Ihre|Lieder|Länder|Musiker:innen|Künstler:innen|Seite|Startseite|Foto|verstorben|Nr\.)(?=[\s.,:;!?)]|$)|[\p{L}]*[äöüßÄÖÜ][\p{L}]*/gu;
+    // Names and places that keep their German spelling in English.
+    const names = new Set(['Böckelmann', 'Wartenburgstraße', 'Gökce', 'Höll', 'Ciocărlia']);
     const hits = new Set<string>();
     for (const m of plain.matchAll(german)) {
+      if (names.has(m[0])) continue;
       const at = m.index ?? 0;
       hits.add(plain.slice(Math.max(0, at - 35), at + m[0].length + 35).trim());
     }
@@ -157,8 +162,8 @@ for (const { url, html } of pages) {
   }
 }
 
-for (const [t, urls] of titles) if (t && urls.length > 1) errors.push(`duplicate title "${t}": ${urls.join(', ')}`);
-for (const [d, urls] of descriptions) if (d && urls.length > 1) errors.push(`duplicate description: ${urls.join(', ')}`);
+for (const [t, urls] of titles) if (t.slice(3) && urls.length > 1) errors.push(`duplicate title "${t.slice(3)}": ${urls.join(', ')}`);
+for (const [d, urls] of descriptions) if (d.slice(3) && urls.length > 1) errors.push(`duplicate description: ${urls.join(', ')}`);
 
 // Report
 console.log(`qa:dist – ${pages.length} pages`);

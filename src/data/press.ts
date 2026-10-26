@@ -20,14 +20,14 @@ export interface PressQuote {
 export const pressQuotes: PressQuote[] = [
   {
     id: 'schlaf-baby-schlaf',
-    quote: { de: 'wunderschöne Einschlaflieder', en: null },
+    quote: { de: 'wunderschöne Einschlaflieder', en: 'beautiful lullabies' },
     headline: 'Schlaf, Baby, schlaf',
     source: null,
     album: 'vol-1',
   },
   {
     id: 'schlaf-mein-kind',
-    quote: { de: 'eine wunderschöne CD mit traditionellen Schlafliedchen und eigenen Kompositionen aus allen Kontinenten', en: null },
+    quote: { de: 'eine wunderschöne CD mit traditionellen Schlafliedchen und eigenen Kompositionen aus allen Kontinenten', en: 'a beautiful CD of traditional lullabies and original compositions from every continent' },
     headline: 'Schlaf, mein Kind',
     source: null,
     album: 'vol-1',
@@ -39,12 +39,12 @@ export const pressQuotes: PressQuote[] = [
  * the sources are checked (07_Presse-Rezensionen: „nur als Text nennen, Belege/Links prüfen“).
  */
 export const pressMentions = [
-  { outlet: 'MDR Figaro', what: { de: 'Interview', en: null }, date: { de: '19.01.2012', en: null } },
-  { outlet: 'sein.de', what: null, date: { de: 'Januar 2012', en: null } },
-  { outlet: 'FolkWorld', what: { de: 'Ausgabe #47', en: null }, date: { de: 'März 2012', en: null } },
-  { outlet: 'Eltern', what: { de: 'Rezension', en: null }, date: null },
-  { outlet: 'Sein', what: { de: 'Rezension', en: null }, date: null },
-  { outlet: 'Himbeere', what: { de: 'Rezension', en: null }, date: null },
+  { outlet: 'MDR Figaro', what: { de: 'Interview', en: 'Interview' }, date: { de: '19.01.2012', en: '19 January 2012' } },
+  { outlet: 'sein.de', what: null, date: { de: 'Januar 2012', en: 'January 2012' } },
+  { outlet: 'FolkWorld', what: { de: 'Ausgabe #47', en: 'Issue 47' }, date: { de: 'März 2012', en: 'March 2012' } },
+  { outlet: 'Eltern', what: { de: 'Rezension', en: 'Review' }, date: null },
+  { outlet: 'Sein', what: { de: 'Rezension', en: 'Review' }, date: null },
+  { outlet: 'Himbeere', what: { de: 'Rezension', en: 'Review' }, date: null },
 ] satisfies { outlet: string; what: Localized | null; date: Localized | null }[];
 
 /** Press mentioned by name only (§5.10, artboard press strip). */

@@ -117,7 +117,7 @@ Art: **nav** Navigation · **btn** Button/Link-Text · **lbl** Label/Überschrif
 | **AlbumView** `:38–45` | Faktenliste „Künstler", „Label", „Katalognummer", „Labelcode", „Erschienen", „Spielzeit", „{n} Lieder · {n} Länder" | lbl |
 | AlbumView `:36` | Datum `Intl.DateTimeFormat('de-DE')` | fmt |
 | AlbumView `:48, 53, 63` | „Nr. {n} („{Titel}")", „(außer Nr. …)", „Nr. {Liste}" | lbl |
-| AlbumView `:62` | „verstorben {Jahr}" (EN „deceased {Jahr}", §5.16) | lbl |
+| AlbumView `:62` | „verstorben {Jahr}" (EN „died {Jahr}", §5.16) | lbl |
 | AlbumView `:76–77` | Title „Lullabies From Around The World {Vol} ({Jahr}) – Heart Tones", Description „… Schlaflieder aus {n} Ländern … Titelliste, Mitwirkende und Streaming-Links/Bestellung der CD" | meta |
 | AlbumView `:92–94` | Breadcrumb „Start", „Musik" | nav |
 | AlbumView `:99` | Eyebrow „Heart Tones · Album · {Jahr}" | lbl |

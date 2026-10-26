@@ -40,7 +40,7 @@ export const singles: Single[] = [
     title: 'World Peace Now!',
     artist: 'Berlin Peace Collective',
     status: 'upcoming',
-    teaser: { de: 'Ein Stück für den Frieden.', en: null },
+    teaser: { de: 'Ein Stück für den Frieden.', en: 'A song for peace.' },
     // Line-up confirmed by Robert, 24.10.2026; the drumline members on the recording are adults, names cleared.
     creditsConfirmed: true,
     credits: [
@@ -63,7 +63,7 @@ export const singles: Single[] = [
     status: 'upcoming',
     teaser: {
       de: '2006 aufgenommen als Statement zum Wahnsinn der weltweiten Kriege – jetzt teilweise neu aufgenommen, neu gemischt und gemastert.',
-      en: null,
+      en: 'Recorded in 2006 as a statement against the madness of wars around the world – now partly re-recorded, remixed and remastered.',
     },
     creditsConfirmed: true,
     credits: [

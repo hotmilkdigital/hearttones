@@ -7,7 +7,7 @@
  */
 import Logo from './Logo.astro';
 import { enPublished, path, routes, type Locale, type RouteKey } from '../data/routes';
-import { site } from '../data/site';
+import { phoneDisplay, site } from '../data/site';
 import { ids } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { loc } from '../i18n/localized';
@@ -54,7 +54,7 @@ const current = (Object.keys(routes) as RouteKey[]).find((k) => routes[k][locale
       </p>
       <p>
         <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a><br />
-        <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+        <a href={`tel:${site.contact.phone}`}>{phoneDisplay(locale)}</a>
       </p>
       <p class="footer__note">{loc(site.contact.availability, locale)}</p>
     </div>

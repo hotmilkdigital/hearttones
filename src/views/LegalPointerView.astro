@@ -6,7 +6,7 @@
 import LegalPage from '../components/LegalPage.astro';
 import { legalPointers, type LegalKey } from '../data/legal';
 import { path, type Locale } from '../data/routes';
-import { site } from '../data/site';
+import { phoneDisplay, site } from '../data/site';
 import { loc } from '../i18n/localized';
 import { useT } from '../i18n/t';
 
@@ -36,7 +36,7 @@ const domain = site.url.replace('https://', '');
     kind === 'imprint' && (
       <p>
         <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> ·{' '}
-        <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+        <a href={`tel:${site.contact.phone}`}>{phoneDisplay(locale)}</a>
       </p>
     )
   }

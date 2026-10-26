@@ -2,7 +2,7 @@
  * Performers on Vol. 1 and Vol. 2 (persons and ensembles), source: ../01_Brief/02_CD-Credits-Vol1-Vol2.md.
  * One entry per person, so the same musician on both albums counts once (CLAUDE.md §5.4: 46).
  *
- * `diedYear` is shown as „verstorben 2012“ / „deceased 2012“ – never a cross (§5.16).
+ * `diedYear` is shown as „verstorben 2012“ / „died 2012“ – never a cross (§5.16).
  *
  * `website`: only the musician's own website, researched 25.10.2026 (CLAUDE.md §5.16) – never a
  * platform profile (SoundCloud, Bandcamp, SoundBetter, Facebook, YouTube, Wikipedia) or an

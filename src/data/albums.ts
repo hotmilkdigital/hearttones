@@ -101,19 +101,22 @@ export const vol1: Album = {
   labelCode: 'LC-27925',
   copyright: 'Heart Tones Records 2011',
   // At Philipp's request (25.10.2026): Peter Böckelmann pre-financed the CD pressing.
-  thanks: { de: 'Vielen Dank an Peter Böckelmann für seine Unterstützung.', en: null },
+  thanks: { de: 'Vielen Dank an Peter Böckelmann für seine Unterstützung.', en: 'Many thanks to Peter Böckelmann for his support.' },
   status: 'outOfPrint',
   coverAlt: {
     de: 'Cover von Heart Tones Vol. 1: Lullabies From Around The World, eine lächelnde schwangere Frau mit einem als Erdkugel bemalten Bauch',
-    en: null,
+    en: 'Cover of Heart Tones Vol. 1: Lullabies From Around The World – a smiling pregnant woman whose belly is painted as a globe',
   },
-  teaser: { de: '13 Lieder aus Haiti, Senegal, Georgien, Indien und neun weiteren Ländern.', en: null },
+  teaser: { de: '13 Lieder aus Haiti, Senegal, Georgien, Indien und neun weiteren Ländern.', en: '13 songs from Haiti, Senegal, Georgia, India and nine other countries.' },
   story: {
     de: [
       'Zwei Kinder, ein Tag Abstand: 2009 kam der Sohn von Philipp von Rothkirch zur Welt, nur einen Tag nach der Tochter von Robert Cummings, mit dem er das Album produziert hat. Aus diesem Zufall wurde ein gemeinsames Projekt. Philipp bat befreundete Musiker:innen um ein Schlaflied aus ihrer Heimat.',
       'Dabei galten ein paar einfache Regeln: Die Lieder sollten so ruhig sein, dass ein schlafendes Baby nicht aufwacht. Alles wurde von Hand eingespielt, ohne Computer-Synthesizer und programmierte Beats. Musikalisch sollten die Lieder so sein, dass man sie auch über das Kindesalter hinaus gern hört. Und sie sollten den Gedanken der Völkerverbindung schon in die Wiege legen, mit 13 Liedern aus 13 Ländern, von Haiti bis Indien.',
     ],
-    en: null,
+    en: [
+      'Two children, one day apart: in 2009 Philipp von Rothkirch’s son was born, just one day after the daughter of Robert Cummings, with whom he produced the album. That coincidence became a shared project. Philipp asked musician friends for a lullaby from their home country.',
+      'A few simple rules applied. The songs had to be so calm that a sleeping baby wouldn’t wake up. Everything was played by hand, with no computer synths or programmed beats. Musically, they were meant to be songs you still enjoy long after childhood. And they were meant to plant the idea of people coming together across cultures right from the cradle – with 13 songs from 13 countries, from Haiti to India.',
+    ],
   },
   credits: [
     { role: 'production', names: ['Philipp von Rothkirch'] },
@@ -318,15 +321,18 @@ export const vol2: Album = {
   status: 'available',
   coverAlt: {
     de: 'Cover von Heart Tones Vol. 2: Lullabies From Around The World, vier schlafende Kinder unter einer bunten Decke',
-    en: null,
+    en: 'Cover of Heart Tones Vol. 2: Lullabies From Around The World – four children asleep under a colourful blanket',
   },
-  teaser: { de: '13 Lieder von Südafrika über Iran und die Mongolei bis Brasilien.', en: null },
+  teaser: { de: '13 Lieder von Südafrika über Iran und die Mongolei bis Brasilien.', en: '13 songs from South Africa via Iran and Mongolia to Brazil.' },
   story: {
     de: [
       'Zwölf Jahre nach dem ersten Album setzt Vol. 2 die Reise fort: 13 neue Schlaflieder aus aller Welt, wieder produziert von Philipp von Rothkirch und Robert Cummings, erschienen 2023 bei Asphalt Tango Records und gefördert von der Initiative Musik.',
       'Die Grundsätze sind geblieben. Jedes Lied ist so leise, dass es ein schlafendes Baby nicht weckt, und von Hand eingespielt, ganz ohne Computerklänge und programmierte Beats. Die Musik ist für Kinder gemacht, aber so, dass auch Erwachsene sie gern hören. Und wie schon beim ersten Album verbindet sie Menschen und Kulturen, von Südafrika über Iran und die Mongolei bis nach Brasilien.',
     ],
-    en: null,
+    en: [
+      'Twelve years after the first album, Vol. 2 continues the journey: 13 new lullabies from around the world, again produced by Philipp von Rothkirch and Robert Cummings, released in 2023 on Asphalt Tango Records and supported by Initiative Musik.',
+      'The principles haven’t changed. Every song is quiet enough not to wake a sleeping baby, and played by hand, with no computer sounds or programmed beats. The music is made for children, but in a way that adults enjoy too. And as on the first album, it brings people and cultures together – from South Africa via Iran and Mongolia to Brazil.',
+    ],
   },
   credits: [
     { role: 'production', names: ['Robert Cummings', 'Philipp von Rothkirch'] },

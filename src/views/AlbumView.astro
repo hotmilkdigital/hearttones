@@ -56,8 +56,11 @@ const facts = [
 const trackRef = (nos: number[]) =>
   nos.map((n) => t('album.trackRef', { n, title: album.tracks.find((tr) => tr.no === n)?.title ?? '' })).join(', ');
 
+// EN role labels are lower case ("production"); as the first word of a credit line they start with a capital.
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
 const creditItem = (c: Credit) => ({
-  term: c.tracks ? `${roleLabel(c.role, locale)} ${trackRef(c.tracks)}` : roleLabel(c.role, locale),
+  term: c.tracks ? `${cap(roleLabel(c.role, locale))} ${trackRef(c.tracks)}` : cap(roleLabel(c.role, locale)),
   detail: c.exceptTracks
     ? t('album.exceptTracks', { names: c.names.join(', '), list: c.exceptTracks.join(', ') })
     : c.names.join(', '),
@@ -185,7 +188,7 @@ const description = t('album.description', {
       <Section tone="sand" aria-label={t('nav.press')}>
         <figure class="quote">
           <blockquote>
-            <p>{t('common.quoteOpen')}{loc(quote.quote, locale)}{t('common.quoteClose')}</p>
+            <p>{t('common.quoteOpen')}{loc(quote.quote, locale)}{t('common.quoteClose')}{t('press.translated') && <> {t('press.translated')}</>}</p>
           </blockquote>
           <figcaption>
             {t('common.quoteOpen')}{locale === 'de' ? quote.headline : <span lang="de">{quote.headline}</span>}{t('common.quoteClose')},{' '}

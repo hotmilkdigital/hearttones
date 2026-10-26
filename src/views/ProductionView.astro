@@ -11,7 +11,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
 import pianoPhoto from '../assets/photos/philipp-fluegel-hot-milk-studio.webp';
 import { path, type Locale } from '../data/routes';
 import { mailSubjects, pricing, process, productionIntro, services } from '../data/production';
-import { site } from '../data/site';
+import { phoneDisplay, site } from '../data/site';
 import { works } from '../data/works';
 import { ids, referenceId, titleId } from '../data/anchors';
 import { useT } from '../i18n/t';
@@ -39,7 +39,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
     <p class="lead prod__intro">{loc(productionIntro, locale)}</p>
     <div class="prod__actions">
       <a class="btn btn--primary" href={mailto}>{t('production.enquireByEmail')}</a>
-      <a class="btn btn--outline" href={`tel:${site.contact.phone}`}>{t('production.call', { phone: site.contact.phoneDisplay })}</a>
+      <a class="btn btn--outline" href={`tel:${site.contact.phone}`}>{t('production.call', { phone: phoneDisplay(locale) })}</a>
     </div>
     <p class="prod__note">{loc(site.contact.availability, locale)}. {loc(pricing, locale)}</p>
   </Section>
@@ -126,7 +126,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
     </p>
     <div class="prod__actions">
       <a class="btn btn--primary" href={mailto}>{site.contact.email}</a>
-      <a class="btn btn--outline" href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+      <a class="btn btn--outline" href={`tel:${site.contact.phone}`}>{phoneDisplay(locale)}</a>
     </div>
   </Section>
 </BaseLayout>

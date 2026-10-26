@@ -9,7 +9,7 @@ import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import { mailSubjects } from '../data/production';
 import { path, type Locale } from '../data/routes';
-import { order, site } from '../data/site';
+import { order, phoneDisplay, site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { formatEur } from '../i18n/format';
@@ -65,7 +65,7 @@ const concerns = [
         <p>{site.label} · {site.contact.area}</p>
         <p class="contact__links">
           <a href={mail()}>{site.contact.email}</a>
-          <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+          <a href={`tel:${site.contact.phone}`}>{phoneDisplay(locale)}</a>
         </p>
         <p class="contact__small">{loc(site.contact.availability, locale)}</p>
       </div>

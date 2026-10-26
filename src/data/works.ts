@@ -35,11 +35,11 @@ export const works: Work[] = [
     youtubeId: 'G4tORyVfDb8',
     credit: {
       de: 'Komposition: Philipp von Rothkirch, Benedikt Stehle und Henry Ernst. Produktion: Henry Ernst. Gemischt und gemastert von Robert Cummings im Hot Milk Studio. Erschienen auf dem Jubiläumsalbum von Fanfare Ciocărlia.',
-      en: null,
+      en: 'Composition: Philipp von Rothkirch, Benedikt Stehle and Henry Ernst. Production: Henry Ernst. Mixed and mastered by Robert Cummings at Hot Milk Studio. Released on Fanfare Ciocărlia’s anniversary album.',
     },
-    shortRole: { de: 'Komposition mit Benedikt Stehle und Henry Ernst', en: null },
+    shortRole: { de: 'Komposition mit Benedikt Stehle und Henry Ernst', en: 'Composition with Benedikt Stehle and Henry Ernst' },
     creditConfirmed: true,
-    artistLink: { label: { de: 'Fanfare Ciocărlia bei Asphalt Tango', en: null }, href: 'https://asphalt-tango.de/' },
+    artistLink: { label: { de: 'Fanfare Ciocărlia bei Asphalt Tango', en: 'Fanfare Ciocărlia on Asphalt Tango' }, href: 'https://asphalt-tango.de/' },
   },
   {
     id: 'this-is-my-body',
@@ -49,10 +49,10 @@ export const works: Work[] = [
     youtubeId: 'IVkwNzdCu88',
     credit: {
       de: 'Komposition und Produktion: Philipp von Rothkirch. Aufgenommen, gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
-      en: null,
+      en: 'Composition and production: Philipp von Rothkirch. Recorded, mixed and mastered by Robert Cummings at Hot Milk Studio.',
     },
-    shortRole: { de: 'Komposition und Produktion', en: null },
+    shortRole: { de: 'Komposition und Produktion', en: 'Composition and production' },
     creditConfirmed: true,
-    artistLink: { label: { de: 'ingridarthur.com', en: null }, href: 'https://www.ingridarthur.com/' },
+    artistLink: { label: { de: 'ingridarthur.com', en: 'ingridarthur.com' }, href: 'https://www.ingridarthur.com/' },
   },
 ];

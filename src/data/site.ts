@@ -4,6 +4,7 @@
  */
 
 import type { Localized } from '../i18n/localized.ts';
+import type { Locale } from './routes.ts';
 
 export const site = {
   url: 'https://hearttones.net',
@@ -19,8 +20,10 @@ export const site = {
     email: 'info@hearttones.net',
     phone: '+4917661233929',
     phoneDisplay: '0176 61233929',
+    /** EN pages show the international format (01_Brief/10, Conventions). */
+    phoneDisplayIntl: '+49 176 61233929',
     /** No opening hours (§5.12). */
-    availability: { de: 'Erstgespräch nach Vereinbarung', en: null } as Localized,
+    availability: { de: 'Erstgespräch nach Vereinbarung', en: 'Initial conversation by appointment' } as Localized,
     /** Shown in header/footer instead of the address. */
     area: 'Berlin-Kreuzberg',
   },
@@ -39,6 +42,10 @@ export const site = {
 } as const;
 
 /** Vol. 2 order by email (§10). */
+/** Phone as displayed in the page language: DE „0176 61233929", EN „+49 176 61233929". */
+export const phoneDisplay = (locale: Locale): string =>
+  locale === 'de' ? site.contact.phoneDisplay : site.contact.phoneDisplayIntl;
+
 export const order = {
   subject: 'Bestellung Heart Tones Vol. 2',
   priceEur: 15,
