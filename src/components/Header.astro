@@ -178,8 +178,10 @@ const langHref = (l: Locale) => (current ? path(current, l) : path('home', l));
     background: currentColor;
   }
 
+  /* Links are 44 px tall (touch target) with centred text – centre the slash on the same line. */
   .header__lang {
     display: flex;
+    align-items: center;
     gap: 6px;
     padding-left: 12px;
     border-left: 1px solid var(--sand);
