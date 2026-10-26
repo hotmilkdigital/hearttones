@@ -27,7 +27,7 @@ Audience: parents, families, educators, world-music listeners; musicians/singers
 | `../01_Brief/07_Presse-Rezensionen.md` | Two press reviews, approved short quotes | Press page, Vol. 1 page |
 | `../01_Brief/08_Ueber-Philipp_Kurzbio.md` | Philipp's short intro (B10) and bio, blocks A–C, with what was deliberately left out | Über Philipp page, text verbatim |
 | `../01_Brief/09_Albumtexte.md` | Approved album texts Vol. 1 and Vol. 2 (25.10.2026) | `story` in `src/data/albums.ts`, verbatim |
-| `../01_Brief/10_Texte-EN.md` | English texts (EN-GB), draft – Robert reviewing, Philipp to approve | `en` in `src/i18n/ui.ts` and the `{ de, en }` data fields, verbatim |
+| `../01_Brief/10_Texte-EN.md` | English texts (EN-GB), draft – Robert (native speaker, translator) approves before launch | `en` in `src/i18n/ui.ts` and the `{ de, en }` data fields, verbatim |
 | `../03_Design/Startseite-Artboard_v6.dc.html` | Approved desktop homepage artboard (Claude Design export) | **Reference** for layout, order and German copy of the homepage. Not code to copy (see §6.8) |
 | `../03_Design/hero-globus.svg` | Approved hero illustration (globe as night light) | Use as-is in the hero |
 | `../03_Design/reise-weltkarte-platzhalter.svg` | Rough map placeholder from the artboard | Replace with the generated map (§8.5) |
@@ -79,7 +79,7 @@ DE at the root, EN under `/en/`. Astro i18n routing: `defaultLocale: 'de'`, `loc
 
 Main navigation: **Musik · Die Reise · Produktion · Über Philipp · Kontakt** + language switch DE/EN. Künstler:innen and Presse live under Musik and in the footer, not top level. Trailing slashes on.
 
-**EN workflow:** German-first. Build all DE pages, Philipp approves, then translate. Until then: i18n config, `hreflang` plumbing and the language switch exist, but the switch is hidden (or links to `/en/` "coming soon") – never machine-translate copy without Robert asking.
+**EN workflow:** German-first; Philipp approves the German copy. EN is enabled on dev and staging (`enPublished = true`, §11 26.10.2026): language switch in header and footer, hreflang alternates, EN sitemap URLs. Robert, as native speaker and translator, is responsible for the English texts and approves them himself; launch only after Robert has verified the EN texts and the three legal pages. Never machine-translate copy without Robert asking.
 
 ## 5. Content rules (hard)
 
@@ -259,11 +259,12 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 24.10.2026 | World Peace Now! line-up confirmed, incl. the „BÄM" drumline members Ramon Buntebart, Leander Winkler, Rafael Nussbaumer. All three are adults (Robert) – names may be published; no guardian consent needed. |
 | 25.10.2026 | Album texts Vol. 1 and Vol. 2 approved (01_Brief/09): verbatim as `story` in `albums.ts`, two paragraphs below the lead line on each album page; not on the homepage, not in the schema. „Komplett analog" means no computer synths or programmed beats – not acoustic-only. Robert is named as co-producer, never „Toningenieur" („dem Koproduzenten, mit dem Philipp beide Alben produziert hat" on Über Philipp and the homepage). |
 | 25.10.2026 | Correction: the two children (Philipp von Rothkirch's son, Robert Cummings' daughter) were born in **2009**, not 2011 – Vol.-1 story in `albums.ts` says „2009 kam der Sohn“. Vol. 1 release year 2011 and the family photo year 2011 are correct and stay. |
-| 25.10.2026 | English version (plan in `docs/i18n-inventory.md` §5–6): British English; press quotes translated on EN pages and marked as translations; EN legal pages (legal notice, privacy, withdrawal) only point to the German version; mail subject lines stay German; price format EN „€15“, DE „15 €“; Vancouver pin translated; bilingual 404; Claude translates (Robert asked), Robert reviews, Philipp approves. Still after DE approval and behind `enPublished`. |
+| 25.10.2026 | English version (plan in `docs/i18n-inventory.md` §5–6): British English; press quotes translated on EN pages and marked as translations; EN legal pages (legal notice, privacy, withdrawal) only point to the German version; mail subject lines stay German; price format EN „€15“, DE „15 €“; Vancouver pin translated; bilingual 404; Claude translates (Robert asked); Robert approves the English texts (changed 26.10.2026, see below). |
 | 25.10.2026 | Anchor IDs are shared across languages: short, lowercase, ASCII, language-neutral, never translated. All ids live in `src/data/anchors.ts` (`ids`, `titleId()`, helpers); German ids renamed (`#inhalt` → `#main`, `#neu` → `#new-music`, `#reise` → `#journey`, `#bestellen` → `#order`, `#lieder` → `#tracks`, `#arbeiten-title` → `#works` …). Track anchors = album + two-digit number (`#vol-1-07`), not titles. The language switch keeps the current #fragment. `qa:dist` fails on a #link or ARIA reference without a matching id, duplicate ids and non-ASCII ids. Exception: gradient ids inside the approved hero SVG. |
 | 25.10.2026 | One bilingual 404 page (`src/pages/404.astro`) instead of separate DE/EN pages, so no server rules are needed: German block first, then English, each with its own `lang`, a short message and links to the main sections in that language (EN links only once `enPublished`). noindex, no redirects, no page JavaScript. After each staging deploy check that a missing DE and EN URL return HTTP 404 (`docs/QA.md` §7). |
-| 26.10.2026 | English texts (draft, 01_Brief/10) filled in verbatim: `ui.ts` (`en`), all `{ de, en }` data fields, EN meta, EN legal pointer pages (`src/data/legal.ts`), EN 404 block. `check:i18n`: 0 missing. Deceased musicians in EN: "died {year}" (§5.16). EN pages show the phone as +49 176 61233929; press quotes carry "(translated from German)"; press headlines and the § 19 UStG note stay German with `lang="de"`. Meta titles keep "| Heart Tones" where the draft left it out (Singles, Contact), so DE and EN use the same variables. Still behind `enPublished = false` until Robert's review and Philipp's approval. |
+| 26.10.2026 | English texts (draft, 01_Brief/10) filled in verbatim: `ui.ts` (`en`), all `{ de, en }` data fields, EN meta, EN legal pointer pages (`src/data/legal.ts`), EN 404 block. `check:i18n`: 0 missing. Deceased musicians in EN: "died {year}" (§5.16). EN pages show the phone as +49 176 61233929; press quotes carry "(translated from German)"; press headlines and the § 19 UStG note stay German with `lang="de"`. Meta titles keep "| Heart Tones" where the draft left it out (Singles, Contact), so DE and EN use the same variables. Enabled on 26.10.2026 (see below). |
 | 26.10.2026 | EN ⚠️ lines decided by Robert: Künstler:innen intro "Allow us to introduce the {n} musicians and ensembles who sang and played the songs on both albums." and Presse lead "What the press has said about Vol. 1 of Lullabies From Around The World." – both without the links of the German sentences. Contact postal paragraph and Produktion note fine as is. `check:i18n` allows EN to leave out link slots ({link}, {vol1}, {vol2} …); other variables must match. |
+| 26.10.2026 | English version enabled: `enPublished = true` (no extra preview flag). The site is not live yet, so EN runs on dev and staging now. Robert, as native speaker and translator, is responsible for the English texts and approves them himself before launch (not Philipp). Launch only after Robert has verified the EN texts and the three legal pages. `check:i18n` is strict from now on (a missing EN string fails the build). |
 
 ## 12. Open items (build around them with placeholders)
 
@@ -275,6 +276,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 - Widerrufsbelehrung, Impressum/Datenschutz final texts.
 - Vector funding logos.
 - Rights: Vol. 1 and Vol. 2 cover consents, GEMA question for audio, Initiative Musik layout approval.
+- Before launch: Robert verifies the EN texts (01_Brief/10) and the three legal pages in both languages.
 - Domain/DNS (IONOS vs ALL-INKL) and info@hearttones.net mailbox.
 
 ## 13. Working agreement

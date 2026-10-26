@@ -46,7 +46,9 @@ export const mainNav: readonly { key: RouteKey; label: Record<Locale, string> }[
 ];
 
 /**
- * EN pages exist only after Philipp approves the German copy (§4). Until then the language
- * switch stays hidden and no hreflang alternates are emitted.
+ * EN pages, language switch, hreflang alternates and sitemap pairs are on (CLAUDE.md §11,
+ * 26.10.2026): the site is not live yet, so EN runs on dev and staging now. Robert approves the
+ * English texts himself; launch only after he has verified them and the three legal pages.
+ * With true, `npm run check:i18n` is strict: a missing EN string fails the build.
  */
-export const enPublished = false;
+export const enPublished = true;

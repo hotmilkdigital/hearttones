@@ -1,6 +1,6 @@
 # English version – inventory and plan
 
-Stand: 25.10.2026 · Basis: Commit `6a7e9e4` · Nichts davon ist gebaut. EN folgt erst nach Philipps Freigabe der deutschen Texte (CLAUDE.md §4). Bis dahin bleibt `enPublished = false` und der Sprachumschalter versteckt. **Keine maschinelle Übersetzung**, solange Robert sie nicht anfordert.
+Stand: 25.10.2026 · Basis: Commit `6a7e9e4`. **Update 26.10.2026:** umgesetzt und aktiviert (`enPublished = true`, CLAUDE.md §11). Robert verantwortet und gibt die englischen Texte selbst frei; Livegang erst nach seiner Prüfung der EN-Texte und der drei Rechtsseiten.
 
 Zeilennummern beziehen sich auf den Stand oben und verschieben sich mit jeder Änderung. Prosa-Abschnitte stehen als Zeilenbereich mit den ersten Wörtern, nicht Satz für Satz.
 
@@ -350,7 +350,7 @@ Eine zweisprachige `404.html` (DE oben, EN darunter, je mit `lang`), siehe §6 N
 2. `feat(i18n): ui.ts, t(), format helpers; DE strings moved` – DE-Ausgabe identisch (Diff von `dist/` vorher/nachher prüfen).
 3. `feat(i18n): Localized data fields (en: null)` + `check:i18n` im Berichtsmodus.
 4. `feat(i18n): en pages behind enPublished`, Sitemap-`serialize`, hreflang, bilinguale 404.
-5. Übersetzung – erst nach Philipps DE-Freigabe und Roberts Auftrag. Danach `enPublished = true` und den Check auf Fehlermodus stellen.
+5. Übersetzung (01_Brief/10, Robert gibt frei), dann `enPublished = true` – der Check ist damit automatisch im Fehlermodus (26.10.2026 erledigt).
 
 **Stand 26.10.2026:** Schritte 1–4 umgesetzt (`985d918`, `3166a78`, `772778a` und der Commit `feat(i18n): en pages behind enPublished`). Der Fehlermodus von `check:i18n` hängt direkt an `enPublished` – kein eigener Schalter nötig. EN-Rechtsseiten: `LegalPointerView` mit Texten aus `src/data/legal.ts`. Test mit `enPublished = true` (nur lokal): 14 EN-Seiten, hreflang im Head und in der Sitemap, Sprachumschalter mit `#fragment`, `check:i18n` bricht mit fehlenden Texten ab.
 

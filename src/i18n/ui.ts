@@ -286,7 +286,7 @@ const de = {
 
 export type UiKey = keyof typeof de;
 
-// EN-GB draft from ../01_Brief/10_Texte-EN.md (Robert reviewing, Philipp to approve). null = not translated yet.
+// EN-GB from ../01_Brief/10_Texte-EN.md – Robert (native speaker, translator) approves before launch. null = not translated yet.
 const en: Record<UiKey, string | null> = {
   'layout.skip': 'Skip to content',
   'layout.ogAlt': '{brand} – Lullabies from around the world: an illustrated globe glowing like a night light',
