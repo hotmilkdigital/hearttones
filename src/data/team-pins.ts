@@ -5,19 +5,20 @@
  * recorded by Peter Sund), so the roles say „fast alle Aufnahmen".
  */
 
-import { site } from './site';
+import { site } from './site.ts';
+import type { Localized } from '../i18n/localized.ts';
 
 export interface TeamPin {
   id: string;
   name: string;
   place: string;
   /** Country, shown in the list. */
-  country: string;
+  country: Localized;
   lat: number;
   lon: number;
   /** Why this place is on the map. */
-  note: string;
-  roles: string;
+  note: Localized;
+  roles: Localized;
   link: { label: string; href: string };
 }
 
@@ -26,11 +27,11 @@ export const teamPins: TeamPin[] = [
     id: 'robert-cummings',
     name: 'Robert Cummings',
     place: 'Vancouver, BC',
-    country: 'Kanada',
+    country: { de: 'Kanada', en: null },
     lat: 49.28,
     lon: -123.12,
-    note: 'Heimatstadt von Robert Cummings, Inhaber und Betreiber des Hot Milk Studio Berlin',
-    roles: 'Koproduktion, Mixing und Mastering von Vol. 1 und Vol. 2 – und fast alle Aufnahmen',
+    note: { de: 'Heimatstadt von Robert Cummings, Inhaber und Betreiber des Hot Milk Studio Berlin', en: null },
+    roles: { de: 'Koproduktion, Mixing und Mastering von Vol. 1 und Vol. 2 – und fast alle Aufnahmen', en: null },
     link: { label: 'hotmilkstudio.de', href: site.partner.url },
   },
 ];

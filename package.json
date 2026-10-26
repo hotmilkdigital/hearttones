@@ -8,10 +8,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run check:data && astro check && astro build",
+    "build": "npm run check:data && npm run check:i18n && astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "check:data": "node scripts/check-data.ts",
+    "check:i18n": "node scripts/check-i18n.ts",
     "astro": "astro",
     "qa:dist": "node scripts/check-dist.ts",
     "qa:contrast": "node scripts/contrast.ts"

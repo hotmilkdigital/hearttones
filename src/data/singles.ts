@@ -9,6 +9,7 @@
 
 import type { Locale } from './routes.ts';
 import type { Role } from './roles.ts';
+import type { Localized } from '../i18n/localized.ts';
 
 export interface SingleCredit {
   name: string;
@@ -25,7 +26,7 @@ export interface Single {
   artist: 'Berlin Peace Collective';
   status: 'upcoming';
   /** Approved draft teaser from the homepage artboard. */
-  teaser: Record<Locale, string | null>;
+  teaser: Localized;
   /** false: Philipp has not explicitly assigned this line-up to the single yet. */
   creditsConfirmed: boolean;
   credits: SingleCredit[];

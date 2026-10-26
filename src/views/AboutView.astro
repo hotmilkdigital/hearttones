@@ -19,8 +19,10 @@ import portraitPhoto from '../assets/photos/philipp-sohn-klavier.jpg';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { works } from '../data/works';
+import { bio, craft, instruments, met } from '../data/about';
+import { loc } from '../i18n/localized';
 import { ids, titleId, workId } from '../data/anchors';
-import { useT } from '../i18n/t';
+import { splitSlots, useT } from '../i18n/t';
 
 interface Props {
   locale?: Locale;
@@ -29,9 +31,6 @@ interface Props {
 const { locale = 'de' } = Astro.props;
 const t = useT(locale);
 const q = (s: string) => `${t('common.quoteOpen')}${s}${t('common.quoteClose')}`;
-
-// From Philipp's questionnaire answers (00_Projektstatus).
-const instruments = ['Klavier (seit dem sechsten Lebensjahr)', 'Rhodes', 'Clavinet', 'Moog und Talkbox', 'Vibraphon', 'Bass', 'Percussion'];
 
 /**
  * Intro portrait. Interim (§11, 25.10.2026): Philipp with his son at the upright piano, square.
@@ -65,11 +64,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
         <p class="lead intro__lead">{t('about.lead')}</p>
         <!-- Block A, 01_Brief/08_Ueber-Philipp_Kurzbio.md (Philipp's approval pending) -->
         <p class="intro__more">
-          Philipp von Rothkirch stammt aus Niedersachsen und lebt seit 2000 in Berlin. Als Keyboarder mit einer Vorliebe für
-          Funk und Soul spielte er live und im Studio unter anderem für Gilbert Abdourahmane Diop, Kirk Smith, Della Miles und
-          Ingrid Arthur sowie im Wintergarten Varieté Berlin. Außerdem arbeitet er als Musiktherapeut in Kitas, in
-          Seniorenheimen und mit einer Gruppe von Menschen mit Trisomie 21 und unterrichtet Klavier an einer Berliner
-          Musikschule.
+          {loc(bio, locale)}
         </p>
       </div>
       {
@@ -119,11 +114,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
 
         <h3 class="story__sub">{t('about.metHeading')}</h3>
         <p>
-          Philipp von Rothkirch wohnt in Berlin-Kreuzberg. Eine Straße weiter, in der
-          Wartenburgstraße, lag von 2009 bis 2022 das Hot Milk Studio, in einer typischen Berliner Souterrainwohnung. Eines
-          Tages im Jahr 2009 ging Philipp mit einem Freund einmal um den Block. Er schaute in das Souterrain und sah zu seiner
-          Überraschung ein Studio. Er klopfte an die Tür und stellte sich vor. Seitdem sind Philipp und Robert Cummings
-          befreundet.
+          {loc(met, locale)}
         </p>
 
         <h3 class="story__sub">{t('about.ideaHeading')}</h3>
@@ -144,28 +135,17 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
       <div class="craft__text">
         <h2 id={titleId(ids.instruments)}>{t('about.instrumentsHeading')}</h2>
         <ul class="craft__instruments" aria-label={t('about.instrumentsLabel')}>
-          {instruments.map((i) => <li>{i}</li>)}
+          {loc(instruments, locale).map((i) => <li>{i}</li>)}
         </ul>
         <!-- Block B, 01_Brief/08 -->
-        <p class="craft__p">
-          Seine Lieblingsinstrumente sind Fender Rhodes, Hohner Clavinet und Moog, gern auch mit Talkbox.
-        </p>
-        <p class="craft__p">
-          Philipp von Rothkirch komponiert schnell einen tragfähigen Basis-Song und gibt ihm prägnante Licks –
-          genreübergreifend.
-        </p>
+        <p class="craft__p">{loc(craft.favourites, locale)}</p>
+        <p class="craft__p">{loc(craft.approach, locale)}</p>
         <!-- Block C, 01_Brief/08 (version 25.10.2026, 14:45) -->
         <p class="craft__p">
-          Seine neuen Songs „World Peace Now!“ und „Bombs Away!“ erscheinen demnächst als{' '}
-          <a href={path('singles', locale)}>Berlin Peace Collective</a>. „Bombs Away!“ entstand 2006 mit seiner damaligen Band Phases
-          of Life, als Statement gegen den Wahnsinn der Kriege weltweit; noch im selben Jahr spielte die Band den Song auf
-          persönliche Einladung von Nina Hagen bei deren Peace Charity Gala. Für das Berlin Peace Collective wurde er
-          teilweise neu aufgenommen und von Robert Cummings im Hot Milk Studio neu gemischt und gemastert. „World Peace Now!“
-          entstand gemeinsam mit Produzent Robert Cummings im Hot Milk Studio.
+          {splitSlots(loc(craft.singles, locale)).map((s, i) => (i % 2 ? <a href={path('singles', locale)}>Berlin Peace Collective</a> : s))}
         </p>
         <p class="craft__p">
-          Am Anfang steht ein Erstgespräch, telefonisch oder vor Ort. Die Vorproduktion entsteht in Kreuzberg, Aufnahme und
-          Postproduktion im <a href={site.partner.url}>Hot Milk Studio</a> in Berlin.
+          {splitSlots(loc(craft.process, locale)).map((s, i) => (i % 2 ? <a href={site.partner.url}>Hot Milk Studio</a> : s))}
         </p>
       </div>
       <figure class="craft__photo">
@@ -201,14 +181,14 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
             <p class="work__meta">
               {w.artist} · {w.year ?? <Placeholder text="Jahr" />}
             </p>
-            <p class="work__credit">{w.credit}</p>
+            <p class="work__credit">{loc(w.credit, locale)}</p>
             {!w.creditConfirmed && (
               <p class="work__check">
                 <Placeholder text="Rollen mit Philipps vollständigen Credits abgleichen" />
               </p>
             )}
             <p class="work__artist">
-              <a href={w.artistLink.href}>{w.artistLink.label}</a>
+              <a href={w.artistLink.href}>{loc(w.artistLink.label, locale)}</a>
             </p>
           </article>
         ))
@@ -221,7 +201,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
     <div class="cta">
       <h2 id={titleId(ids.enquiry)}>{t('production.enquire')}</h2>
       <p class="cta__text">
-        {t('about.cta', { availability: site.contact.availability })}
+        {t('about.cta', { availability: loc(site.contact.availability, locale) })}
       </p>
       <div class="cta__actions">
         <a class="btn btn--light" href={path('contact', locale)}>{t('production.enquire')}</a>

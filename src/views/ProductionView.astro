@@ -15,6 +15,7 @@ import { site } from '../data/site';
 import { works } from '../data/works';
 import { ids, referenceId, titleId } from '../data/anchors';
 import { useT } from '../i18n/t';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -35,12 +36,12 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
   <Section tone="light" aria-labelledby={titleId(ids.production)}>
     <Breadcrumb locale={locale} items={[{ label: t('nav.home'), href: path('home', locale) }, { label: t('nav.production') }]} />
     <h1 id={titleId(ids.production)}>{t('production.heading')}</h1>
-    <p class="lead prod__intro">{productionIntro}</p>
+    <p class="lead prod__intro">{loc(productionIntro, locale)}</p>
     <div class="prod__actions">
       <a class="btn btn--primary" href={mailto}>{t('production.enquireByEmail')}</a>
       <a class="btn btn--outline" href={`tel:${site.contact.phone}`}>{t('production.call', { phone: site.contact.phoneDisplay })}</a>
     </div>
-    <p class="prod__note">{site.contact.availability}. {pricing}</p>
+    <p class="prod__note">{loc(site.contact.availability, locale)}. {loc(pricing, locale)}</p>
   </Section>
 
   <Section tone="paper" aria-labelledby={titleId(ids.services)}>
@@ -48,7 +49,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
       <div>
         <h2 id={titleId(ids.services)}>{t('production.services')}</h2>
         <ul class="prod__services">
-          {services.map((s) => <li>{s}</li>)}
+          {services.map((s) => <li>{loc(s, locale)}</li>)}
         </ul>
         <p class="prod__p">{t('production.servicesIntro')}</p>
       </div>
@@ -58,8 +59,8 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
           {
             process.map((step) => (
               <li>
-                <span class="prod__step-title">{step.title}</span>
-                <span class="prod__step-text">{step.text}</span>
+                <span class="prod__step-title">{loc(step.title, locale)}</span>
+                <span class="prod__step-text">{loc(step.text, locale)}</span>
               </li>
             ))
           }
@@ -79,10 +80,10 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
             <p class="prod__ref-meta">
               {w.artist} · {w.year}
             </p>
-            <p class="prod__ref-credit">{w.credit}</p>
+            <p class="prod__ref-credit">{loc(w.credit, locale)}</p>
             <p class="prod__ref-links">
               <a href={`${path('about', locale)}#${ids.works}`}>{t('production.watchVideo')}</a>
-              <a href={w.artistLink.href}>{w.artistLink.label}</a>
+              <a href={w.artistLink.href}>{loc(w.artistLink.label, locale)}</a>
             </p>
           </article>
         ))
@@ -121,7 +122,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
   <Section tone="light" aria-labelledby={titleId(ids.enquiry)}>
     <h2 id={titleId(ids.enquiry)}>{t('production.enquire')}</h2>
     <p class="prod__p">
-      {t('production.closing', { availability: site.contact.availability })}
+      {t('production.closing', { availability: loc(site.contact.availability, locale) })}
     </p>
     <div class="prod__actions">
       <a class="btn btn--primary" href={mailto}>{site.contact.email}</a>

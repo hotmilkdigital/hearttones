@@ -25,6 +25,7 @@ import { teamPins } from '../data/team-pins';
 import { continentId, countryId, ids, titleId, trackId } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { compareText } from '../i18n/format';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -149,11 +150,11 @@ const audio = anyAudioPlayable();
           teamPins.map((t) => (
             <article class="country country--team" id={countryId(t.id)} aria-labelledby={titleId(countryId(t.id))} tabindex="-1">
               <h4 id={titleId(countryId(t.id))} class="country__name">
-                {t.place} ({t.country})
+                {t.place} ({loc(t.country, locale)})
               </h4>
               <p class="country__team-name">{t.name}</p>
-              <span class="country__meta">{t.note}</span>
-              <span class="country__lineup">{t.roles}</span>
+              <span class="country__meta">{loc(t.note, locale)}</span>
+              <span class="country__lineup">{loc(t.roles, locale)}</span>
               <a class="country__song" href={t.link.href}>
                 {t.link.label}
               </a>

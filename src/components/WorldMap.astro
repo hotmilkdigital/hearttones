@@ -20,6 +20,7 @@ import { countryId, hash, ids, mapTipId, trackId } from '../data/anchors';
 import { teamPins } from '../data/team-pins';
 import { MAP_HEIGHT, MAP_WIDTH, countryPath, landPath, project } from '../lib/world-map';
 import { useT } from '../i18n/t';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -63,7 +64,7 @@ const diamond = (x: number, y: number, r = 9) => `${x},${y - r} ${x + r},${y} ${
 const team = interactive
   ? teamPins.map((p) => {
       const [x, y] = project(p.lon, p.lat);
-      return { ...p, x, y, points: diamond(x, y), tipId: mapTipId(p.id), ariaLabel: `${p.place}: ${p.name} – ${p.roles}` };
+      return { ...p, x, y, points: diamond(x, y), tipId: mapTipId(p.id), ariaLabel: `${p.place}: ${p.name} – ${loc(p.roles, locale)}` };
     })
   : [];
 
@@ -162,8 +163,8 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
       <div class="map__tip" id={t.tipId} role="tooltip" aria-hidden="true" hidden>
         <p class="map__tip-country">{t.place}</p>
         <p class="map__tip-title">{t.name}</p>
-        <span class="map__tip-origin">{t.note}</span>
-        <span class="map__tip-lineup">{t.roles}</span>
+        <span class="map__tip-origin">{loc(t.note, locale)}</span>
+        <span class="map__tip-lineup">{loc(t.roles, locale)}</span>
         <p class="map__tip-hint">{t.link.label} →</p>
       </div>
     ))

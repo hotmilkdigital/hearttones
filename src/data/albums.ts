@@ -10,6 +10,7 @@ import type { CountryCode } from './countries.ts';
 import { people, type PersonId } from './people.ts';
 import type { Locale } from './routes.ts';
 import { roleLabel, type Role } from './roles.ts';
+import type { Localized } from '../i18n/localized.ts';
 
 /** How the song was written. Vol. 2 prints names without saying who wrote music or lyrics. */
 export type Writing =
@@ -72,14 +73,14 @@ export interface Album {
   /** Printed ℗/© line where known. */
   copyright?: string;
   status: 'outOfPrint' | 'available';
-  coverAlt: string;
+  coverAlt: Localized;
   /** One-line teaser (approved artboard copy). */
-  teaser: string;
+  teaser: Localized;
   /** Album text (01_Brief/09, approved 25.10.2026), two paragraphs below the lead line on the album page (not on the homepage, not in the schema). */
-  story?: string[];
+  story?: Localized<string[]>;
   credits: Credit[];
   /** Short thanks line shown below the production credits on the album page (not on the homepage, not in the schema). */
-  thanks?: string;
+  thanks?: Localized;
   /** Studio statement (§5.7): almost entirely recorded, entirely mixed and mastered there. */
   studio: string;
   links: ExternalLink[];
@@ -100,15 +101,20 @@ export const vol1: Album = {
   labelCode: 'LC-27925',
   copyright: 'Heart Tones Records 2011',
   // At Philipp's request (25.10.2026): Peter Böckelmann pre-financed the CD pressing.
-  thanks: 'Vielen Dank an Peter Böckelmann für seine Unterstützung.',
+  thanks: { de: 'Vielen Dank an Peter Böckelmann für seine Unterstützung.', en: null },
   status: 'outOfPrint',
-  coverAlt:
-    'Cover von Heart Tones Vol. 1: Lullabies From Around The World, eine lächelnde schwangere Frau mit einem als Erdkugel bemalten Bauch',
-  teaser: '13 Lieder aus Haiti, Senegal, Georgien, Indien und neun weiteren Ländern.',
-  story: [
-    'Zwei Kinder, ein Tag Abstand: 2009 kam der Sohn von Philipp von Rothkirch zur Welt, nur einen Tag nach der Tochter von Robert Cummings, mit dem er das Album produziert hat. Aus diesem Zufall wurde ein gemeinsames Projekt. Philipp bat befreundete Musiker:innen um ein Schlaflied aus ihrer Heimat.',
-    'Dabei galten ein paar einfache Regeln: Die Lieder sollten so ruhig sein, dass ein schlafendes Baby nicht aufwacht. Alles wurde von Hand eingespielt, ohne Computer-Synthesizer und programmierte Beats. Musikalisch sollten die Lieder so sein, dass man sie auch über das Kindesalter hinaus gern hört. Und sie sollten den Gedanken der Völkerverbindung schon in die Wiege legen, mit 13 Liedern aus 13 Ländern, von Haiti bis Indien.',
-  ],
+  coverAlt: {
+    de: 'Cover von Heart Tones Vol. 1: Lullabies From Around The World, eine lächelnde schwangere Frau mit einem als Erdkugel bemalten Bauch',
+    en: null,
+  },
+  teaser: { de: '13 Lieder aus Haiti, Senegal, Georgien, Indien und neun weiteren Ländern.', en: null },
+  story: {
+    de: [
+      'Zwei Kinder, ein Tag Abstand: 2009 kam der Sohn von Philipp von Rothkirch zur Welt, nur einen Tag nach der Tochter von Robert Cummings, mit dem er das Album produziert hat. Aus diesem Zufall wurde ein gemeinsames Projekt. Philipp bat befreundete Musiker:innen um ein Schlaflied aus ihrer Heimat.',
+      'Dabei galten ein paar einfache Regeln: Die Lieder sollten so ruhig sein, dass ein schlafendes Baby nicht aufwacht. Alles wurde von Hand eingespielt, ohne Computer-Synthesizer und programmierte Beats. Musikalisch sollten die Lieder so sein, dass man sie auch über das Kindesalter hinaus gern hört. Und sie sollten den Gedanken der Völkerverbindung schon in die Wiege legen, mit 13 Liedern aus 13 Ländern, von Haiti bis Indien.',
+    ],
+    en: null,
+  },
   credits: [
     { role: 'production', names: ['Philipp von Rothkirch'] },
     { role: 'coProduction', names: ['Robert Cummings'] },
@@ -310,13 +316,18 @@ export const vol2: Album = {
   catalogueNo: 'HTR 002',
   labelCode: 'LC-12494',
   status: 'available',
-  coverAlt:
-    'Cover von Heart Tones Vol. 2: Lullabies From Around The World, vier schlafende Kinder unter einer bunten Decke',
-  teaser: '13 Lieder von Südafrika über Iran und die Mongolei bis Brasilien.',
-  story: [
-    'Zwölf Jahre nach dem ersten Album setzt Vol. 2 die Reise fort: 13 neue Schlaflieder aus aller Welt, wieder produziert von Philipp von Rothkirch und Robert Cummings, erschienen 2023 bei Asphalt Tango Records und gefördert von der Initiative Musik.',
-    'Die Grundsätze sind geblieben. Jedes Lied ist so leise, dass es ein schlafendes Baby nicht weckt, und von Hand eingespielt, ganz ohne Computerklänge und programmierte Beats. Die Musik ist für Kinder gemacht, aber so, dass auch Erwachsene sie gern hören. Und wie schon beim ersten Album verbindet sie Menschen und Kulturen, von Südafrika über Iran und die Mongolei bis nach Brasilien.',
-  ],
+  coverAlt: {
+    de: 'Cover von Heart Tones Vol. 2: Lullabies From Around The World, vier schlafende Kinder unter einer bunten Decke',
+    en: null,
+  },
+  teaser: { de: '13 Lieder von Südafrika über Iran und die Mongolei bis Brasilien.', en: null },
+  story: {
+    de: [
+      'Zwölf Jahre nach dem ersten Album setzt Vol. 2 die Reise fort: 13 neue Schlaflieder aus aller Welt, wieder produziert von Philipp von Rothkirch und Robert Cummings, erschienen 2023 bei Asphalt Tango Records und gefördert von der Initiative Musik.',
+      'Die Grundsätze sind geblieben. Jedes Lied ist so leise, dass es ein schlafendes Baby nicht weckt, und von Hand eingespielt, ganz ohne Computerklänge und programmierte Beats. Die Musik ist für Kinder gemacht, aber so, dass auch Erwachsene sie gern hören. Und wie schon beim ersten Album verbindet sie Menschen und Kulturen, von Südafrika über Iran und die Mongolei bis nach Brasilien.',
+    ],
+    en: null,
+  },
   credits: [
     { role: 'production', names: ['Robert Cummings', 'Philipp von Rothkirch'] },
     { role: 'recording', names: ['Robert Cummings'] },

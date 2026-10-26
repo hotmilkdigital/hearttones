@@ -5,9 +5,11 @@
  * Never quote the sentence about sitars or the one about the three-year-old son; no page images.
  */
 
+import type { Localized } from '../i18n/localized.ts';
+
 export interface PressQuote {
   id: string;
-  quote: string;
+  quote: Localized;
   /** Headline of the article, as on the scan. */
   headline: string;
   /** "Magazin, Ausgabe, Jahr" once confirmed. */
@@ -18,14 +20,14 @@ export interface PressQuote {
 export const pressQuotes: PressQuote[] = [
   {
     id: 'schlaf-baby-schlaf',
-    quote: 'wunderschöne Einschlaflieder',
+    quote: { de: 'wunderschöne Einschlaflieder', en: null },
     headline: 'Schlaf, Baby, schlaf',
     source: null,
     album: 'vol-1',
   },
   {
     id: 'schlaf-mein-kind',
-    quote: 'eine wunderschöne CD mit traditionellen Schlafliedchen und eigenen Kompositionen aus allen Kontinenten',
+    quote: { de: 'eine wunderschöne CD mit traditionellen Schlafliedchen und eigenen Kompositionen aus allen Kontinenten', en: null },
     headline: 'Schlaf, mein Kind',
     source: null,
     album: 'vol-1',
@@ -37,13 +39,13 @@ export const pressQuotes: PressQuote[] = [
  * the sources are checked (07_Presse-Rezensionen: „nur als Text nennen, Belege/Links prüfen“).
  */
 export const pressMentions = [
-  { outlet: 'MDR Figaro', what: 'Interview', date: '19.01.2012' },
-  { outlet: 'sein.de', what: null, date: 'Januar 2012' },
-  { outlet: 'FolkWorld', what: 'Ausgabe #47', date: 'März 2012' },
-  { outlet: 'Eltern', what: 'Rezension', date: null },
-  { outlet: 'Sein', what: 'Rezension', date: null },
-  { outlet: 'Himbeere', what: 'Rezension', date: null },
-] as const;
+  { outlet: 'MDR Figaro', what: { de: 'Interview', en: null }, date: { de: '19.01.2012', en: null } },
+  { outlet: 'sein.de', what: null, date: { de: 'Januar 2012', en: null } },
+  { outlet: 'FolkWorld', what: { de: 'Ausgabe #47', en: null }, date: { de: 'März 2012', en: null } },
+  { outlet: 'Eltern', what: { de: 'Rezension', en: null }, date: null },
+  { outlet: 'Sein', what: { de: 'Rezension', en: null }, date: null },
+  { outlet: 'Himbeere', what: { de: 'Rezension', en: null }, date: null },
+] satisfies { outlet: string; what: Localized | null; date: Localized | null }[];
 
 /** Press mentioned by name only (§5.10, artboard press strip). */
 export const pressOutlets = ['MDR Figaro', 'Eltern', 'Sein', 'Himbeere', 'FolkWorld'] as const;

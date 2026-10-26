@@ -9,6 +9,7 @@ import { roleLabel } from '../data/roles';
 import { singleId, titleId } from '../data/anchors';
 import type { Locale } from '../data/routes';
 import { useT } from '../i18n/t';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -24,7 +25,7 @@ const credits = single.credits.map((c) => ({
   name: c.members ? `${c.name} (${c.members.join(', ')})` : c.name,
   roles: [c.roles.map((r) => roleLabel(r, locale)).join(', '), c.note?.[locale] ?? c.note?.de].filter(Boolean).join(' · '),
 }));
-const teaser = single.teaser[locale] ?? single.teaser.de;
+const teaser = loc(single.teaser, locale);
 ---
 
 <article class="single" id={singleId(single.slug)} aria-labelledby={titleId(singleId(single.slug))}>

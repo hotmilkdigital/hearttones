@@ -3,6 +3,8 @@
  * Payment details (bank account, PayPal) never go here or anywhere on the site (§5.14).
  */
 
+import type { Localized } from '../i18n/localized.ts';
+
 export const site = {
   url: 'https://hearttones.net',
   brand: 'Heart Tones',
@@ -18,7 +20,7 @@ export const site = {
     phone: '+4917661233929',
     phoneDisplay: '0176 61233929',
     /** No opening hours (§5.12). */
-    availability: 'Erstgespräch nach Vereinbarung',
+    availability: { de: 'Erstgespräch nach Vereinbarung', en: null } as Localized,
     /** Shown in header/footer instead of the address. */
     area: 'Berlin-Kreuzberg',
   },

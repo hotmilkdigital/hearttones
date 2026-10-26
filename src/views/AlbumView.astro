@@ -25,6 +25,7 @@ import { site } from '../data/site';
 import { ids, titleId, hash } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { formatDate } from '../i18n/format';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -99,7 +100,7 @@ const description = t('album.description', {
   routeKey={album.id === 'vol-1' ? 'vol1' : 'vol2'}
   ogType="music.album"
   image={coverImage ?? undefined}
-  imageAlt={album.coverAlt}
+  imageAlt={loc(album.coverAlt, locale)}
   schema={albumGraph(album, ogCover ? new URL(ogCover.src, site.url).href : undefined)}
 >
   <Section tone="light" class="album-head" aria-labelledby={titleId(ids.album)}>
@@ -116,8 +117,8 @@ const description = t('album.description', {
         <h1 id={titleId(ids.album)}>
           {seriesTitle} <span class="album-head__vol">{nb(album.shortTitle)}</span>
         </h1>
-        <p class="lead album-head__intro">{album.teaser}</p>
-        {album.story?.map((p) => <p class="album-head__more">{nb(p)}</p>)}
+        <p class="lead album-head__intro">{loc(album.teaser, locale)}</p>
+        {album.story && loc(album.story, locale).map((p) => <p class="album-head__more">{nb(p)}</p>)}
 
         {
           album.status === 'outOfPrint' ? (
@@ -174,7 +175,7 @@ const description = t('album.description', {
       <div>
         <h2 id={titleId(ids.credits)}>{t('album.credits')}</h2>
         <CreditList items={album.credits.map(creditItem)} class="people__list" />
-        {album.thanks && <p class="people__thanks">{album.thanks}</p>}
+        {album.thanks && <p class="people__thanks">{loc(album.thanks, locale)}</p>}
       </div>
     </div>
   </Section>
@@ -184,7 +185,7 @@ const description = t('album.description', {
       <Section tone="sand" aria-label={t('nav.press')}>
         <figure class="quote">
           <blockquote>
-            <p>{t('common.quoteOpen')}{quote.quote}{t('common.quoteClose')}</p>
+            <p>{t('common.quoteOpen')}{loc(quote.quote, locale)}{t('common.quoteClose')}</p>
           </blockquote>
           <figcaption>
             {t('common.quoteOpen')}{locale === 'de' ? quote.headline : <span lang="de">{quote.headline}</span>}{t('common.quoteClose')},{' '}

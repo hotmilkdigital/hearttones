@@ -13,6 +13,7 @@ import { site } from '../../data/site';
 import { works } from '../../data/works';
 import { ids, titleId } from '../../data/anchors';
 import { useT } from '../../i18n/t';
+import { loc } from '../../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -26,9 +27,9 @@ const t = useT(locale);
   <div class="production__grid">
     <div class="production__main">
       <h2 id={titleId(ids.production)}>{t('production.heading')}</h2>
-      <p class="production__intro">{productionIntro}</p>
+      <p class="production__intro">{loc(productionIntro, locale)}</p>
       <ul class="production__services">
-        {services.map((s) => <li>{s}</li>)}
+        {services.map((s) => <li>{loc(s, locale)}</li>)}
       </ul>
       <div class="production__actions">
         <a class="btn btn--primary" href={path('contact', locale)}>{t('production.enquire')}</a>
@@ -43,7 +44,7 @@ const t = useT(locale);
           {
             works.map((w) => (
               <li>
-                <strong>{w.artist}</strong> – {t('common.quoteOpen')}{w.title}{t('common.quoteClose')}{w.year ? ` (${w.year})` : ''}, {w.shortRole}
+                <strong>{w.artist}</strong> – {t('common.quoteOpen')}{w.title}{t('common.quoteClose')}{w.year ? ` (${w.year})` : ''}, {loc(w.shortRole, locale)}
               </li>
             ))
           }

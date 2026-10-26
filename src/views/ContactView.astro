@@ -13,6 +13,7 @@ import { order, site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { formatEur } from '../i18n/format';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -57,7 +58,7 @@ const concerns = [
     <div class="contact">
       <div class="contact__text">
         <h1 id={titleId(ids.contact)}>{t('nav.contact')}</h1>
-        <p class="lead contact__lead">{t('contact.lead', { availability: site.contact.availability })}</p>
+        <p class="lead contact__lead">{t('contact.lead', { availability: loc(site.contact.availability, locale) })}</p>
       </div>
       <div class="contact__card" data-tone="taupe">
         <p class="contact__name">{site.owner.fullName}</p>
@@ -66,7 +67,7 @@ const concerns = [
           <a href={mail()}>{site.contact.email}</a>
           <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
         </p>
-        <p class="contact__small">{site.contact.availability}</p>
+        <p class="contact__small">{loc(site.contact.availability, locale)}</p>
       </div>
     </div>
   </Section>

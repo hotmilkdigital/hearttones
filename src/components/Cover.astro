@@ -9,6 +9,7 @@ import type { Album } from '../data/albums';
 import { clearedCover } from '../lib/covers';
 import type { Locale } from '../data/routes';
 import { useT } from '../i18n/t';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -32,7 +33,7 @@ const widths = image ? [width, Math.round(width * 1.5), width * 2].filter((w) =>
   image ? (
     <Picture
       src={image}
-      alt={album.coverAlt}
+      alt={loc(album.coverAlt, locale)}
       widths={widths}
       width={widths.at(-1)}
       height={widths.at(-1)}

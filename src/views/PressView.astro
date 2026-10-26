@@ -14,6 +14,7 @@ import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { ids, titleId } from '../data/anchors';
 import { useT } from '../i18n/t';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -46,7 +47,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
         pressQuotes.map((q) => (
           <figure class="press__quote">
             <blockquote>
-              <p>{t('common.quoteOpen')}{q.quote}{t('common.quoteClose')}</p>
+              <p>{t('common.quoteOpen')}{loc(q.quote, locale)}{t('common.quoteClose')}</p>
             </blockquote>
             <figcaption>
               {t('common.quoteOpen')}{locale === 'de' ? q.headline : <span lang="de">{q.headline}</span>}{t('common.quoteClose')}, {q.source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />} · {t('press.reviewOf')}
@@ -66,7 +67,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
             pressMentions.map((m) => (
               <li>
                 <strong>{m.outlet}</strong>
-                {[m.what, m.date].filter(Boolean).length > 0 && <span> – {[m.what, m.date].filter(Boolean).join(', ')}</span>}
+                {[m.what, m.date].some(Boolean) && <span> – {[m.what, m.date].flatMap((x) => (x ? [loc(x, locale)] : [])).join(', ')}</span>}
               </li>
             ))
           }

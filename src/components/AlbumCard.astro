@@ -13,6 +13,7 @@ import { order } from '../data/site';
 import { albumCardId, ids } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { formatEur } from '../i18n/format';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -39,7 +40,7 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
         <a href={url}>Lullabies From Around The World <span class="nowrap">{nb(album.shortTitle)}</span></a>
       </Heading>
       <p class="album-card__meta">{meta}</p>
-      <p class="album-card__teaser">{album.teaser}</p>
+      <p class="album-card__teaser">{loc(album.teaser, locale)}</p>
 
       {
         album.status === 'outOfPrint' ? (

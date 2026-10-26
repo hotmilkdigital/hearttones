@@ -8,6 +8,7 @@ import { trackId } from '../data/anchors';
 import { albumDuration, isoDuration, vol1, vol2, type Album } from '../data/albums';
 import { path, type RouteKey } from '../data/routes';
 import { site } from '../data/site';
+import { personDescription } from '../data/about';
 
 type Node = Record<string, unknown>;
 
@@ -40,7 +41,7 @@ export function siteGraph(): Node[] {
       url: abs(path('about')),
       // Exact job title still to be confirmed by Philipp (§8.7).
       jobTitle: '[PLATZHALTER: jobTitle]',
-      description: 'Komponist, Produzent und Musiker in Berlin-Kreuzberg',
+      description: personDescription.de,
       homeLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', addressLocality: 'Berlin', addressCountry: 'DE' } },
       email: `mailto:${site.contact.email}`,
       memberOf: { '@id': ids.group },

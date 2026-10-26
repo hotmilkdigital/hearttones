@@ -9,6 +9,8 @@
  * mastered by Robert Cummings at Hot Milk Studio.
  */
 
+import type { Localized } from '../i18n/localized.ts';
+
 export interface Work {
   id: string;
   title: string;
@@ -16,12 +18,12 @@ export interface Work {
   /** null → placeholder until confirmed. */
   year: number | null;
   youtubeId: string;
-  credit: string;
+  credit: Localized;
   /** Philipp's role in a few words, for the homepage reference list. */
-  shortRole: string;
+  shortRole: Localized;
   /** false: roles still to be checked against Philipp's full credits. */
   creditConfirmed: boolean;
-  artistLink: { label: string; href: string };
+  artistLink: { label: Localized; href: string };
 }
 
 export const works: Work[] = [
@@ -31,11 +33,13 @@ export const works: Work[] = [
     artist: 'Fanfare Ciocărlia',
     year: 2021,
     youtubeId: 'G4tORyVfDb8',
-    credit:
-      'Komposition: Philipp von Rothkirch, Benedikt Stehle und Henry Ernst. Produktion: Henry Ernst. Gemischt und gemastert von Robert Cummings im Hot Milk Studio. Erschienen auf dem Jubiläumsalbum von Fanfare Ciocărlia.',
-    shortRole: 'Komposition mit Benedikt Stehle und Henry Ernst',
+    credit: {
+      de: 'Komposition: Philipp von Rothkirch, Benedikt Stehle und Henry Ernst. Produktion: Henry Ernst. Gemischt und gemastert von Robert Cummings im Hot Milk Studio. Erschienen auf dem Jubiläumsalbum von Fanfare Ciocărlia.',
+      en: null,
+    },
+    shortRole: { de: 'Komposition mit Benedikt Stehle und Henry Ernst', en: null },
     creditConfirmed: true,
-    artistLink: { label: 'Fanfare Ciocărlia bei Asphalt Tango', href: 'https://asphalt-tango.de/' },
+    artistLink: { label: { de: 'Fanfare Ciocărlia bei Asphalt Tango', en: null }, href: 'https://asphalt-tango.de/' },
   },
   {
     id: 'this-is-my-body',
@@ -43,10 +47,12 @@ export const works: Work[] = [
     artist: 'Ingrid Arthur',
     year: 2014,
     youtubeId: 'IVkwNzdCu88',
-    credit:
-      'Komposition und Produktion: Philipp von Rothkirch. Aufgenommen, gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
-    shortRole: 'Komposition und Produktion',
+    credit: {
+      de: 'Komposition und Produktion: Philipp von Rothkirch. Aufgenommen, gemischt und gemastert von Robert Cummings im Hot Milk Studio.',
+      en: null,
+    },
+    shortRole: { de: 'Komposition und Produktion', en: null },
     creditConfirmed: true,
-    artistLink: { label: 'ingridarthur.com', href: 'https://www.ingridarthur.com/' },
+    artistLink: { label: { de: 'ingridarthur.com', en: null }, href: 'https://www.ingridarthur.com/' },
   },
 ];

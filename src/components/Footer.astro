@@ -10,6 +10,7 @@ import { enPublished, path, type Locale, type RouteKey } from '../data/routes';
 import { site } from '../data/site';
 import { ids } from '../data/anchors';
 import { useT } from '../i18n/t';
+import { loc } from '../i18n/localized';
 
 interface Props {
   locale?: Locale;
@@ -54,7 +55,7 @@ const other: Locale = locale === 'de' ? 'en' : 'de';
         <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a><br />
         <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
       </p>
-      <p class="footer__note">{site.contact.availability}</p>
+      <p class="footer__note">{loc(site.contact.availability, locale)}</p>
     </div>
 
     <nav class="footer__col" aria-labelledby={ids.footerPages}>
