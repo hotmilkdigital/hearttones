@@ -12,7 +12,8 @@ import type { Role } from './roles.ts';
 import type { Localized } from '../i18n/localized.ts';
 
 export interface SingleCredit {
-  name: string;
+  /** Localized where the name carries quote marks („BÄM“ / “BÄM”). */
+  name: string | Localized;
   roles: Role[];
   /** Short qualifier as given by Philipp, e.g. the year of the original recording. */
   note?: Record<Locale, string>;
@@ -53,7 +54,7 @@ export const singles: Single[] = [
       { name: 'Sebastian Borkowsky', roles: ['flute'] },
       { name: 'Philipp Sindhy', roles: ['trumpet'] },
       { name: 'Friedrich Milz', roles: ['trombone'] },
-      { name: '„BÄM“ drumline', roles: ['drumline'], members: ['Ramon Buntebart', 'Leander Winkler', 'Rafael Nussbaumer'] },
+      { name: { de: '„BÄM“ drumline', en: '“BÄM” drumline' }, roles: ['drumline'], members: ['Ramon Buntebart', 'Leander Winkler', 'Rafael Nussbaumer'] },
     ],
   },
   {

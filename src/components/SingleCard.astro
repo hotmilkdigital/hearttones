@@ -21,10 +21,13 @@ interface Props {
 const { locale = 'de', single, headingLevel: Heading = 'h3', showCredits = true } = Astro.props;
 const t = useT(locale);
 
-const credits = single.credits.map((c) => ({
-  name: c.members ? `${c.name} (${c.members.join(', ')})` : c.name,
-  roles: [c.roles.map((r) => roleLabel(r, locale)).join(', '), c.note?.[locale] ?? c.note?.de].filter(Boolean).join(' · '),
-}));
+const credits = single.credits.map((c) => {
+  const name = typeof c.name === 'string' ? c.name : loc(c.name, locale);
+  return {
+    name: c.members ? `${name} (${c.members.join(', ')})` : name,
+    roles: [c.roles.map((r) => roleLabel(r, locale)).join(', '), c.note?.[locale] ?? c.note?.de].filter(Boolean).join(' · '),
+  };
+});
 const teaser = loc(single.teaser, locale);
 ---
 
