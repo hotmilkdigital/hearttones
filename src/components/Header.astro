@@ -31,7 +31,6 @@ const items = mainNav.map((item) => {
   return { href: path(item.key, locale), label: item.label[locale], ariaCurrent };
 });
 
-const other: Locale = locale === 'de' ? 'en' : 'de';
 // Same page in each language (falls back to the homepage). Anchor ids are shared across languages
 // (anchors.ts), so the script below carries the current #fragment over on click.
 const langHref = (l: Locale) => (current ? path(current, l) : path('home', l));
@@ -75,8 +74,8 @@ const langHref = (l: Locale) => (current ? path(current, l) : path('home', l));
               DE
             </a>
             <span aria-hidden="true">/</span>
-            <a href={langHref(other)} lang={other} hreflang={other} data-lang-switch>
-              {other.toUpperCase()}
+            <a href={langHref('en')} lang="en" hreflang="en" data-lang-switch aria-current={locale === 'en' ? 'true' : undefined}>
+              EN
             </a>
           </p>
         )

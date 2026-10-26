@@ -39,6 +39,7 @@ const modules: Record<string, Record<string, unknown>> = {
   singles: await import('../src/data/singles.ts'),
   'team-pins': await import('../src/data/team-pins.ts'),
   works: await import('../src/data/works.ts'),
+  legal: await import('../src/data/legal.ts'),
 };
 
 const missing: string[] = [];

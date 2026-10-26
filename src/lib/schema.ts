@@ -6,9 +6,10 @@
 import { people } from '../data/people';
 import { trackId } from '../data/anchors';
 import { albumDuration, isoDuration, vol1, vol2, type Album } from '../data/albums';
-import { path, type RouteKey } from '../data/routes';
+import { enPublished, path, type Locale, type RouteKey } from '../data/routes';
 import { site } from '../data/site';
 import { personDescription } from '../data/about';
+import { loc } from '../i18n/localized';
 
 type Node = Record<string, unknown>;
 
@@ -24,24 +25,25 @@ export const ids = {
 
 export const albumPath = (album: Album) => path((album.id === 'vol-1' ? 'vol1' : 'vol2') as RouteKey);
 
-export function siteGraph(): Node[] {
+/** Site graph in the page language: the @ids stay the same in DE and EN (one entity per thing). */
+export function siteGraph(locale: Locale = 'de'): Node[] {
   return [
     {
       '@type': 'WebSite',
       '@id': ids.website,
       url: abs('/'),
       name: site.brand,
-      inLanguage: 'de-DE',
+      inLanguage: enPublished ? ['de-DE', 'en-GB'] : 'de-DE',
       publisher: { '@id': ids.person },
     },
     {
       '@type': 'Person',
       '@id': ids.person,
       name: site.owner.fullName,
-      url: abs(path('about')),
+      url: abs(path('about', locale)),
       // Exact job title still to be confirmed by Philipp (§8.7).
       jobTitle: '[PLATZHALTER: jobTitle]',
-      description: personDescription.de,
+      description: loc(personDescription, locale),
       homeLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', addressLocality: 'Berlin', addressCountry: 'DE' } },
       email: `mailto:${site.contact.email}`,
       memberOf: { '@id': ids.group },

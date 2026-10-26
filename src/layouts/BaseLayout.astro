@@ -69,7 +69,7 @@ const alternates =
       ]
     : [];
 
-const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...siteGraph(), ...schema] });
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...siteGraph(locale), ...schema] });
 ---
 
 <!doctype html>
@@ -90,6 +90,7 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.brand} />
     <meta property="og:locale" content={locale === 'de' ? 'de_DE' : 'en_GB'} />
+    {alternates.length > 0 && <meta property="og:locale:alternate" content={locale === 'de' ? 'en_GB' : 'de_DE'} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {canonical && <meta property="og:url" content={canonical} />}

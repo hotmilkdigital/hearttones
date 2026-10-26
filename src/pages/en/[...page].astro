@@ -1,0 +1,24 @@
+---
+/**
+ * All EN pages, including the homepage (/en/). Built only once `enPublished` is true
+ * (CLAUDE.md §4: EN after Philipp's approval of the German copy). Same views as DE
+ * (HomeView, PageView) with locale "en"; URLs from src/data/routes.ts only.
+ */
+import type { GetStaticPaths } from 'astro';
+import HomeView from '../../views/HomeView.astro';
+import PageView from '../../views/PageView.astro';
+import { enPublished, routes, type PageKey, type RouteKey } from '../../data/routes';
+
+export const getStaticPaths = (() =>
+  enPublished
+    ? (Object.keys(routes) as RouteKey[]).map((key) => ({
+        // '/en/' → undefined (the /en/ index), '/en/music/' → 'music'
+        params: { page: routes[key].en.replace(/^\/en\/?|\/$/g, '') || undefined },
+        props: { key },
+      }))
+    : []) satisfies GetStaticPaths;
+
+const { key } = Astro.props as { key: RouteKey };
+---
+
+{key === 'home' ? <HomeView locale="en" /> : <PageView pageKey={key as PageKey} locale="en" />}

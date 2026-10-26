@@ -1,7 +1,8 @@
 ---
 /**
  * Route key → view, shared by the DE pages (src/pages/[...page].astro) and the EN pages
- * (src/pages/en/[...page].astro), so both languages always render the same views.
+ * (src/pages/en/[...page].astro), so both languages always render the same views. Exception: the
+ * EN legal pages are short pointers to the binding German texts (LegalPointerView).
  */
 import MusicView from '../views/MusicView.astro';
 import AlbumView from '../views/AlbumView.astro';
@@ -15,6 +16,7 @@ import ContactView from '../views/ContactView.astro';
 import ImprintView from '../views/ImprintView.astro';
 import PrivacyView from '../views/PrivacyView.astro';
 import WithdrawalView from '../views/WithdrawalView.astro';
+import LegalPointerView from '../views/LegalPointerView.astro';
 import { vol1, vol2 } from '../data/albums';
 import type { Locale, PageKey } from '../data/routes';
 
@@ -36,6 +38,6 @@ const { pageKey: key, locale } = Astro.props;
 {key === 'production' && <ProductionView locale={locale} />}
 {key === 'press' && <PressView locale={locale} />}
 {key === 'contact' && <ContactView locale={locale} />}
-{key === 'imprint' && <ImprintView locale={locale} />}
-{key === 'privacy' && <PrivacyView locale={locale} />}
-{key === 'withdrawal' && <WithdrawalView locale={locale} />}
+{key === 'imprint' && (locale === 'de' ? <ImprintView locale={locale} /> : <LegalPointerView kind="imprint" locale={locale} />)}
+{key === 'privacy' && (locale === 'de' ? <PrivacyView locale={locale} /> : <LegalPointerView kind="privacy" locale={locale} />)}
+{key === 'withdrawal' && (locale === 'de' ? <WithdrawalView locale={locale} /> : <LegalPointerView kind="withdrawal" locale={locale} />)}

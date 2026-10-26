@@ -5,6 +5,8 @@
  *   every internal link resolves to a built page, every #fragment (same page or other page) and
  *   every aria-labelledby/-controls/-describedby resolves to an id on that page; ids are unique and
  *   lowercase ASCII (anchors.ts, CLAUDE.md §11).
+ * - EN pages (/en/): lang="en", hreflang alternate, and a list of German words still visible
+ *   outside lang="de" elements (for a human check, not failed).
  * - Lists every [PLATZHALTER: …] per page (§5.1). With --write: docs/platzhalter.md.
  * Exits 1 on SEO errors; placeholders are reported, not failed (they are expected on staging).
  */
@@ -51,6 +53,7 @@ const meta = (html: string, attr: string, name: string) =>
 const titles = new Map<string, string[]>();
 const descriptions = new Map<string, string[]>();
 const placeholders: { url: string; text: string }[] = [];
+const germanOnEn: { url: string; text: string }[] = [];
 
 for (const { url, html } of pages) {
   const is404 = url === '/404';
@@ -121,8 +124,28 @@ for (const { url, html } of pages) {
     for (const ref of m[2]!.split(/\s+/).filter(Boolean))
       if (!idSet.has(ref)) errors.push(`${url}: aria-${m[1]} refers to missing id "${ref}"`);
 
+  // EN pages: lang="en", hreflang pair, and no German text outside lang="de" elements (press
+  // headlines, tax note, German song titles) and [PLATZHALTER] markers. German hits are listed for a
+  // human check, not failed – names like „Böckelmann" or „Wartenburgstraße" are correct in EN too.
+  if (url.startsWith('/en/')) {
+    if (!/<html lang="en"/.test(html)) errors.push(`${url}: EN page without <html lang="en">`);
+    if (!/<link rel="alternate" hreflang="de"/.test(html) && !is404) errors.push(`${url}: EN page without hreflang="de" alternate`);
+    let visible = html.replace(/<(script|style)[\s\S]*?<\/\1>/g, ' ').replace(/<span class="placeholder">[\s\S]*?<\/span>/g, ' ');
+    // Drop elements marked German (innermost first, repeated for nesting).
+    for (let i = 0; i < 5; i++) visible = visible.replace(/<(\w+)\b[^>]*\blang="de"[^>]*>(?:(?!<\1\b)[\s\S])*?<\/\1>/g, ' ');
+    const attrText = [...visible.matchAll(/\b(?:alt|aria-label|title|content)="([^"]*)"/g)].map((m) => m[1]).join(' | ');
+    const plain = decode(`${visible.replace(/<[^>]+>/g, ' ')} | ${attrText}`).replace(/\s+/g, ' ');
+    const german = /\b(und|der|die|das|mit|für|nicht|oder|zur|zum|im|bei|Sie|Ihr|Ihre|Lieder|Länder|Musiker:innen|Künstler:innen|Seite|Startseite|Foto|verstorben|Nr\.)(?=[\s.,:;!?)]|$)|\b\w*(?<!Böckelm|Wartenburgstr|Ciocărl)(?:ä|ö|ü|ß)\w*/g;
+    const hits = new Set<string>();
+    for (const m of plain.matchAll(german)) {
+      const at = m.index ?? 0;
+      hits.add(plain.slice(Math.max(0, at - 35), at + m[0].length + 35).trim());
+    }
+    for (const h of hits) germanOnEn.push({ url, text: h });
+  }
+
   // Placeholders in text and attributes
-  const text = decode(html.replace(/<script[\s\S]*?<\/script>/g, (s) => (s.includes('PLATZHALTER') ? s : '')).replace(/<[^>]+>/g, ' '));
+  const text =decode(html.replace(/<script[\s\S]*?<\/script>/g, (s) => (s.includes('PLATZHALTER') ? s : '')).replace(/<[^>]+>/g, ' '));
   const attrs = decode(html.match(/"[^"]*\[PLATZHALTER:[^"]*"/g)?.join(' ') ?? '');
   const seen = new Set<string>();
   for (const m of `${text} ${attrs}`.matchAll(/\[PLATZHALTER:\s*([^\]]+)\]/g)) {
@@ -141,6 +164,12 @@ for (const [d, urls] of descriptions) if (d && urls.length > 1) errors.push(`dup
 console.log(`qa:dist – ${pages.length} pages`);
 for (const w of warn) console.log(`  warn: ${w}`);
 for (const e of errors) console.log(`  ERROR: ${e}`);
+
+if (pages.some((p) => p.url.startsWith('/en/'))) {
+  console.log(`
+German text on EN pages (outside lang="de"): ${germanOnEn.length}`);
+  for (const g of germanOnEn) console.log(`  - ${g.url}: …${g.text}…`);
+}
 
 const byText = new Map<string, string[]>();
 for (const p of placeholders) byText.set(p.text, [...(byText.get(p.text) ?? []), p.url]);

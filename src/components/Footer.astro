@@ -6,7 +6,7 @@
  * language link once EN exists. No funding note in the footer (§11, 23.10.2026).
  */
 import Logo from './Logo.astro';
-import { enPublished, path, type Locale, type RouteKey } from '../data/routes';
+import { enPublished, path, routes, type Locale, type RouteKey } from '../data/routes';
 import { site } from '../data/site';
 import { ids } from '../data/anchors';
 import { useT } from '../i18n/t';
@@ -35,6 +35,7 @@ const legal: { key: RouteKey; label: string }[] = [
 ];
 
 const other: Locale = locale === 'de' ? 'en' : 'de';
+const current = (Object.keys(routes) as RouteKey[]).find((k) => routes[k][locale] === Astro.url.pathname);
 ---
 
 <footer class="footer" data-tone="taupe">
@@ -84,7 +85,7 @@ const other: Locale = locale === 'de' ? 'en' : 'de';
       {
         enPublished && (
           <li>
-            <a href={path('home', other)} lang={other} hreflang={other}>
+            <a href={path(current ?? 'home', other)} lang={other} hreflang={other} data-lang-switch>
               {t('footer.otherLanguage')}
             </a>
           </li>

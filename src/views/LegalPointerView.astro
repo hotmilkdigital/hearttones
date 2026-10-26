@@ -1,0 +1,43 @@
+---
+/**
+ * EN legal page (legal notice, privacy, withdrawal): a short English summary that points to the
+ * binding German page (decision 25.10.2026). The legal notice also repeats email and phone.
+ */
+import LegalPage from '../components/LegalPage.astro';
+import { legalPointers, type LegalKey } from '../data/legal';
+import { path, type Locale } from '../data/routes';
+import { site } from '../data/site';
+import { loc } from '../i18n/localized';
+import { useT } from '../i18n/t';
+
+interface Props {
+  locale: Locale;
+  kind: LegalKey;
+}
+
+const { locale, kind } = Astro.props;
+const t = useT(locale);
+const pointer = legalPointers[kind];
+const domain = site.url.replace('https://', '');
+---
+
+<LegalPage
+  locale={locale}
+  routeKey={kind}
+  title={t(`${kind}.title` as const, { brand: site.brand })}
+  heading={t(`${kind}.heading` as const)}
+  description={t(`${kind}.description` as const, { domain })}
+>
+  <p>{loc(pointer.text, locale)}</p>
+  <p>
+    <a href={path(kind, 'de')} hreflang="de">{loc(pointer.link, locale)}</a>
+  </p>
+  {
+    kind === 'imprint' && (
+      <p>
+        <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a> ·{' '}
+        <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+      </p>
+    )
+  }
+</LegalPage>

@@ -352,6 +352,8 @@ Eine zweisprachige `404.html` (DE oben, EN darunter, je mit `lang`), siehe §6 N
 4. `feat(i18n): en pages behind enPublished`, Sitemap-`serialize`, hreflang, bilinguale 404.
 5. Übersetzung – erst nach Philipps DE-Freigabe und Roberts Auftrag. Danach `enPublished = true` und den Check auf Fehlermodus stellen.
 
+**Stand 26.10.2026:** Schritte 1–4 umgesetzt (`985d918`, `3166a78`, `772778a` und der Commit `feat(i18n): en pages behind enPublished`). Der Fehlermodus von `check:i18n` hängt direkt an `enPublished` – kein eigener Schalter nötig. EN-Rechtsseiten: `LegalPointerView` mit Texten aus `src/data/legal.ts`. Test mit `enPublished = true` (nur lokal): 14 EN-Seiten, hreflang im Head und in der Sitemap, Sprachumschalter mit `#fragment`, `check:i18n` bricht mit fehlenden Texten ab.
+
 ---
 
 ## 6. Entscheidungen (Robert, 25.10.2026)
