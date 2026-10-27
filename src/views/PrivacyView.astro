@@ -1,11 +1,13 @@
 ---
 /**
- * Datenschutzerklärung – scaffold (CLAUDE.md §10). States what the site technically does;
- * all legal wording (legal bases, retention, rights, processor details) stays [PLATZHALTER]
- * until Robert supplies the final text. The controller's address lives in the Impressum only.
+ * Datenschutzerklärung (CLAUDE.md §10) – final text by Robert,
+ * ../01_Brief/hearttones_datenschutzerklaerung_final_2026-10-27 (27.10.2026), verbatim.
+ * Sections marked „bestehender Text" in Robert's file keep the earlier wording (1, 2, 4, 5, 7 and the
+ * technical part of 6, incl. the YouTube domains from privacy.ts), switched from „unser Server" to
+ * „der Server dieser Website" to match Robert's first-person text. Not taken over: the paragraph on a
+ * contact form – the site has none (§10; Robert, 27.10.2026). Typography only (§5.15).
  */
 import LegalPage from '../components/LegalPage.astro';
-import Placeholder from '../components/Placeholder.astro';
 import { externalLinkTargets, youtubeHosts, youtubeHostsCheckedOn } from '../data/privacy';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
@@ -17,6 +19,7 @@ interface Props {
 
 const { locale = 'de' } = Astro.props;
 const t = useT(locale);
+const email = site.contact.email;
 ---
 
 <LegalPage
@@ -25,45 +28,66 @@ const t = useT(locale);
   title={t('privacy.title', { brand: site.brand })}
   heading={t('privacy.heading')}
   description={t('privacy.description', { domain: site.url.replace('https://', '') })}
-  status="Endgültiger Text der Datenschutzerklärung – von Robert"
 >
   <h2>1. Verantwortlicher</h2>
   <p>
     Verantwortlich für die Datenverarbeitung auf dieser Website ist {site.owner.fullName}. Die Kontaktdaten finden Sie
-    im{' '}<a href={path('imprint', locale)}>Impressum</a>. E-Mail: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+    im{' '}<a href={path('imprint', locale)}>Impressum</a>. E-Mail: <a href={`mailto:${email}`}>{email}</a>
   </p>
 
   <h2>2. Das Wichtigste in Kürze</h2>
   <ul>
     <li>Diese Website setzt keine Cookies und verwendet keine Analyse- oder Tracking-Dienste.</li>
-    <li>Schriften und Hörproben liegen auf unserem eigenen Server; beim Laden werden keine Daten an Dritte übertragen.</li>
+    <li>Schriften und Hörproben liegen auf dem Server dieser Website; beim Laden werden keine Daten an Dritte übertragen.</li>
     <li>YouTube-Videos werden erst geladen, wenn Sie auf „Video laden“ klicken.</li>
   </ul>
 
   <h2>3. Hosting und Server-Logfiles</h2>
-  <p>Die Website wird bei der Hetzner Online GmbH gehostet.</p>
-  <p><Placeholder text="Serverstandort (Deutschland/Finnland), Angaben zu Server-Logfiles (erfasste Daten, Zweck, Rechtsgrundlage, Speicherdauer) und Auftragsverarbeitung mit Hetzner" /></p>
+  <p>
+    Diese Website wird im Auftrag von Philipp von Rothkirch von Hot Milk Digital (Robert Cummings, Berlin) betreut und auf
+    einem Server der Hetzner Online GmbH, Industriestr.&nbsp;25, 91710 Gunzenhausen, betrieben. Der Server steht in einem
+    Rechenzentrum in Am Datacenter-Park&nbsp;1, 08223 Falkenstein/Vogtland. Mit Hot Milk Digital besteht ein Vertrag über die
+    Auftragsverarbeitung nach Art.&nbsp;28 DSGVO; Hetzner ist als Unterauftragsverarbeiter eingebunden.
+  </p>
+  <p>
+    Wenn Sie diese Website aufrufen, überträgt Ihr Browser automatisch Daten an den Server. Der Server speichert sie
+    vorübergehend in Protokolldateien (Server-Logfiles):
+  </p>
+  <ul>
+    <li>IP-Adresse des anfragenden Geräts</li>
+    <li>Datum und Uhrzeit des Zugriffs</li>
+    <li>aufgerufene Seite oder Datei</li>
+    <li>HTTP-Statuscode und übertragene Datenmenge</li>
+    <li>die Seite, von der aus Sie zu mir gekommen sind (Referrer), sofern Ihr Browser sie übermittelt</li>
+    <li>Browsertyp und Betriebssystem (User-Agent)</li>
+  </ul>
+  <p>
+    Diese Daten brauche ich, um die Website auszuliefern, Fehler zu finden und Angriffe abzuwehren. Rechtsgrundlage ist
+    Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO; mein berechtigtes Interesse liegt im sicheren und fehlerfreien Betrieb der Website.
+    Die Logfiles werden nach 7&nbsp;Tagen automatisch gelöscht. Eine Zusammenführung mit anderen Daten oder eine Auswertung zu
+    Werbe- oder Analysezwecken findet nicht statt.
+  </p>
 
   <h2>4. Schriftarten</h2>
   <p>
-    Die Schriften (Literata, Nunito) werden von unserem eigenen Server geladen. Es besteht keine Verbindung zu Google Fonts
+    Die Schriften (Literata, Nunito) werden vom Server dieser Website geladen. Es besteht keine Verbindung zu Google Fonts
     oder anderen Schriftanbietern.
   </p>
 
   <h2>5. Hörproben</h2>
   <p>
-    Die Hörproben sind MP3-Dateien auf unserem eigenen Server. Beim Abspielen werden keine Daten an Dritte übertragen.
+    Die Hörproben sind MP3-Dateien auf dem Server dieser Website. Beim Abspielen werden keine Daten an Dritte übertragen.
   </p>
 
   <h2>6. YouTube-Videos (Zwei-Klick-Lösung)</h2>
   <p>
     Auf der Seite <a href={path('about', locale)}>Über Philipp</a> sind Videos von YouTube eingebunden. Solange Sie nicht auf
     „Video laden“ klicken, stellt Ihr Browser keine Verbindung zu YouTube oder Google her; angezeigt wird nur eine Vorschau
-    von unserem Server.
+    vom Server dieser Website.
   </p>
   <p>
-    Erst nach dem Klick wird der Player im erweiterten Datenschutzmodus von youtube-nocookie.com geladen. Anbieter ist die
-    Google Ireland Limited. Dabei ruft Ihr Browser Inhalte von folgenden Domains ab (geprüft am {youtubeHostsCheckedOn}):
+    Erst nach dem Klick wird der Player im erweiterten Datenschutzmodus von youtube-nocookie.com geladen. Dabei ruft Ihr
+    Browser Inhalte von folgenden Domains ab (geprüft am {youtubeHostsCheckedOn}):
   </p>
   <ul class="legal__hosts">
     {
@@ -78,7 +102,32 @@ const t = useT(locale);
     Dabei werden mindestens Ihre IP-Adresse und technische Angaben zu Ihrem Browser an Google übertragen; eine Übermittlung
     in die USA ist möglich.
   </p>
-  <p><Placeholder text="Rechtsgrundlage (Einwilligung), Widerruf der Einwilligung, Speicherung durch Google, Datenübermittlung in Drittländer, Link zur Datenschutzerklärung von Google" /></p>
+  <p>
+    Rechtsgrundlage für das Laden des Videos ist Ihre Einwilligung, die Sie mit dem Klick auf „Video laden“ erteilen
+    (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO und §&nbsp;25 Abs.&nbsp;1 TDDDG). Die Einwilligung gilt nur für das jeweilige Video und den
+    aktuellen Seitenaufruf; ich speichere sie nicht. Beim nächsten Aufruf der Seite ist das Video wieder deaktiviert. Sie
+    können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie die Seite neu laden oder verlassen.
+  </p>
+  <p>
+    Nach dem Laden des Players kann YouTube Cookies oder ähnliche Technologien auf Ihrem Gerät speichern und Daten über Ihre
+    Nutzung des Videos erheben, etwa um Statistiken zu erstellen oder Missbrauch zu verhindern. Wenn Sie bei einem
+    Google-Konto angemeldet sind, kann Google diese Daten Ihrem Konto zuordnen. Auf Art, Umfang und Dauer dieser Verarbeitung
+    habe ich keinen Einfluss.
+  </p>
+  <p>
+    Anbieter ist die Google Ireland Limited, Gordon House, Barrow Street, Dublin&nbsp;4, Irland. Daten können auch an die Google
+    LLC in den USA übermittelt werden. Die Google LLC ist nach dem EU-US Data Privacy Framework zertifiziert; für zertifizierte
+    Unternehmen hat die EU-Kommission ein angemessenes Datenschutzniveau festgestellt (Angemessenheitsbeschluss vom
+    10.&nbsp;Juli 2023, Art.&nbsp;45 DSGVO).
+  </p>
+  <p>
+    Sollte sich die Grundlage für die Übermittlung an die Google LLC künftig ändern, etwa durch Wegfall des
+    Angemessenheitsbeschlusses, werde ich diese Datenschutzerklärung entsprechend anpassen.
+  </p>
+  <p>
+    Weitere Informationen finden Sie in der Datenschutzerklärung von Google:{' '}
+    <a href="https://policies.google.com/privacy">https://policies.google.com/privacy</a>
+  </p>
   <p>
     Der Link „Auf YouTube ansehen“ führt direkt zu youtube.com; dort gelten die Datenschutzbestimmungen von YouTube.
   </p>
@@ -89,21 +138,76 @@ const t = useT(locale);
     wenn Sie einen solchen Link anklicken; dann gelten die Datenschutzbestimmungen der jeweiligen Website.
   </p>
 
-  <h2>8. Kontakt per E-Mail oder Telefon</h2>
+  <h2>8. Kontakt per E-Mail oder Telefon und CD-Bestellungen</h2>
   <p>
-    Wenn Sie uns per E-Mail oder Telefon kontaktieren oder eine CD bestellen, verarbeiten wir Ihre Angaben, um Ihre Anfrage
-    zu bearbeiten.
+    <strong>Welche Daten:</strong> Ich verarbeite die Angaben, die Sie mir mitteilen, in der Regel Ihren Namen, Ihre
+    E-Mail-Adresse oder Telefonnummer und den Inhalt Ihrer Nachricht. Bei einer CD-Bestellung zusätzlich Ihre Lieferanschrift,
+    die bestellte Menge und die Angaben zur Zahlung.
   </p>
-  <p><Placeholder text="Rechtsgrundlage, Speicherdauer, E-Mail-Anbieter (ALL-INKL?), Bestelldaten und Aufbewahrungspflichten" /></p>
+  <p>
+    <strong>Zweck und Rechtsgrundlage:</strong> Ich nutze die Daten nur, um Ihre Anfrage zu beantworten und Ihre Bestellung
+    abzuwickeln. Geht es um einen Vertrag, etwa eine CD-Bestellung oder eine Produktionsanfrage, ist Rechtsgrundlage
+    Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO. Bei allen anderen Anfragen ist es Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO; mein berechtigtes
+    Interesse liegt darin, Ihre Nachricht zu beantworten.
+  </p>
+  <p>
+    <strong>E-Mail-Anbieter:</strong> Mein E-Mail-Postfach wird im Rahmen der Betreuung durch Hot Milk Digital bei
+    ALL-INKL.COM – Neue Medien Münnich, Hauptstraße&nbsp;68, 02742 Friedersdorf, Deutschland, gehostet. Hot Milk Digital ist
+    insoweit mein Auftragsverarbeiter nach Art.&nbsp;28 DSGVO; ALL-INKL.COM ist als Unterauftragsverarbeiter eingebunden.
+  </p>
+  <p>
+    <strong>Zahlung:</strong> Bei Zahlung per Überweisung erhält meine Bank die Zahlungsdaten. Wenn Sie per PayPal bezahlen,
+    verarbeitet die PayPal (Europe) S.à r.l. et Cie, S.C.A., 22–24 Boulevard Royal, L-2449 Luxemburg, Ihre Zahlungsdaten in
+    eigener Verantwortung. Es gilt die Datenschutzerklärung von PayPal:{' '}
+    <a href="https://www.paypal.com/de/legalhub/privacy-full">https://www.paypal.com/de/legalhub/privacy-full</a>
+  </p>
+  <p>
+    <strong>Versand:</strong> Für den Versand der CD übermittle ich Ihren Namen und Ihre Lieferanschrift an das beauftragte
+    Versandunternehmen, z.&nbsp;B. Deutsche Post oder DHL. Dieses verarbeitet die Daten zur Zustellung in eigener
+    datenschutzrechtlicher Verantwortung. Rechtsgrundlage für die Übermittlung ist Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO.
+  </p>
+  <p>
+    <strong>Speicherdauer:</strong> Anfragen lösche ich, sobald sie erledigt sind und keine weitere Korrespondenz zu erwarten
+    ist. Daten zu Bestellungen und Rechnungen bewahre ich auf, solange gesetzliche Aufbewahrungspflichten bestehen
+    (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;c DSGVO in Verbindung mit §&nbsp;147 Abgabenordnung: in der Regel 8&nbsp;Jahre für Buchungsbelege wie
+    Rechnungen und 6&nbsp;Jahre für Geschäftsbriefe).
+  </p>
+  <p>
+    <strong>Pflicht zur Bereitstellung:</strong> Die Bereitstellung Ihrer Daten ist weder gesetzlich noch vertraglich
+    vorgeschrieben. Für die Beantwortung einer Anfrage benötige ich jedoch mindestens eine Kontaktmöglichkeit; für die
+    Abwicklung einer CD-Bestellung benötige ich Ihren Namen und Ihre Lieferanschrift. Ohne diese Angaben kann ich Ihre Anfrage
+    nicht beantworten bzw. Ihre Bestellung nicht ausführen.
+  </p>
+  <p>Ich gebe Ihre Daten nicht für Werbung weiter und verkaufe sie nicht.</p>
 
   <h2>9. Ihre Rechte</h2>
-  <p><Placeholder text="Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerspruch, Beschwerde bei einer Aufsichtsbehörde" /></p>
+  <p>Sie haben jederzeit das Recht,</p>
+  <ul>
+    <li>Auskunft über die bei mir gespeicherten Daten zu verlangen (Art.&nbsp;15 DSGVO),</li>
+    <li>unrichtige Daten berichtigen zu lassen (Art.&nbsp;16 DSGVO),</li>
+    <li>die Löschung Ihrer Daten zu verlangen (Art.&nbsp;17 DSGVO), soweit keine gesetzliche Pflicht zur Aufbewahrung besteht,</li>
+    <li>die Einschränkung der Verarbeitung zu verlangen (Art.&nbsp;18 DSGVO),</li>
+    <li>Ihre Daten in einem gängigen, maschinenlesbaren Format zu erhalten (Datenübertragbarkeit, Art.&nbsp;20 DSGVO),</li>
+    <li>
+      eine erteilte Einwilligung zu widerrufen (Art.&nbsp;7 Abs.&nbsp;3 DSGVO); die Rechtmäßigkeit der bis dahin erfolgten
+      Verarbeitung bleibt unberührt.
+    </li>
+  </ul>
+  <p>
+    <strong>Widerspruchsrecht (Art.&nbsp;21 DSGVO):</strong> Verarbeite ich Ihre Daten auf Grundlage eines berechtigten Interesses
+    (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO), können Sie dieser Verarbeitung aus Gründen, die sich aus Ihrer besonderen Situation
+    ergeben, jederzeit widersprechen.
+  </p>
+  <p>
+    <strong>Keine automatisierte Entscheidungsfindung:</strong> Eine automatisierte Entscheidungsfindung einschließlich
+    Profiling im Sinne des Art.&nbsp;22 DSGVO findet nicht statt.
+  </p>
+  <p>Für alle diese Anliegen genügt eine E-Mail an <a href={`mailto:${email}`}>{email}</a>.</p>
+  <p>
+    <strong>Beschwerderecht:</strong> Sie können sich bei einer Datenschutz-Aufsichtsbehörde beschweren (Art.&nbsp;77 DSGVO). Für
+    mich zuständig ist: Berliner Beauftragte für Datenschutz und Informationsfreiheit, Alt-Moabit 59–61, 10555 Berlin,{' '}
+    <a href="https://www.datenschutz-berlin.de/">www.datenschutz-berlin.de</a>
+  </p>
 
-  <p class="legal__date"><Placeholder text="Stand der Datenschutzerklärung (Datum)" /></p>
+  <p class="legal__date">Stand der Datenschutzerklärung: 27.10.2026</p>
 </LegalPage>
-
-<style>
-  .legal__date {
-    margin-top: 48px;
-  }
-</style>
