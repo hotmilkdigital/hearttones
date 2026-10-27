@@ -139,7 +139,7 @@ for (const { url, html } of pages) {
     const plain = decode(`${visible.replace(/<[^>]+>/g, ' ')} | ${attrText}`).replace(/\s+/g, ' ');
     const german = /\b(und|der|die|das|mit|für|nicht|oder|zur|zum|im|bei|Sie|Ihr|Ihre|Lieder|Länder|Musiker:innen|Künstler:innen|Seite|Startseite|Foto|verstorben|Nr\.)(?=[\s.,:;!?)]|$)|[\p{L}]*[äöüßÄÖÜ][\p{L}]*/gu;
     // Names and places that keep their German spelling in English.
-    const names = new Set(['Böckelmann', 'Wartenburgstraße', 'Gökce', 'Höll', 'Ciocărlia', 'BÄM']);
+    const names = new Set(['Böckelmann', 'Wartenburgstraße', 'Gökce', 'Höll', 'Ciocărlia', 'BÄM', 'Obentrautstraße']);
     const hits = new Set<string>();
     for (const m of plain.matchAll(german)) {
       if (names.has(m[0])) continue;

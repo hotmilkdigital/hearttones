@@ -1,10 +1,12 @@
 ---
 /**
- * Widerrufsbelehrung + Muster-Widerrufsformular for the Vol. 2 CD order by email (CLAUDE.md §10).
- * Scaffold only – no legal text is written here; Robert supplies it.
+ * Widerrufsbelehrung + Muster-Widerrufsformular for the Vol. 2 CD order by email (CLAUDE.md §10) –
+ * final text by Robert, ../01_Brief/hearttones_Widerrufsbelehrung_final_2026-10-27 (27.10.2026),
+ * verbatim. The address appears here because the statutory text requires it (besides the Impressum,
+ * §5.12). Model form per Anlage 2 zu Art. 246a § 1 Abs. 2 Satz 1 Nr. 1 EGBGB: the „(*)" markers were
+ * lost in Robert's Word file (empty italic runs) and are restored here.
  */
 import LegalPage from '../components/LegalPage.astro';
-import Placeholder from '../components/Placeholder.astro';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { ids } from '../data/anchors';
@@ -16,6 +18,7 @@ interface Props {
 
 const { locale = 'de' } = Astro.props;
 const t = useT(locale);
+const email = site.contact.email;
 ---
 
 <LegalPage
@@ -24,20 +27,96 @@ const t = useT(locale);
   title={t('withdrawal.title', { brand: site.brand })}
   heading={t('withdrawal.heading')}
   description={t('withdrawal.description')}
-  status="Endgültiger Text der Widerrufsbelehrung – von Robert"
 >
   <p>
-    Gilt für die Bestellung der CD <a href={`${path('vol2', locale)}#${ids.order}`}>Lullabies From Around The World Vol.&nbsp;2</a> per
-    E-Mail.
+    Diese Widerrufsbelehrung gilt für die Bestellung der CD{' '}
+    <a href={`${path('vol2', locale)}#${ids.order}`}>„Lullabies From Around The World Vol.&nbsp;2“</a> per E-Mail. Sie erhalten
+    sie zusätzlich mit Ihrer Bestellbestätigung.
   </p>
 
   <h2>Widerrufsrecht</h2>
+  <p>Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen.</p>
   <p>
-    <Placeholder
-      text="Widerrufsbelehrung (Frist, Ausübung, Folgen, Rücksendekosten); prüfen: Ausnahme für versiegelte Ton- und Datenträger nach Entsiegelung (§ 312g Abs. 2 Nr. 6 BGB)"
-    />
+    Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag, an dem Sie oder ein von Ihnen benannter Dritter, der nicht der
+    Beförderer ist, die Waren in Besitz genommen haben bzw. hat.
+  </p>
+  <p>
+    Um Ihr Widerrufsrecht auszuüben, müssen Sie uns (Philipp von Rothkirch, Heart Tones, Obentrautstraße&nbsp;51, 10963 Berlin,
+    Deutschland, Telefon: +49 176 61233929, E-Mail: <a href={`mailto:${email}`}>{email}</a>) mittels einer eindeutigen Erklärung
+    (z.&nbsp;B. ein mit der Post versandter Brief oder eine E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen,
+    informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.
+  </p>
+  <p>
+    Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf
+    der Widerrufsfrist absenden.
+  </p>
+
+  <h2>Folgen des Widerrufs</h2>
+  <p>
+    Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, einschließlich der
+    Lieferkosten (mit Ausnahme der zusätzlichen Kosten, die sich daraus ergeben, dass Sie eine andere Art der Lieferung als
+    die von uns angebotene, günstigste Standardlieferung gewählt haben), unverzüglich und spätestens binnen vierzehn Tagen ab
+    dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese
+    Rückzahlung verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei
+    denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte
+    berechnet.
+  </p>
+  <p>
+    Wir können die Rückzahlung verweigern, bis wir die Waren wieder zurückerhalten haben oder bis Sie den Nachweis erbracht
+    haben, dass Sie die Waren zurückgesandt haben, je nachdem, welches der frühere Zeitpunkt ist.
+  </p>
+  <p>
+    Sie haben die Waren unverzüglich und in jedem Fall spätestens binnen vierzehn Tagen ab dem Tag, an dem Sie uns über den
+    Widerruf dieses Vertrags unterrichten, an uns zurückzusenden oder zu übergeben. Die Frist ist gewahrt, wenn Sie die Waren
+    vor Ablauf der Frist von vierzehn Tagen absenden.
+  </p>
+  <p>Sie tragen die unmittelbaren Kosten der Rücksendung der Waren.</p>
+  <p>
+    Sie müssen für einen etwaigen Wertverlust der Waren nur aufkommen, wenn dieser Wertverlust auf einen zur Prüfung der
+    Beschaffenheit, Eigenschaften und Funktionsweise der Waren nicht notwendigen Umgang mit ihnen zurückzuführen ist.
   </p>
 
   <h2>Muster-Widerrufsformular</h2>
-  <p><Placeholder text="Muster-Widerrufsformular nach Anlage 2 zu Art. 246a § 1 Abs. 2 Satz 1 Nr. 1 EGBGB" /></p>
+  <p>(Wenn Sie den Vertrag widerrufen wollen, dann füllen Sie bitte dieses Formular aus und senden Sie es zurück.)</p>
+  <div class="form">
+    <p>
+      An<br />
+      Philipp von Rothkirch, Heart Tones<br />
+      Obentrautstraße&nbsp;51<br />
+      10963 Berlin<br />
+      Deutschland<br />
+      E-Mail: {email}
+    </p>
+    <p>
+      Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*)/die
+      Erbringung der folgenden Dienstleistung (*)
+    </p>
+    <p class="form__field">Bestellt am (*)/erhalten am (*)</p>
+    <p class="form__field">Name des/der Verbraucher(s)</p>
+    <p class="form__field">Anschrift des/der Verbraucher(s)</p>
+    <p class="form__field">Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier)</p>
+    <p class="form__field">Datum</p>
+    <p class="form__note">(*) Unzutreffendes streichen.</p>
+  </div>
 </LegalPage>
+
+<style>
+  /* Model form as a printable box; each field gets a line to write on. */
+  .form {
+    margin-top: 20px;
+    padding: 20px 24px;
+    border: 1px solid var(--sand);
+    border-radius: var(--radius-card);
+    background: var(--paper);
+  }
+
+  .form__field {
+    padding-bottom: 28px;
+    border-bottom: 1px dotted var(--ink-muted);
+  }
+
+  .form__note {
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+</style>

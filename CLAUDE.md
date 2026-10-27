@@ -268,6 +268,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 27.10.2026 | Vol. 2 order block: pre-contractual information added (Robert). Delivery time „3–5 Werktage innerhalb Deutschlands, international 5–10 Werktage, jeweils nach Zahlungseingang" (`order.deliveryDaysDe/Intl` in `site.ts`) and the warranty note „Es gilt das gesetzliche Mängelhaftungsrecht." / "Statutory warranty rights apply." below the § 19 UStG note. Robert verifies the warranty wording together with the legal texts. |
 | 27.10.2026 | Impressum final (Robert, `01_Brief/hearttones_Impressum_final_2026-10-27`), verbatim: address block with „Heart Tones", phone in international format (+49 176 61233929), § 19 UStG line, Verbraucherstreitbeilegung, Haftung für Inhalte, Haftung für Links, Urheberrecht. Existing blocks kept per Robert's note: § 18 Abs. 2 MStV, Label, Bildnachweise (`site.imageCredits`). |
 | 27.10.2026 | Datenschutzerklärung final (Robert, `01_Brief/hearttones_datenschutzerklaerung_final_2026-10-27`), verbatim. Sections marked „bestehender Text" keep the earlier wording, now „Server dieser Website" instead of „unser Server" (first-person text). Hosting by Hot Milk Digital (AV-Vertrag Art. 28 DSGVO) on Hetzner, Falkenstein; logs 7 days; e-mail at ALL-INKL.COM; PayPal, shipping, retention (§ 147 AO), rights, Berlin supervisory authority. **Contact-form paragraph left out – the site has no form (§10); add it back only together with a form.** „Stand" 27.10.2026. |
+| 27.10.2026 | Widerrufsbelehrung final (Robert, `01_Brief/hearttones_Widerrufsbelehrung_final_2026-10-27`), verbatim, incl. Muster-Widerrufsformular as a printable box; the „(*)" markers lost in Robert's Word file are restored per Anlage 2 EGBGB. The Widerruf page shows the postal address (statutory; exception to §5.12 besides the Impressum). /en/withdrawal/ uses Robert's `01_Brief/right-of-withdrawal.md` (summary + link to the German text), adapted to site style ("email", spaced en dash, ’, German link text with `lang="de"`). All three legal pages are now free of own placeholders. |
 
 ## 12. Open items (build around them with placeholders)
 
@@ -276,10 +277,9 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 - Musicians' photos (permission and credit via Philipp). Websites and years of death are in `people.ts` but not shown on the site yet.
 - Press sources (magazine/issue/year).
 - Singles artwork, date, distribution.
-- Widerrufsbelehrung, Impressum/Datenschutz final texts.
 - Vector funding logos.
 - Rights: Vol. 1 and Vol. 2 cover consents, GEMA question for audio, Initiative Musik layout approval.
-- Before launch: Robert verifies the EN texts (01_Brief/10) and the three legal pages in both languages.
+- Before launch: Robert verifies the EN texts (01_Brief/10) and the three legal pages (German texts final since 27.10.2026; EN pointer pages).
 - Domain/DNS (IONOS vs ALL-INKL) and info@hearttones.net mailbox.
 
 ## 13. Working agreement

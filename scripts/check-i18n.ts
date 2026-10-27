@@ -79,7 +79,8 @@ const walk = (value: unknown, at: string, seen: Set<unknown>) => {
       if (!Array.isArray(en) || en.length !== de.length || en.some(empty)) missing.push(`${at}.en`);
     } else if (typeof de === 'string') {
       if (empty(en)) missing.push(`${at}.en`);
-      else if (!sameVars(de, en as string)) mismatched.push(`${at} – DE {${placeholders(de)}} / EN {${placeholders(en as string)}}`);
+      // de === '': EN-only text (EN legal pointer pages) – nothing to compare against.
+      else if (de !== '' && !sameVars(de, en as string)) mismatched.push(`${at} – DE {${placeholders(de)}} / EN {${placeholders(en as string)}}`);
     }
     return;
   }

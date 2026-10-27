@@ -1,14 +1,15 @@
 ---
 /**
  * EN legal page (legal notice, privacy, withdrawal): a short English summary that points to the
- * binding German page (decision 25.10.2026). The legal notice also repeats email and phone.
+ * binding German page (decision 25.10.2026). Paragraphs from src/data/legal.ts; {link} and {email}
+ * become links. The legal notice also repeats email and phone.
  */
 import LegalPage from '../components/LegalPage.astro';
 import { legalPointers, type LegalKey } from '../data/legal';
 import { path, type Locale } from '../data/routes';
 import { phoneDisplay, site } from '../data/site';
 import { loc } from '../i18n/localized';
-import { useT } from '../i18n/t';
+import { splitSlots, useT } from '../i18n/t';
 
 interface Props {
   locale: Locale;
@@ -19,6 +20,8 @@ const { locale, kind } = Astro.props;
 const t = useT(locale);
 const pointer = legalPointers[kind];
 const domain = site.url.replace('https://', '');
+const paragraphs = pointer.text.map((p) => splitSlots(loc(p, locale)));
+const linkInline = paragraphs.some((parts) => parts.includes('link'));
 ---
 
 <LegalPage
@@ -28,10 +31,32 @@ const domain = site.url.replace('https://', '');
   heading={t(`${kind}.heading` as const)}
   description={t(`${kind}.description` as const, { domain })}
 >
-  <p>{loc(pointer.text, locale)}</p>
-  <p>
-    <a href={path(kind, 'de')} hreflang="de">{loc(pointer.link, locale)}</a>
-  </p>
+  {
+    paragraphs.map((parts) => (
+      <p>
+        {parts.map((s, i) =>
+          i % 2 === 0 ? (
+            s
+          ) : s === 'link' ? (
+            <a href={path(kind, 'de')} hreflang="de" lang={pointer.linkLang}>
+              {loc(pointer.link, locale)}
+            </a>
+          ) : (
+            <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+          ),
+        )}
+      </p>
+    ))
+  }
+  {
+    !linkInline && (
+      <p>
+        <a href={path(kind, 'de')} hreflang="de" lang={pointer.linkLang}>
+          {loc(pointer.link, locale)}
+        </a>
+      </p>
+    )
+  }
   {
     kind === 'imprint' && (
       <p>

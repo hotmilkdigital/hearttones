@@ -275,7 +275,8 @@ const de = {
   'privacy.description':
     'Datenschutzerklärung von {domain}: keine Cookies, keine Analyse, YouTube-Videos erst nach Klick.',
   'withdrawal.title': 'Widerrufsbelehrung – {brand}',
-  'withdrawal.heading': 'Widerrufsbelehrung',
+  // Soft hyphen: the word is wider than a 390 px screen at H1 size and would otherwise break mid-letter.
+  'withdrawal.heading': 'Widerrufs­belehrung',
   'withdrawal.description':
     'Widerrufsbelehrung und Muster-Widerrufsformular für die Bestellung der CD Lullabies From Around The World Vol. 2.',
 
