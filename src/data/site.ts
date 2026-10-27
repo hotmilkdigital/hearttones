@@ -51,6 +51,9 @@ export const order = {
   priceEur: 15,
   shippingDeEur: 3.5,
   shippingIntlEur: 7,
+  /** Delivery time in working days after receipt of payment (Robert, 27.10.2026). */
+  deliveryDaysDe: '3–5',
+  deliveryDaysIntl: '5–10',
   taxNote: 'Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.',
 } as const;
 

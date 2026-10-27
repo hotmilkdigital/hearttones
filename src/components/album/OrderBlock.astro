@@ -1,7 +1,7 @@
 ---
 /**
  * Vol. 2 order by email (CLAUDE.md §10): prefilled mailto, price, shipping, payment methods,
- * § 19 UStG note. Bank account and PayPal address never appear here – they go in the
+ * delivery time, § 19 UStG note and the statutory-warranty note (pre-contractual information). Bank account and PayPal address never appear here – they go in the
  * confirmation email only (§5.14). Widerrufsbelehrung follows from Robert.
  */
 import CreditList from '../CreditList.astro';
@@ -30,6 +30,7 @@ const terms = [
     term: t('order.shipping'),
     detail: t('order.shippingValue', { shippingDe: eur(order.shippingDeEur), shippingIntl: eur(order.shippingIntlEur) }),
   },
+  { term: t('order.delivery'), detail: t('order.deliveryValue', { de: order.deliveryDaysDe, intl: order.deliveryDaysIntl }) },
   { term: t('order.payment'), detail: t('order.paymentValue') },
 ];
 ---
@@ -41,6 +42,7 @@ const terms = [
   </p>
   <CreditList items={terms} class="order__terms" />
   <p class="order__tax" lang={locale === 'de' ? undefined : 'de'}>{order.taxNote.replace('§ ', '§ ')}</p>
+  <p class="order__warranty">{t('order.warranty')}</p>
   <div class="order__actions">
     <a class="btn btn--primary" href={mailto}>{t('album.orderByEmail')}</a>
     {
@@ -73,7 +75,8 @@ const terms = [
     --rule: var(--taupe-line);
   }
 
-  .order__tax {
+  .order__tax,
+  .order__warranty {
     margin-top: 14px;
     font-size: var(--fs-small);
     color: var(--text-muted);
