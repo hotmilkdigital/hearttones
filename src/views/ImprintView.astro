@@ -1,8 +1,10 @@
 ---
 /**
- * Impressum – scaffold (CLAUDE.md §10). Angaben nach § 5 DDG from site.ts; the only page that
- * shows Philipp's postal address (§5.12). Liability/copyright wording and the consumer
- * dispute note stay [PLATZHALTER] until Robert supplies the final text.
+ * Impressum (CLAUDE.md §10) – final text by Robert, ../01_Brief/hearttones_Impressum_final_2026-10-27
+ * (27.10.2026), verbatim. The only page with Philipp's postal address besides the Widerruf
+ * (§5.12). Robert's note „mit den bestehenden Pflichtangaben abgleichen" → the existing blocks
+ * § 18 Abs. 2 MStV, Label and Bildnachweise (site.imageCredits, referred to under Urheberrecht)
+ * stay. Typography only: § with non-breaking space, „…“ quotes (§5.15).
  */
 import LegalPage from '../components/LegalPage.astro';
 import Placeholder from '../components/Placeholder.astro';
@@ -26,24 +28,20 @@ const { owner, address, contact } = site;
   title={t('imprint.title', { brand: site.brand })}
   heading={t('imprint.heading')}
   description={t('imprint.description', { domain: site.url.replace('https://', '') })}
-  status="Endgültiger Text des Impressums – von Robert"
 >
   <h2>Angaben gemäß §&nbsp;5 DDG</h2>
   <address>
     {owner.fullName}<br />
+    {site.brand}<br />
     {address.street}<br />
     {address.postalCode} {address.city}<br />
     Deutschland
   </address>
-
-  <h2>Kontakt</h2>
   <p>
-    Telefon: <a href={`tel:${contact.phone}`}>{contact.phoneDisplay}</a><br />
+    Telefon: <a href={`tel:${contact.phone}`}>{contact.phoneDisplayIntl}</a><br />
     E-Mail: <a href={`mailto:${contact.email}`}>{contact.email}</a>
   </p>
-
-  <h2>Umsatzsteuer</h2>
-  <p>Kleinunternehmer gemäß §&nbsp;19 UStG; es wird keine Umsatzsteuer ausgewiesen.</p>
+  <p>Kleinunternehmer gemäß §&nbsp;19 UStG (keine Ausweisung der Umsatzsteuer; keine USt-IdNr.).</p>
 
   <h2>Verantwortlich für den Inhalt nach §&nbsp;18 Abs.&nbsp;2 MStV</h2>
   <address>
@@ -67,13 +65,43 @@ const { owner, address, contact } = site;
   </ul>
 
   <h2>Verbraucherstreitbeilegung</h2>
-  <p><Placeholder text="Hinweis nach § 36 VSBG (Teilnahme an Streitbeilegungsverfahren)" /></p>
+  <p>Ich bin weder bereit noch verpflichtet, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
 
-  <h2>Haftung für Inhalte und Links</h2>
-  <p><Placeholder text="Haftungshinweise für eigene Inhalte und externe Links" /></p>
+  <h2>Haftung für Inhalte</h2>
+  <p>
+    Die Inhalte dieser Website habe ich mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und
+    Aktualität der Inhalte kann ich jedoch keine Gewähr übernehmen. Für eigene Inhalte bin ich nach den allgemeinen Gesetzen
+    verantwortlich. Sobald mir eine Rechtsverletzung bekannt wird, entferne oder korrigiere ich die betreffenden Inhalte
+    umgehend.
+  </p>
+
+  <h2>Haftung für Links</h2>
+  <p>
+    Diese Website enthält Links zu Websites Dritter, zum Beispiel zu Websites der mitwirkenden Musiker:innen, zu Streaming- und
+    Musikplattformen und zu Labels. Auf die Inhalte dieser Websites habe ich keinen Einfluss; für sie ist allein der jeweilige
+    Anbieter verantwortlich. Die verlinkten Seiten habe ich beim Setzen der Links auf erkennbare Rechtsverstöße geprüft; zu
+    diesem Zeitpunkt waren keine rechtswidrigen Inhalte erkennbar. Eine fortlaufende Kontrolle der verlinkten Seiten ist ohne
+    konkrete Hinweise auf eine Rechtsverletzung nicht zumutbar. Wird mir eine Rechtsverletzung bekannt, entferne ich den
+    betreffenden Link umgehend.
+  </p>
 
   <h2>Urheberrecht</h2>
-  <p><Placeholder text="Hinweis zum Urheberrecht an Texten, Fotos, Covern und Aufnahmen" /></p>
+  <p>
+    Die Texte, Fotos, Grafiken, Tonaufnahmen und Kompositionen auf dieser Website sind urheberrechtlich und durch verwandte
+    Schutzrechte geschützt. Die Rechte liegen bei Philipp von Rothkirch bzw. Heart Tones Records, bei den mitwirkenden
+    Musiker:innen, Komponist:innen und Textdichter:innen, bei Asphalt Tango Records (Vol.&nbsp;2) sowie bei den unter
+    „Bildnachweise“ genannten Fotograf:innen.
+  </p>
+  <p>
+    Die Tonaufnahmen werden auf dieser Website zum Anhören bereitgestellt. Vervielfältigung, Bearbeitung, Verbreitung und
+    öffentliche Wiedergabe – auch auszugsweise – sind nur mit vorheriger Zustimmung der jeweiligen Rechteinhaber erlaubt,
+    soweit das Urheberrechtsgesetz nichts anderes zulässt.
+  </p>
+  <p>
+    Inhalte Dritter, insbesondere Pressezitate und Fotos, sind als solche gekennzeichnet. Sollten Sie dennoch auf eine
+    Urheberrechtsverletzung aufmerksam werden, bitte ich um einen Hinweis an <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+    Sobald mir eine Rechtsverletzung bekannt wird, entferne ich den betreffenden Inhalt umgehend.
+  </p>
 
   <p>
     Informationen zum Datenschutz finden Sie in der <a href={path('privacy', locale)}>Datenschutzerklärung</a>.
