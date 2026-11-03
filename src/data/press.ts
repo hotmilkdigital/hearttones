@@ -1,7 +1,7 @@
 /**
  * Reviews of Vol. 1 – press and listeners (CLAUDE.md §5.10, §11 03.11.2026). Verbatim from Philipp's
- * list ../02_Assets/reviews/hearttones-reviews.txt, plus the second approved quote from
- * ../01_Brief/07_Presse-Rezensionen.md (source still unknown → placeholder). Typography only:
+ * list ../02_Assets/reviews/hearttones-reviews.txt. Only quotes with a verified source – „Schlaf, mein
+ * Kind" (07_Presse-Rezensionen) was removed for lack of one (Robert, 03.11.2026). Typography only:
  * „…" quotes, the five dots in „Wir Eltern" as „ … ", „Schwangerschaftstagebuch" typo fixed.
  * FolkWorld: only the accurate last sentences (Robert) – the first part misspells the name and
  * claims all recordings were made by one musician (§5.3, §5.7).
@@ -15,7 +15,6 @@ import type { Localized } from '../i18n/localized.ts';
 
 export type ReviewId =
   | 'eltern'
-  | 'schlaf-mein-kind'
   | 'wir-eltern'
   | 'sein'
   | 'himbeer'
@@ -44,18 +43,6 @@ export const reviews: Review[] = [
     lang: 'de',
     source: { de: 'Eltern, 9/2012', en: 'Eltern, 9/2012' },
     headline: 'Schlaf, Baby, schlaf',
-    album: 'vol-1',
-  },
-  {
-    id: 'schlaf-mein-kind',
-    kind: 'press',
-    quote: {
-      de: 'eine wunderschöne CD mit traditionellen Schlafliedchen und eigenen Kompositionen aus allen Kontinenten',
-      en: 'a beautiful CD of traditional lullabies and original compositions from every continent',
-    },
-    lang: 'de',
-    source: null,
-    headline: 'Schlaf, mein Kind',
     album: 'vol-1',
   },
   {
