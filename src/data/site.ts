@@ -60,7 +60,7 @@ export const order = {
 /**
  * Default social image src/assets/og/og-default.png (1200×630, §8.7): Heart Tones wordmark on taupe
  * with „Lullabies From Around The World · Vol. 1 · Vol. 2" (03.11.2026, replaces the hero version).
- * Not the Vol. 2 cover – the children's photo is behind the §9 consent gate. false → [PLATZHALTER].
+ * Kept although the Vol. 2 cover is now cleared (Robert, 03.11.2026). false → [PLATZHALTER].
  */
 export const ogDefaultApproved = true;
 
@@ -85,12 +85,13 @@ export const fundingNotice = {
 
 /**
  * Rights gates (§9). Robert flips a flag only after the consent/licence is on file in writing.
- * Cover consents were given verbally on 23.10.2026 – still false until filed.
+ * 03.11.2026 (Robert): written agreements for both covers (Vol. 1: Andre Wagner, Sylvia Puta, Dalal;
+ * Vol. 2: the four children's parents); GEMA cleared with the original releases (2012, 2023).
  */
 export const rights = {
-  vol1CoverCleared: false,
-  vol2CoverCleared: false,
-  audioCleared: false,
+  vol1CoverCleared: true,
+  vol2CoverCleared: true,
+  audioCleared: true,
 } as const;
 
 export type RightsKey = keyof typeof rights;

@@ -208,7 +208,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 
 - On **staging** (`PUBLIC_INDEXABLE` unset) everything renders so Philipp can review.
 - On **production** (`PUBLIC_INDEXABLE=true`) an uncleared item renders its fallback: typographic placeholder cover (album title in Literata on sand), player with disabled play buttons and the note "Hörproben folgen in Kürze".
-- Robert flips a flag only after the consent/licence is on file (Vol. 2 cover: consent of the Kita parents; Vol. 1 cover: Andre Wagner, Sylvia Puta, Dalal; audio: GEMA question resolved).
+- Robert flips a flag only after the consent/licence is on file (Vol. 2 cover: consent of the Kita parents; Vol. 1 cover: Andre Wagner, Sylvia Puta, Dalal; audio: GEMA question resolved). **All three cleared on 03.11.2026** (written agreements for both covers; GEMA cleared with the original releases) – the gates stay in code for future items.
 
 ## 10. Environments, legal, privacy
 
@@ -274,16 +274,15 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 03.11.2026 | Job title confirmed by Philipp: „Komponist und Musikproduzent" (EN "Composer and music producer", Claude) – JSON-LD `Person.jobTitle` per page language (`about.ts`). |
 | 03.11.2026 | Presse: „Weitere Presse" stays plain text without links (placeholder „Belege und Links prüfen" removed). Press photos come later with Philipp's portraits – placeholder „Pressefotos" removed; section added when the photos exist. |
 | 03.11.2026 | Default OG image new: Heart Tones wordmark (taupe variant, §6.4) on the taupe band with „Lullabies From Around The World · Vol. 1 · Vol. 2" in Literata, 1200×630, centred so square crops keep the logo (`src/assets/og/og-default.png`, rendered from project tokens/fonts/logo). Not the Vol. 2 cover: the children's photo is behind the §9 consent gate and a social image cannot be gated. Alt text updated (DE/EN); `ogDefaultApproved = true` (Robert asked for the image; set back to false if not approved). |
+| 03.11.2026 | Rights cleared (Robert): written agreements for the Vol. 1 cover (Andre Wagner, Sylvia Puta, Dalal) and the Vol. 2 cover (the four children's parents; also covers `vol-2-kinder-ohne-schrift.jpg`); GEMA rights cleared with the original releases (2012, 2023) → `vol1CoverCleared`, `vol2CoverCleared`, `audioCleared` true: covers and audio player also on production. Initiative Musik has seen a draft and gave Philipp written consent (email) for the funding block. Written consent of Bettina W. and Annika for their quotes; Michael von Rothkirch consents to the use of his photos. Default OG image stays the wordmark version. |
 
 ## 12. Open items (build around them with placeholders)
 
 - Portraits of Philipp (shoot pending) → placeholder blocks.
 - Über Philipp: Philipp's approval of the bio (01_Brief/08), perspective of the "Wie wir uns kennenlernten" text.
 - Musicians' photos (permission and credit via Philipp). Websites and years of death are in `people.ts` but not shown on the site yet.
-- Consent of the two listeners (Bettina W., Annika) on file.
 - Singles artwork, date, distribution.
 - Vector funding logos.
-- Rights: Vol. 1 and Vol. 2 cover consents, GEMA question for audio, Initiative Musik layout approval.
 - Before launch: Robert verifies the EN texts (01_Brief/10) and the three legal pages (German texts final since 27.10.2026; EN pointer pages).
 - Domain/DNS (IONOS vs ALL-INKL) and info@hearttones.net mailbox.
 
