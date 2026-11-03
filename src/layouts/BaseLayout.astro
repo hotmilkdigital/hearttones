@@ -110,15 +110,10 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...
   <body>
     <a class="skip-link" href={hash(ids.main)}>{skipLabel}</a>
     <Header locale={locale} />
-    <main id={ids.main} tabindex="-1">
+    <main id={ids.main}>
       <slot />
     </main>
     <Footer locale={locale} />
   </body>
 </html>
 
-<style>
-  main:focus {
-    outline: none;
-  }
-</style>

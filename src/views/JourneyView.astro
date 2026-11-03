@@ -90,7 +90,7 @@ const audio = anyAudioPlayable();
     </p>
   </Section>
 
-  <Section tone="light" id={ids.countries} aria-labelledby={titleId(ids.countries)} tabindex="-1">
+  <Section tone="light" id={ids.countries} aria-labelledby={titleId(ids.countries)}>
     <h2 id={titleId(ids.countries)}>{t('journey.allCountries', { n: countryCount })}</h2>
     {
       groups.map((group) => (
@@ -100,7 +100,7 @@ const audio = anyAudioPlayable();
           </h3>
           <div class="continent__grid">
             {group.countries.map((c) => (
-              <article class="country" id={countryId(c.code)} aria-labelledby={titleId(countryId(c.code))} tabindex="-1">
+              <article class="country" id={countryId(c.code)} aria-labelledby={titleId(countryId(c.code))}>
                 <h4 id={titleId(countryId(c.code))} class="country__name">
                   {c.name}
                 </h4>
@@ -148,7 +148,7 @@ const audio = anyAudioPlayable();
       <div class="continent__grid">
         {
           teamPins.map((t) => (
-            <article class="country country--team" id={countryId(t.id)} aria-labelledby={titleId(countryId(t.id))} tabindex="-1">
+            <article class="country country--team" id={countryId(t.id)} aria-labelledby={titleId(countryId(t.id))}>
               <h4 id={titleId(countryId(t.id))} class="country__name">
                 {t.place} ({loc(t.country, locale)})
               </h4>
@@ -214,8 +214,7 @@ const audio = anyAudioPlayable();
     scroll-margin-top: 24px;
   }
 
-  .country:target,
-  .country:focus {
+  .country:target {
     outline: 3px solid var(--heart-red);
     outline-offset: 3px;
   }
@@ -273,8 +272,4 @@ const audio = anyAudioPlayable();
     color: var(--text-muted);
   }
 
-  /* ids.countries in anchors.ts – CSS cannot import it */
-  #countries:focus {
-    outline: none;
-  }
 </style>
