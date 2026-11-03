@@ -1,0 +1,84 @@
+---
+/**
+ * One review (src/data/press.ts): quote in the page language with source. German originals carry
+ * "(translated from German)" on EN pages; the English FolkWorld quote is marked lang="en" on DE
+ * pages. `detail` adds the article headline and „Rezension zu Vol. 1" (press page).
+ */
+import Placeholder from './Placeholder.astro';
+import type { Review } from '../data/press';
+import type { Locale } from '../data/routes';
+import { loc } from '../i18n/localized';
+import { useT } from '../i18n/t';
+
+interface Props {
+  locale?: Locale;
+  review: Review;
+  detail?: boolean;
+  size?: 'normal' | 'large';
+}
+
+const { locale = 'de', review, detail = false, size = 'normal' } = Astro.props;
+const t = useT(locale);
+const translated = locale === 'en' && review.lang === 'de';
+const quoteLang = review.lang !== locale ? review.lang : undefined;
+// On EN pages a translated quote is English; only an original in another language keeps its lang.
+const textLang = translated ? undefined : quoteLang;
+const source = review.source ? loc(review.source, locale) : null;
+---
+
+<figure class:list={['review', `review--${size}`]}>
+  <blockquote>
+    <p>
+      <span lang={textLang}>{t('common.quoteOpen')}{loc(review.quote, locale)}{t('common.quoteClose')}</span>
+      {translated && <span class="review__note"> {t('press.translated')}</span>}
+    </p>
+  </blockquote>
+  <figcaption>
+    {
+      detail && review.headline && (
+        <>
+          {t('common.quoteOpen')}
+          {locale === 'de' ? review.headline : <span lang="de">{review.headline}</span>}
+          {t('common.quoteClose')},{' '}
+        </>
+      )
+    }
+    {source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />}
+    {detail && <> · {t('press.reviewOf')}</>}
+  </figcaption>
+</figure>
+
+<style>
+  .review {
+    margin: 0;
+  }
+
+  .review blockquote {
+    margin: 0;
+  }
+
+  .review blockquote p {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.4;
+  }
+
+  .review--large blockquote p {
+    font-size: clamp(22px, 2.4vw, 28px);
+    line-height: 1.3;
+  }
+
+  .review__note {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  .review figcaption {
+    margin-top: 12px;
+    font-size: var(--fs-meta);
+    color: var(--text-muted);
+  }
+</style>

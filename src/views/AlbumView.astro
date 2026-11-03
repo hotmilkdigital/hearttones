@@ -2,7 +2,7 @@
 /**
  * Album page for Vol. 1 and Vol. 2 (CLAUDE.md §8.3): cover, facts, intro, status/links,
  * track list with full credits (shared player), performers, production credits.
- * Vol. 1: out of print + streaming links + press quote. Vol. 2: order block + funding notice.
+ * Vol. 1: out of print + streaming links + trust bar with reviews. Vol. 2: order block + funding notice.
  */
 import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -12,13 +12,12 @@ import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import Cover from '../components/Cover.astro';
 import CreditList from '../components/CreditList.astro';
-import Placeholder from '../components/Placeholder.astro';
 import AudioPlayer from '../components/AudioPlayer.astro';
 import FundingNotice from '../components/FundingNotice.astro';
 import OrderBlock from '../components/album/OrderBlock.astro';
+import TrustBar from '../components/TrustBar.astro';
 import { albumDuration, albumPerformers, formatDuration, type Album, type Credit } from '../data/albums';
 import { people, type Person } from '../data/people';
-import { pressQuotes } from '../data/press';
 import { roleLabel } from '../data/roles';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
@@ -79,7 +78,6 @@ const performerItems = performers.map((p) => {
   };
 });
 
-const quote = album.id === 'vol-1' ? pressQuotes.find((q) => q.id === 'schlaf-mein-kind') : undefined;
 
 // Social image and schema image: the cover only when it is cleared for this build (§9).
 const coverImage = clearedCover(album);
@@ -183,22 +181,7 @@ const description = t('album.description', {
     </div>
   </Section>
 
-  {
-    quote && (
-      <Section tone="sand" aria-label={t('nav.press')}>
-        <figure class="quote">
-          <blockquote>
-            <p>{t('common.quoteOpen')}{loc(quote.quote, locale)}{t('common.quoteClose')}{t('press.translated') && <> {t('press.translated')}</>}</p>
-          </blockquote>
-          <figcaption>
-            {t('common.quoteOpen')}{locale === 'de' ? quote.headline : <span lang="de">{quote.headline}</span>}{t('common.quoteClose')},{' '}
-            {quote.source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />} ·{' '}
-            <a href={path('press', locale)}>{t('nav.press')}</a>
-          </figcaption>
-        </figure>
-      </Section>
-    )
-  }
+  {album.id === 'vol-1' && <TrustBar locale={locale} reviews={['schlaf-mein-kind', 'wir-eltern', 'sein']} />}
 
   {
     album.status === 'available' && (
@@ -309,26 +292,4 @@ const description = t('album.description', {
     min-height: var(--touch-min);
   }
 
-  .quote {
-    max-width: 820px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .quote blockquote {
-    margin: 0;
-  }
-
-  .quote blockquote p {
-    font-family: var(--font-serif);
-    font-size: clamp(24px, 3vw, 34px);
-    font-weight: 600;
-    line-height: 1.3;
-  }
-
-  .quote figcaption {
-    margin-top: 16px;
-    font-size: var(--fs-meta);
-    color: var(--text-muted);
-  }
 </style>

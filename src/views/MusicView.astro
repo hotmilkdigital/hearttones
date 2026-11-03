@@ -9,6 +9,7 @@ import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import AlbumCard from '../components/AlbumCard.astro';
 import SingleCard from '../components/SingleCard.astro';
+import TrustBar from '../components/TrustBar.astro';
 import { albums } from '../data/albums';
 import { countries } from '../data/countries';
 import { path, type RouteKey, type Locale } from '../data/routes';
@@ -56,6 +57,8 @@ const more: { key: RouteKey; title: string; text: string }[] = [
       {albums.map((album) => <AlbumCard locale={locale} album={album} />)}
     </div>
   </Section>
+
+  <TrustBar locale={locale} reviews={['himbeer', 'folkworld', 'annika']} />
 
   <Section tone="night" aria-labelledby={titleId(ids.singlesTeaser)}>
     <p class="badge-soon">{t('common.soon')}</p>

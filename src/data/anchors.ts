@@ -47,6 +47,8 @@ export const ids = {
   partner: 'partner',
   press: 'press',
   quotes: 'quotes',
+  listeners: 'listeners',
+  reviews: 'reviews',
   mentions: 'mentions',
   pressContact: 'press-contact',
   contact: 'contact',

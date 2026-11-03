@@ -9,6 +9,7 @@ import JourneyTeaser from '../components/home/JourneyTeaser.astro';
 import Story from '../components/home/Story.astro';
 import Production from '../components/home/Production.astro';
 import PressStrip from '../components/home/PressStrip.astro';
+import TrustBar from '../components/TrustBar.astro';
 import { site } from '../data/site';
 import type { Locale } from '../data/routes';
 import { useT } from '../i18n/t';
@@ -30,6 +31,7 @@ const t = useT(locale);
   <Hero locale={locale} />
   <AudioPlayer locale={locale} />
   <Albums locale={locale} />
+  <TrustBar locale={locale} reviews={['eltern', 'sein', 'bettina']} />
   <NewMusic locale={locale} />
   <JourneyTeaser locale={locale} />
   <Story locale={locale} />

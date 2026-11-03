@@ -1,0 +1,64 @@
+---
+/**
+ * Trust bar (§11 03.11.2026): a band with a few short reviews of Vol. 1 (src/data/press.ts) and a
+ * link to all reviews on the press page. All reviews are about Vol. 1, so the eyebrow says so and
+ * the bar is never placed next to Vol. 2 (album page, order block).
+ */
+import Section from './Section.astro';
+import ReviewQuote from './ReviewQuote.astro';
+import { review, type ReviewId } from '../data/press';
+import { path, type Locale } from '../data/routes';
+import { ids, titleId } from '../data/anchors';
+import { useT } from '../i18n/t';
+
+interface Props {
+  locale?: Locale;
+  reviews: ReviewId[];
+  tone?: 'light' | 'paper' | 'sand';
+  /** Link to the press page with all reviews (off on the press page itself). */
+  showAll?: boolean;
+}
+
+const { locale = 'de', reviews: reviewIds, tone = 'sand', showAll = true } = Astro.props;
+const t = useT(locale);
+---
+
+<Section tone={tone} class="trust" aria-labelledby={titleId(ids.reviews)}>
+  <h2 id={titleId(ids.reviews)} class="eyebrow trust__eyebrow">{t('reviews.eyebrow')}</h2>
+  <div class="trust__grid">
+    {reviewIds.map((id) => <ReviewQuote locale={locale} review={review(id)} />)}
+  </div>
+  {
+    showAll && (
+      <p class="trust__more">
+        <a href={path('press', locale)}>{t('reviews.all')}</a>
+      </p>
+    )
+  }
+</Section>
+
+<style>
+  .trust__eyebrow {
+    margin: 0;
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+
+  .trust__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 32px 48px;
+    margin-top: 24px;
+  }
+
+  .trust__more {
+    margin-top: 28px;
+    font-weight: 700;
+  }
+
+  .trust__more a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-min);
+  }
+</style>

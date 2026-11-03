@@ -1,14 +1,15 @@
 ---
 /**
- * Presse (CLAUDE.md §5.10): only the two approved short quotes, verbatim, with source
- * (placeholder until confirmed); further press named as text only, no page images, no
- * „Sitars" sentence, no sentence about the three-year-old son. Press contact by email.
+ * Presse (CLAUDE.md §5.10, §11 03.11.2026): all reviews of Vol. 1 from src/data/press.ts, verbatim
+ * with source – press quotes, then listener voices; further press named as text only, no page
+ * images, no sentence about the three-year-old son. Press contact by email.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import Placeholder from '../components/Placeholder.astro';
-import { pressMentions, pressQuotes } from '../data/press';
+import ReviewQuote from '../components/ReviewQuote.astro';
+import { pressMentions, reviews } from '../data/press';
 import { mailSubjects } from '../data/production';
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
@@ -41,20 +42,16 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
   </Section>
 
   <Section tone="sand" aria-labelledby={titleId(ids.quotes)}>
-    <h2 id={titleId(ids.quotes)} class="visually-hidden">{t('press.quotesHeading')}</h2>
+    <h2 id={titleId(ids.quotes)}>{t('press.quotesHeading')}</h2>
     <div class="press__quotes">
-      {
-        pressQuotes.map((q) => (
-          <figure class="press__quote">
-            <blockquote>
-              <p>{t('common.quoteOpen')}{loc(q.quote, locale)}{t('common.quoteClose')}{t('press.translated') && <> {t('press.translated')}</>}</p>
-            </blockquote>
-            <figcaption>
-              {t('common.quoteOpen')}{locale === 'de' ? q.headline : <span lang="de">{q.headline}</span>}{t('common.quoteClose')}, {q.source ?? <Placeholder text="Magazin, Ausgabe, Jahr" />} · {t('press.reviewOf')}
-            </figcaption>
-          </figure>
-        ))
-      }
+      {reviews.filter((r) => r.kind === 'press').map((r) => <ReviewQuote locale={locale} review={r} detail size="large" />)}
+    </div>
+  </Section>
+
+  <Section tone="paper" aria-labelledby={titleId(ids.listeners)}>
+    <h2 id={titleId(ids.listeners)}>{t('press.listeners')}</h2>
+    <div class="press__quotes">
+      {reviews.filter((r) => r.kind === 'listener').map((r) => <ReviewQuote locale={locale} review={r} size="large" />)}
     </div>
   </Section>
 
@@ -98,27 +95,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
     gap: 40px;
-  }
-
-  .press__quote {
-    margin: 0;
-  }
-
-  .press__quote blockquote {
-    margin: 0;
-  }
-
-  .press__quote blockquote p {
-    font-family: var(--font-serif);
-    font-size: clamp(24px, 2.6vw, 32px);
-    font-weight: 600;
-    line-height: 1.3;
-  }
-
-  .press__quote figcaption {
-    margin-top: 14px;
-    font-size: var(--fs-meta);
-    color: var(--text-muted);
+    margin-top: 28px;
   }
 
   .press__two {
