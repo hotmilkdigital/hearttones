@@ -58,10 +58,11 @@ export const order = {
 } as const;
 
 /**
- * Default social image src/assets/og/og-default.png (1200×630, built from the hero, §8.7).
- * false → listed as [PLATZHALTER] until Robert approves it.
+ * Default social image src/assets/og/og-default.png (1200×630, §8.7): Heart Tones wordmark on taupe
+ * with „Lullabies From Around The World · Vol. 1 · Vol. 2" (03.11.2026, replaces the hero version).
+ * Not the Vol. 2 cover – the children's photo is behind the §9 consent gate. false → [PLATZHALTER].
  */
-export const ogDefaultApproved = false;
+export const ogDefaultApproved = true;
 
 /** Image credits for captions and the Impressum (§5.11). `credit: null` → [PLATZHALTER: Fotograf:in]. */
 export const imageCredits: { image: string; credit: string | null }[] = [

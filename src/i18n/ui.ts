@@ -12,7 +12,7 @@ import type { Locale } from '../data/routes';
 const de = {
   // Global
   'layout.skip': 'Zum Inhalt springen',
-  'layout.ogAlt': '{brand} – Schlaflieder aus aller Welt: illustrierter Globus als Nachtlicht',
+  'layout.ogAlt': 'Logo von {brand} mit dem Titel „Lullabies From Around The World“, Vol. 1 und Vol. 2',
   'header.logo': 'Heart Tones – Startseite',
   'header.menu': 'Menü',
   'header.nav': 'Hauptnavigation',
@@ -296,7 +296,7 @@ export type UiKey = keyof typeof de;
 // EN-GB from ../01_Brief/10_Texte-EN.md – Robert (native speaker, translator) approves before launch. null = not translated yet.
 const en: Record<UiKey, string | null> = {
   'layout.skip': 'Skip to content',
-  'layout.ogAlt': '{brand} – Lullabies from around the world: an illustrated globe glowing like a night light',
+  'layout.ogAlt': '{brand} logo with the title “Lullabies From Around The World”, Vol. 1 and Vol. 2',
   'header.logo': 'Heart Tones – Home',
   'header.menu': 'Menu',
   'header.nav': 'Main navigation',

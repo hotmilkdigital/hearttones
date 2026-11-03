@@ -273,6 +273,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 03.11.2026 | Review „eine wunderschöne CD mit traditionellen Schlafliedchen …" („Schlaf, mein Kind") removed everywhere – no verified source (Robert). Only reviews with a verified source are shown. The Vol. 1 trust bar now shows Eltern, Wir Eltern, Sein. |
 | 03.11.2026 | Job title confirmed by Philipp: „Komponist und Musikproduzent" (EN "Composer and music producer", Claude) – JSON-LD `Person.jobTitle` per page language (`about.ts`). |
 | 03.11.2026 | Presse: „Weitere Presse" stays plain text without links (placeholder „Belege und Links prüfen" removed). Press photos come later with Philipp's portraits – placeholder „Pressefotos" removed; section added when the photos exist. |
+| 03.11.2026 | Default OG image new: Heart Tones wordmark (taupe variant, §6.4) on the taupe band with „Lullabies From Around The World · Vol. 1 · Vol. 2" in Literata, 1200×630, centred so square crops keep the logo (`src/assets/og/og-default.png`, rendered from project tokens/fonts/logo). Not the Vol. 2 cover: the children's photo is behind the §9 consent gate and a social image cannot be gated. Alt text updated (DE/EN); `ogDefaultApproved = true` (Robert asked for the image; set back to false if not approved). |
 
 ## 12. Open items (build around them with placeholders)
 
