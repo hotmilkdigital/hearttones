@@ -8,7 +8,7 @@ import { trackId } from '../data/anchors';
 import { albumDuration, isoDuration, vol1, vol2, type Album } from '../data/albums';
 import { enPublished, path, type Locale, type RouteKey } from '../data/routes';
 import { site } from '../data/site';
-import { personDescription } from '../data/about';
+import { jobTitle, personDescription } from '../data/about';
 import { loc } from '../i18n/localized';
 
 type Node = Record<string, unknown>;
@@ -41,8 +41,7 @@ export function siteGraph(locale: Locale = 'de'): Node[] {
       '@id': ids.person,
       name: site.owner.fullName,
       url: abs(path('about', locale)),
-      // Exact job title still to be confirmed by Philipp (§8.7).
-      jobTitle: '[PLATZHALTER: jobTitle]',
+      jobTitle: loc(jobTitle, locale),
       description: loc(personDescription, locale),
       homeLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', addressLocality: 'Berlin', addressCountry: 'DE' } },
       email: `mailto:${site.contact.email}`,

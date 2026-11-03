@@ -44,6 +44,12 @@ export const craft: { favourites: Localized; approach: Localized; singles: Local
   },
 };
 
+/** Job title in the JSON-LD (lib/schema.ts), confirmed by Philipp (03.11.2026). */
+export const jobTitle: Localized = {
+  de: 'Komponist und Musikproduzent',
+  en: 'Composer and music producer',
+};
+
 /** Person description in the JSON-LD (lib/schema.ts). */
 export const personDescription: Localized = {
   de: 'Komponist, Produzent und Musiker in Berlin-Kreuzberg',
