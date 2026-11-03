@@ -7,7 +7,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
-import Placeholder from '../components/Placeholder.astro';
 import ReviewQuote from '../components/ReviewQuote.astro';
 import { pressMentions, reviews } from '../data/press';
 import { mailSubjects } from '../data/production';
@@ -69,7 +68,6 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
             ))
           }
         </ul>
-        <p class="press__check"><Placeholder text="Belege und Links zu den Beiträgen prüfen" /></p>
       </div>
       <div>
         <h2 id={titleId(ids.pressContact)}>{t('press.contact')}</h2>
@@ -79,7 +77,6 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
         <p class="press__actions">
           <a class="btn btn--primary" href={mailto}>{site.contact.email}</a>
         </p>
-        <p class="press__check"><Placeholder text="Pressefotos (Porträts nach dem Fotoshooting)" /></p>
       </div>
     </div>
   </Section>
@@ -115,7 +112,6 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
     border-bottom: 1px solid var(--sand);
   }
 
-  .press__check,
   .press__p,
   .press__actions {
     margin-top: 16px;

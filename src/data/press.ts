@@ -116,8 +116,8 @@ export const reviews: Review[] = [
 export const review = (id: ReviewId): Review => reviews.find((r) => r.id === id)!;
 
 /**
- * Further press from Philipp's answers (00_Projektstatus) – named as text only, no links until
- * the sources are checked (07_Presse-Rezensionen: „nur als Text nennen, Belege/Links prüfen“).
+ * Further press from Philipp's answers (00_Projektstatus) – named as plain text, no links (Robert,
+ * 03.11.2026: the list stays text only).
  */
 export const pressMentions = [
   { outlet: 'MDR Figaro', what: { de: 'Interview', en: 'Interview' }, date: { de: '19.01.2012', en: '19 January 2012' } },
