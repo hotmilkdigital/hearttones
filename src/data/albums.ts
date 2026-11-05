@@ -54,6 +54,19 @@ export interface Credit {
   exceptTracks?: number[];
 }
 
+/**
+ * Websites for the production and design credits on the album pages (Robert, 05.11.2026). Key = the
+ * name a printed credit starts with (Peter Sund („the farm“)); only the name is the link text.
+ * Robert Cummings → his studio (same URL as site.partner.url; site.ts can't be imported here, as
+ * check:data runs without import.meta.env).
+ */
+export const creditWebsites: Record<string, string> = {
+  'Robert Cummings': 'https://www.hotmilkstudio.de/',
+  'Peter Sund': people['peter-sund'].website!,
+  'Andre Wagner': 'https://andrewagner.com/',
+  'Benedikt Stehle': 'https://www.benediktstehle.com/',
+};
+
 export interface ExternalLink {
   label: string;
   href: string;

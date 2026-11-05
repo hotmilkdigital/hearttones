@@ -3,9 +3,12 @@
  * Two-column credit list (term → detail), e.g. role → names or name → roles.
  * Optional per row: `termNote` after the term in detail style (e.g. „verstorben 2012"),
  * `link` after the detail (e.g. a musician's own website, domain as link text, §5.16).
+ * `detail` may mix text and links (e.g. linked names in the production credits).
  */
+type Link = { href: string; text: string };
+
 interface Props {
-  items: { term: string; termNote?: string; detail: string; link?: { href: string; text: string } }[];
+  items: { term: string; termNote?: string; detail: string | (string | Link)[]; link?: Link }[];
   class?: string;
 }
 
@@ -21,7 +24,17 @@ const { items, class: className } = Astro.props;
           {item.termNote && <span class="credits__note">{item.termNote}</span>}
         </dt>
         <dd>
-          {item.detail}
+          {typeof item.detail === 'string'
+            ? item.detail
+            : item.detail.map((part) =>
+                typeof part === 'string' ? (
+                  part
+                ) : (
+                  <a href={part.href} rel="noopener">
+                    {part.text}
+                  </a>
+                ),
+              )}
           {item.link && (
             <>
               {' · '}

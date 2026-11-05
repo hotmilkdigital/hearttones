@@ -16,7 +16,7 @@ import AudioPlayer from '../components/AudioPlayer.astro';
 import FundingNotice from '../components/FundingNotice.astro';
 import OrderBlock from '../components/album/OrderBlock.astro';
 import TrustBar from '../components/TrustBar.astro';
-import { albumDuration, albumPerformers, formatDuration, type Album, type Credit } from '../data/albums';
+import { albumDuration, albumPerformers, creditWebsites, formatDuration, type Album, type Credit } from '../data/albums';
 import { people, type Person } from '../data/people';
 import { roleLabel } from '../data/roles';
 import { path, type Locale } from '../data/routes';
@@ -58,11 +58,25 @@ const trackRef = (nos: number[]) =>
 // EN role labels are lower case ("production"); as the first word of a credit line they start with a capital.
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
+// Names with a website (creditWebsites) are linked at their first mention in the list only, so
+// Robert Cummings' four rows don't repeat the same link.
+const linkedNames = new Set<string>();
+const nameParts = (names: string[]) =>
+  names.flatMap((name, i) => {
+    const key = Object.keys(creditWebsites).find((k) => name.startsWith(k));
+    const sep = i ? [', '] : [];
+    if (!key || linkedNames.has(key)) return [...sep, name];
+    linkedNames.add(key);
+    return [...sep, { href: creditWebsites[key], text: key }, ...(name.length > key.length ? [name.slice(key.length)] : [])];
+  });
+
 const creditItem = (c: Credit) => ({
   term: c.tracks ? `${cap(roleLabel(c.role, locale))} ${trackRef(c.tracks)}` : cap(roleLabel(c.role, locale)),
   detail: c.exceptTracks
-    ? t('album.exceptTracks', { names: c.names.join(', '), list: c.exceptTracks.join(', ') })
-    : c.names.join(', '),
+    ? t
+        .split('album.exceptTracks', { list: c.exceptTracks.join(', ') })
+        .flatMap((part, i) => (i % 2 ? (part === 'names' ? nameParts(c.names) : []) : [part]))
+    : nameParts(c.names),
 });
 
 // Own website (domain as link text) and year of death from people.ts (§5.16).
