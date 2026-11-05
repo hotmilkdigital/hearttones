@@ -10,6 +10,6 @@ export const GET: APIRoute = ({ site }) => {
   const sitemap = new URL('sitemap-index.xml', site).href;
   const body = isIndexable
     ? `User-agent: *\nAllow: /\n\nSitemap: ${sitemap}\n`
-    : `# Staging – not for indexing\nUser-agent: *\nDisallow: /\n`;
+    : `# Staging - not for indexing\nUser-agent: *\nDisallow: /\n`;
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 };
