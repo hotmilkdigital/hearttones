@@ -78,6 +78,8 @@ Alle 38 verwendeten Farbpaare erfüllen WCAG 2.2 AA → [contrast.md](contrast.m
 npm run build                  # Daten, Typen, Build
 npm run qa:dist -- --write     # SEO-Checks + docs/platzhalter.md
 npm run qa:contrast            # docs/contrast.md
+npm run qa:browser             # Browser: alle Seiten 390/1440 px, Skip-Link, Menü, Player, Karte, Video, 404
+npm run qa:browser -- --shots  # zusätzlich Screenshots in qa-shots/ (nicht im Git)
 ```
 
 Lighthouse lief außerhalb des Repos (Scratchpad, `lighthouse@12` + Edge); für Staging die Online-Version von PageSpeed Insights nutzen.

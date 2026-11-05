@@ -20,3 +20,6 @@ desktop.ini
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# browser QA screenshots (npm run qa:browser -- --shots)
+qa-shots/

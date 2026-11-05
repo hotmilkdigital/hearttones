@@ -15,7 +15,8 @@
     "check:i18n": "node scripts/check-i18n.ts",
     "astro": "astro",
     "qa:dist": "node scripts/check-dist.ts",
-    "qa:contrast": "node scripts/contrast.ts"
+    "qa:contrast": "node scripts/contrast.ts",
+    "qa:browser": "node scripts/qa-browser.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -31,6 +32,7 @@
     "@types/d3-geo": "^3.1.1",
     "@types/geojson": "^7946.0.16",
     "@types/topojson-client": "^3.1.5",
+    "puppeteer-core": "^25.16.0",
     "typescript": "^6.0.3"
   }
 }
