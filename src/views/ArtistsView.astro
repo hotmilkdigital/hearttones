@@ -17,6 +17,7 @@ import { site } from '../data/site';
 import { artistsAlbumId, hash, ids, titleId, trackId } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { compareText, formatList } from '../i18n/format';
+import ExternalLink from '../components/ExternalLink.astro';
 
 interface Props {
   locale?: Locale;
@@ -129,7 +130,7 @@ const memorial = deceased.length > 0 ? t('artists.memorial', { list: formatList(
               </ul>
               {e.person.website && (
                 <p class="artist__web">
-                  {t('artists.website')} <a href={e.person.website} rel="noopener">{domain(e.person.website)}</a>
+                  {t('artists.website')} <ExternalLink href={e.person.website}>{domain(e.person.website)}</ExternalLink>
                 </p>
               )}
               {e.id === 'philipp-v-rothkirch' && (

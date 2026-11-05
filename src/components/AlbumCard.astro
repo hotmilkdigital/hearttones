@@ -14,6 +14,7 @@ import { albumCardId, ids } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { formatEur } from '../i18n/format';
 import { loc } from '../i18n/localized';
+import ExternalLink from './ExternalLink.astro';
 
 interface Props {
   locale?: Locale;
@@ -48,7 +49,7 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
             <p class="album-card__status">{t('album.outOfPrint')}</p>
             <p class="album-card__links">
               {album.links.map((l) => (
-                <a href={l.href}>{l.label}</a>
+                <ExternalLink href={l.href}>{l.label}</ExternalLink>
               ))}
             </p>
           </>
@@ -59,9 +60,9 @@ const meta = nb(`${album.shortTitle} · ${album.year} · ${album.label} · ${alb
                 {t('album.orderByEmail')}
               </a>
               {album.links.map((l) => (
-                <a class="btn btn--outline" href={l.href}>
+                <ExternalLink class="btn btn--outline" href={l.href}>
                   {l.label === 'Asphalt Tango Records' ? 'Asphalt Tango' : l.label}
-                </a>
+                </ExternalLink>
               ))}
             </div>
             <p class="album-card__price">

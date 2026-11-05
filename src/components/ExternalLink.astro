@@ -1,0 +1,17 @@
+---
+/**
+ * Link to another website (CLAUDE.md §11 05.11.2026): opens in a new tab with rel="noopener" and
+ * tells screen reader users so in the page language. Internal, mailto and tel links stay plain <a>.
+ * `qa:dist` fails on an external link without target="_blank".
+ */
+import type { HTMLAttributes } from 'astro/types';
+import type { Locale } from '../data/routes';
+import { useT } from '../i18n/t';
+
+type Props = HTMLAttributes<'a'>;
+
+const { href, ...rest } = Astro.props;
+const t = useT((Astro.currentLocale ?? 'de') as Locale);
+---
+
+<a href={href} target="_blank" rel="noopener" {...rest}><slot /><span class="visually-hidden"> {t('common.newTab')}</span></a>

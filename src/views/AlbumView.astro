@@ -25,6 +25,7 @@ import { ids, titleId, hash } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { formatDate } from '../i18n/format';
 import { loc } from '../i18n/localized';
+import ExternalLink from '../components/ExternalLink.astro';
 
 interface Props {
   locale?: Locale;
@@ -63,11 +64,10 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const linkedNames = new Set<string>();
 const nameParts = (names: string[]) =>
   names.flatMap((name, i) => {
-    const key = Object.keys(creditWebsites).find((k) => name.startsWith(k));
     const sep = i ? [', '] : [];
-    if (!key || linkedNames.has(key)) return [...sep, name];
-    linkedNames.add(key);
-    return [...sep, { href: creditWebsites[key], text: key }, ...(name.length > key.length ? [name.slice(key.length)] : [])];
+    if (!creditWebsites[name] || linkedNames.has(name)) return [...sep, name];
+    linkedNames.add(name);
+    return [...sep, { href: creditWebsites[name], text: name }];
   });
 
 const creditItem = (c: Credit) => ({
@@ -76,7 +76,7 @@ const creditItem = (c: Credit) => ({
     ? t
         .split('album.exceptTracks', { list: c.exceptTracks.join(', ') })
         .flatMap((part, i) => (i % 2 ? (part === 'names' ? nameParts(c.names) : []) : [part]))
-    : nameParts(c.names),
+    : [...nameParts(c.names), ...(c.note ? [` (${t('common.quoteOpen')}${c.note}${t('common.quoteClose')})`] : [])],
 });
 
 // Own website (domain as link text) and year of death from people.ts (§5.16).
@@ -141,9 +141,9 @@ const description = t('album.description', {
               <p class="album-head__status-text">{t('album.outOfPrint')}</p>
               <div class="album-head__actions">
                 {album.links.map((l) => (
-                  <a class="btn btn--outline" href={l.href}>
+                  <ExternalLink class="btn btn--outline" href={l.href}>
                     {l.label}
-                  </a>
+                  </ExternalLink>
                 ))}
               </div>
             </div>
@@ -154,9 +154,9 @@ const description = t('album.description', {
                   {t('album.orderByEmail')}
                 </a>
                 {album.links.map((l) => (
-                  <a class="btn btn--outline" href={l.href}>
+                  <ExternalLink class="btn btn--outline" href={l.href}>
                     {l.label}
-                  </a>
+                  </ExternalLink>
                 ))}
               </div>
             </div>
@@ -164,7 +164,7 @@ const description = t('album.description', {
         }
 
         <p class="album-head__studio">
-          {t.split('album.studio').map((s, i) => (i % 2 ? <a href={site.partner.url}>Hot Milk Studio</a> : s))}
+          {t.split('album.studio').map((s, i) => (i % 2 ? <ExternalLink href={site.partner.url}>Hot Milk Studio</ExternalLink> : s))}
         </p>
       </div>
 

@@ -12,6 +12,7 @@ import { externalLinkTargets, youtubeHosts, youtubeHostsCheckedOn } from '../dat
 import { path, type Locale } from '../data/routes';
 import { site } from '../data/site';
 import { useT } from '../i18n/t';
+import ExternalLink from '../components/ExternalLink.astro';
 
 interface Props {
   locale?: Locale;
@@ -126,7 +127,7 @@ const email = site.contact.email;
   </p>
   <p>
     Weitere Informationen finden Sie in der Datenschutzerklärung von Google:{' '}
-    <a href="https://policies.google.com/privacy">https://policies.google.com/privacy</a>
+    <ExternalLink href="https://policies.google.com/privacy">https://policies.google.com/privacy</ExternalLink>
   </p>
   <p>
     Der Link „Auf YouTube ansehen“ führt direkt zu youtube.com; dort gelten die Datenschutzbestimmungen von YouTube.
@@ -159,7 +160,7 @@ const email = site.contact.email;
     <strong>Zahlung:</strong> Bei Zahlung per Überweisung erhält meine Bank die Zahlungsdaten. Wenn Sie per PayPal bezahlen,
     verarbeitet die PayPal (Europe) S.à r.l. et Cie, S.C.A., 22–24 Boulevard Royal, L-2449 Luxemburg, Ihre Zahlungsdaten in
     eigener Verantwortung. Es gilt die Datenschutzerklärung von PayPal:{' '}
-    <a href="https://www.paypal.com/de/legalhub/privacy-full">https://www.paypal.com/de/legalhub/privacy-full</a>
+    <ExternalLink href="https://www.paypal.com/de/legalhub/privacy-full">https://www.paypal.com/de/legalhub/privacy-full</ExternalLink>
   </p>
   <p>
     <strong>Versand:</strong> Für den Versand der CD übermittle ich Ihren Namen und Ihre Lieferanschrift an das beauftragte
@@ -206,7 +207,7 @@ const email = site.contact.email;
   <p>
     <strong>Beschwerderecht:</strong> Sie können sich bei einer Datenschutz-Aufsichtsbehörde beschweren (Art.&nbsp;77 DSGVO). Für
     mich zuständig ist: Berliner Beauftragte für Datenschutz und Informationsfreiheit, Alt-Moabit 59–61, 10555 Berlin,{' '}
-    <a href="https://www.datenschutz-berlin.de/">www.datenschutz-berlin.de</a>
+    <ExternalLink href="https://www.datenschutz-berlin.de/">www.datenschutz-berlin.de</ExternalLink>
   </p>
 
   <p class="legal__date">Stand der Datenschutzerklärung: 27.10.2026</p>

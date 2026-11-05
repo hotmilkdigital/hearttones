@@ -10,6 +10,8 @@ import familyPhoto from '../../assets/photos/philipp-robert-kinder-2011.webp';
 import { path, type Locale } from '../../data/routes';
 import { ids, titleId } from '../../data/anchors';
 import { useT } from '../../i18n/t';
+import ExternalLink from '../ExternalLink.astro';
+import { creditWebsites } from '../../data/albums';
 
 interface Props {
   locale?: Locale;
@@ -29,7 +31,12 @@ const t = useT(locale);
         sizes="(max-width: 760px) 100vw, 420px"
         class="story__img"
       />
-      <figcaption>{t('photo.familyAlt')} · {t('common.photo', { name: 'Benedikt Stehle' })}</figcaption>
+      <figcaption>
+        {t('photo.familyAlt')} ·{' '}
+        {t.split('common.photo').map((s, i) =>
+          i % 2 ? <ExternalLink href={creditWebsites['Benedikt Stehle']}>Benedikt Stehle</ExternalLink> : s,
+        )}
+      </figcaption>
     </figure>
     <div class="story__text">
       <p class="eyebrow story__eyebrow">{t('story.eyebrow')}</p>

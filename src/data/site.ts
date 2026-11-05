@@ -70,7 +70,7 @@ export const imageCredits: { image: string; credit: string | null }[] = [
   { image: 'Philipp von Rothkirch am Klavier mit seinem Sohn (Über Philipp)', credit: 'Michael von Rothkirch' },
   { image: 'Familienfoto 2011 (Philipp von Rothkirch und Robert Cummings mit ihren Kindern)', credit: 'Benedikt Stehle' },
   { image: 'Philipp von Rothkirch am Flügel im Hot Milk Studio', credit: 'Robert Cummings' },
-  { image: 'Cover Vol. 1', credit: 'Andre Wagner (Foto), Sylvia Puta (Bodypainting)' },
+  { image: 'Cover Vol. 1', credit: 'André Wagner (Foto), Sylvia Puta (Bodypainting)' },
   { image: 'Cover Vol. 2', credit: 'Benedikt Stehle (Foto)' },
 ];
 
@@ -85,7 +85,7 @@ export const fundingNotice = {
 
 /**
  * Rights gates (§9). Robert flips a flag only after the consent/licence is on file in writing.
- * 03.11.2026 (Robert): written agreements for both covers (Vol. 1: Andre Wagner, Sylvia Puta, Dalal;
+ * 03.11.2026 (Robert): written agreements for both covers (Vol. 1: André Wagner, Sylvia Puta, Dalal;
  * Vol. 2: the four children's parents); GEMA cleared with the original releases (2012, 2023).
  */
 export const rights = {

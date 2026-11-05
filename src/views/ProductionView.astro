@@ -16,6 +16,7 @@ import { works } from '../data/works';
 import { ids, referenceId, titleId } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { loc } from '../i18n/localized';
+import ExternalLink from '../components/ExternalLink.astro';
 
 interface Props {
   locale?: Locale;
@@ -83,7 +84,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
             <p class="prod__ref-credit">{loc(w.credit, locale)}</p>
             <p class="prod__ref-links">
               <a href={`${path('about', locale)}#${ids.works}`}>{t('production.watchVideo')}</a>
-              <a href={w.artistLink.href}>{loc(w.artistLink.label, locale)}</a>
+              <ExternalLink href={w.artistLink.href}>{loc(w.artistLink.label, locale)}</ExternalLink>
             </p>
           </article>
         ))
@@ -114,7 +115,7 @@ const mailto = `mailto:${site.contact.email}?subject=${encodeURIComponent(mailSu
         <h2 id={titleId(ids.partner)}>{t('production.partnerHeading')}</h2>
         <p>{t('production.partner1')}</p>
         <p>{t('production.partner2')}</p>
-        <p class="prod__partner-link"><a href={site.partner.url}>hotmilkstudio.de</a></p>
+        <p class="prod__partner-link"><ExternalLink href={site.partner.url}>hotmilkstudio.de</ExternalLink></p>
       </div>
     </div>
   </Section>

@@ -5,6 +5,8 @@
  * `link` after the detail (e.g. a musician's own website, domain as link text, §5.16).
  * `detail` may mix text and links (e.g. linked names in the production credits).
  */
+import ExternalLink from './ExternalLink.astro';
+
 type Link = { href: string; text: string };
 
 interface Props {
@@ -30,17 +32,13 @@ const { items, class: className } = Astro.props;
                 typeof part === 'string' ? (
                   part
                 ) : (
-                  <a href={part.href} rel="noopener">
-                    {part.text}
-                  </a>
+                  <ExternalLink href={part.href}>{part.text}</ExternalLink>
                 ),
               )}
           {item.link && (
             <>
               {' · '}
-              <a href={item.link.href} rel="noopener">
-                {item.link.text}
-              </a>
+              <ExternalLink href={item.link.href}>{item.link.text}</ExternalLink>
             </>
           )}
         </dd>

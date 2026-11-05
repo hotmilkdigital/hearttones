@@ -14,6 +14,7 @@ import { works } from '../../data/works';
 import { ids, titleId } from '../../data/anchors';
 import { useT } from '../../i18n/t';
 import { loc } from '../../i18n/localized';
+import ExternalLink from '../ExternalLink.astro';
 
 interface Props {
   locale?: Locale;
@@ -65,7 +66,7 @@ const t = useT(locale);
           <p>
             {t('production.homePartner')}
           </p>
-          <p class="production__link"><a href={site.partner.url}>hotmilkstudio.de</a></p>
+          <p class="production__link"><ExternalLink href={site.partner.url}>hotmilkstudio.de</ExternalLink></p>
           <p class="production__credit">{t('common.photo', { name: 'Robert Cummings' })}</p>
         </div>
       </div>

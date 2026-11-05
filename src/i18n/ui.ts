@@ -35,6 +35,8 @@ const de = {
   'common.quoteOpen': '„',
   'common.quoteClose': '“',
   'common.photo': 'Foto: {name}',
+  /** Visually hidden after every external link (ExternalLink.astro). */
+  'common.newTab': '(öffnet in neuem Tab)',
   'common.soon': 'Demnächst',
   'common.died': 'verstorben {year}',
   'common.no': 'Nr. {n}',
@@ -319,6 +321,7 @@ const en: Record<UiKey, string | null> = {
   'common.quoteOpen': '“',
   'common.quoteClose': '”',
   'common.photo': 'Photo: {name}',
+  'common.newTab': '(opens in a new tab)',
   'common.soon': 'Coming soon',
   'common.died': 'died {year}',
   'common.no': 'No.\u00a0{n}',

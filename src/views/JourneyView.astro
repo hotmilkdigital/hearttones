@@ -26,6 +26,7 @@ import { continentId, countryId, ids, titleId, trackId } from '../data/anchors';
 import { useT } from '../i18n/t';
 import { compareText } from '../i18n/format';
 import { loc } from '../i18n/localized';
+import ExternalLink from '../components/ExternalLink.astro';
 
 interface Props {
   locale?: Locale;
@@ -155,9 +156,9 @@ const audio = anyAudioPlayable();
               <p class="country__team-name">{t.name}</p>
               <span class="country__meta">{loc(t.note, locale)}</span>
               <span class="country__lineup">{loc(t.roles, locale)}</span>
-              <a class="country__song" href={t.link.href}>
+              <ExternalLink class="country__song" href={t.link.href}>
                 {t.link.label}
-              </a>
+              </ExternalLink>
             </article>
           ))
         }

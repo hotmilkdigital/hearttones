@@ -64,7 +64,7 @@ const diamond = (x: number, y: number, r = 9) => `${x},${y - r} ${x + r},${y} ${
 const team = interactive
   ? teamPins.map((p) => {
       const [x, y] = project(p.lon, p.lat);
-      return { ...p, x, y, points: diamond(x, y), tipId: mapTipId(p.id), ariaLabel: `${p.place}: ${p.name} – ${loc(p.roles, locale)}` };
+      return { ...p, x, y, points: diamond(x, y), tipId: mapTipId(p.id), ariaLabel: `${p.place}: ${p.name} – ${loc(p.roles, locale)} ${t('common.newTab')}` };
     })
   : [];
 
@@ -106,7 +106,7 @@ const featured = (Object.values(countries) as { isoNumeric: string }[]).map((c) 
       }
       {
         team.map((t) => (
-          <a href={t.link.href} class="marker marker--team" aria-label={t.ariaLabel} data-tip={t.tipId}>
+          <a href={t.link.href} target="_blank" rel="noopener" class="marker marker--team" aria-label={t.ariaLabel} data-tip={t.tipId}>
             <circle class="marker__hit" cx={t.x} cy={t.y} r="14" />
             <circle class="marker__focus-outer" cx={t.x} cy={t.y} r="15" />
             <circle class="marker__focus-inner" cx={t.x} cy={t.y} r="12" />

@@ -23,6 +23,8 @@ import { bio, craft, instruments, met } from '../data/about';
 import { loc } from '../i18n/localized';
 import { ids, titleId, workId } from '../data/anchors';
 import { splitSlots, useT } from '../i18n/t';
+import ExternalLink from '../components/ExternalLink.astro';
+import { creditWebsites } from '../data/albums';
 
 interface Props {
   locale?: Locale;
@@ -105,7 +107,10 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
           class="story__img"
         />
         <figcaption>
-          {t('photo.familyAlt')} · {t('common.photo', { name: 'Benedikt Stehle' })}
+          {t('photo.familyAlt')} ·{' '}
+          {t.split('common.photo').map((s, i) =>
+            i % 2 ? <ExternalLink href={creditWebsites['Benedikt Stehle']}>Benedikt Stehle</ExternalLink> : s,
+          )}
         </figcaption>
       </figure>
       <div class="story__text">
@@ -145,7 +150,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
           {splitSlots(loc(craft.singles, locale)).map((s, i) => (i % 2 ? <a href={path('singles', locale)}>Berlin Peace Collective</a> : s))}
         </p>
         <p class="craft__p">
-          {splitSlots(loc(craft.process, locale)).map((s, i) => (i % 2 ? <a href={site.partner.url}>Hot Milk Studio</a> : s))}
+          {splitSlots(loc(craft.process, locale)).map((s, i) => (i % 2 ? <ExternalLink href={site.partner.url}>Hot Milk Studio</ExternalLink> : s))}
         </p>
       </div>
       <figure class="craft__photo">
@@ -188,7 +193,7 @@ const portraitWidths = portrait ? [340, 680, 1020].filter((w) => w <= portrait.i
               </p>
             )}
             <p class="work__artist">
-              <a href={w.artistLink.href}>{loc(w.artistLink.label, locale)}</a>
+              <ExternalLink href={w.artistLink.href}>{loc(w.artistLink.label, locale)}</ExternalLink>
             </p>
           </article>
         ))

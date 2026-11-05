@@ -52,18 +52,19 @@ export interface Credit {
   tracks?: number[];
   /** All tracks except these. */
   exceptTracks?: number[];
+  /** Printed addition after the names, shown in brackets and the page's quote marks (Peter Sund („the farm“)). */
+  note?: string;
 }
 
 /**
- * Websites for the production and design credits on the album pages (Robert, 05.11.2026). Key = the
- * name a printed credit starts with (Peter Sund („the farm“)); only the name is the link text.
+ * Websites for the production and design credits on the album pages (Robert, 05.11.2026), keyed by name.
  * Robert Cummings → his studio (same URL as site.partner.url; site.ts can't be imported here, as
  * check:data runs without import.meta.env).
  */
 export const creditWebsites: Record<string, string> = {
   'Robert Cummings': 'https://www.hotmilkstudio.de/',
   'Peter Sund': people['peter-sund'].website!,
-  'Andre Wagner': 'https://andrewagner.com/',
+  'André Wagner': 'https://andrewagner.com/',
   'Benedikt Stehle': 'https://www.benediktstehle.com/',
 };
 
@@ -135,10 +136,10 @@ export const vol1: Album = {
     { role: 'production', names: ['Philipp von Rothkirch'] },
     { role: 'coProduction', names: ['Robert Cummings'] },
     { role: 'recording', names: ['Robert Cummings'], exceptTracks: [7] },
-    { role: 'recording', names: ['Peter Sund („the farm“)'], tracks: [7] },
+    { role: 'recording', names: ['Peter Sund'], note: 'the farm', tracks: [7] },
     { role: 'mixing', names: ['Robert Cummings'] },
     { role: 'mastering', names: ['Robert Cummings'] },
-    { role: 'coverPhoto', names: ['Andre Wagner'] },
+    { role: 'coverPhoto', names: ['André Wagner'] },
     { role: 'bodyPainting', names: ['Sylvia Puta'] },
     { role: 'coverModel', names: ['Dalal'] },
     { role: 'design', names: ['Tobias Henze (aitrio crossmedia communication)'] },

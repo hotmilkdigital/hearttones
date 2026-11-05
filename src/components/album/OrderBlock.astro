@@ -11,6 +11,7 @@ import { order, site } from '../../data/site';
 import { ids, titleId } from '../../data/anchors';
 import { useT } from '../../i18n/t';
 import { formatEur } from '../../i18n/format';
+import ExternalLink from '../ExternalLink.astro';
 
 interface Props {
   locale?: Locale;
@@ -47,9 +48,9 @@ const terms = [
     <a class="btn btn--primary" href={mailto}>{t('album.orderByEmail')}</a>
     {
       album.links.map((l) => (
-        <a class="btn btn--outline" href={l.href}>
+        <ExternalLink class="btn btn--outline" href={l.href}>
           {l.label}
-        </a>
+        </ExternalLink>
       ))
     }
   </div>

@@ -4,7 +4,8 @@
  *   canonical, og:image file exists, JSON-LD parses, exactly one <h1>, lang, alt on every <img>,
  *   every internal link resolves to a built page, every #fragment (same page or other page) and
  *   every aria-labelledby/-controls/-describedby resolves to an id on that page; ids are unique and
- *   lowercase ASCII (anchors.ts, CLAUDE.md §11).
+ *   lowercase ASCII (anchors.ts, CLAUDE.md §11); every external link has target="_blank" and
+ *   rel="noopener" (ExternalLink.astro).
  * - EN pages (/en/): lang="en", hreflang alternate, and a list of German words still visible
  *   outside lang="de" elements (for a human check, not failed).
  * - Lists every [PLATZHALTER: …] per page (§5.1). With --write: docs/platzhalter.md.
@@ -104,6 +105,11 @@ for (const { url, html } of pages) {
     if (!existsSync(target) && !existsSync(join(DIST, `${href}.html`)))
       errors.push(`${url}: internal link to ${href} has no page`);
   }
+
+  // External links open in a new tab with rel="noopener" (ExternalLink.astro, §11 05.11.2026).
+  for (const a of html.match(/<a\b[^>]*\bhref="https?:\/\/[^"]*"[^>]*>/g) ?? [])
+    if (!/\btarget="_blank"/.test(a) || !/\brel="[^"]*\bnoopener\b/.test(a))
+      errors.push(`${url}: external link not opening in a new tab: ${a.slice(0, 100)}`);
 
   // Ids: unique, lowercase ASCII, language-neutral (anchors.ts).
   const pageIds = idsByUrl.get(url)!;

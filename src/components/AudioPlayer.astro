@@ -26,6 +26,7 @@ import { ids, panelId, tabId, titleId, trackId } from '../data/anchors';
 import { isPlayable } from '../lib/audio';
 import type { Locale } from '../data/routes';
 import { useT } from '../i18n/t';
+import ExternalLink from './ExternalLink.astro';
 
 interface Props {
   locale?: Locale;
@@ -185,7 +186,7 @@ const tabLabel = (album: Album) => `${album.shortTitle} · ${album.year}`;
                 showLinks(album) && (
                   <p class="panel__links">
                     {album.links.map((l) => (
-                      <a href={l.href}>{linkLabels[album.id][l.label] ?? l.label}</a>
+                      <ExternalLink href={l.href}>{linkLabels[album.id][l.label] ?? l.label}</ExternalLink>
                     ))}
                   </p>
                 )
