@@ -2,8 +2,9 @@
 /**
  * Hero cover stack (reference: 03_Design/hero-d-cover-stapel.png): the two album covers lying
  * loosely on top of each other. Vol. 1 underneath (−7°, down-left) so its face and painted globe
- * stay visible and its logo corner sits under Vol. 2; Vol. 2 on top (+4.5°, up-right) – the LCP
- * element, hence fetchpriority="high". Each cover links to its album page. Rights gates (§9) come
+ * stay visible and its logo corner sits under Vol. 2; Vol. 2 on top (+4.5°, up-right). Both are the
+ * same size and LCP ignores overlap, so the first one in the DOM (Vol. 1) is the LCP element (Lighthouse,
+ * 06.11.2026) – hence fetchpriority="high" on Vol. 1. Each cover links to its album page. Rights gates (§9) come
  * from Cover.astro: an uncleared cover renders the typographic placeholder in the same position.
  * No animation (§6.6).
  */
@@ -25,10 +26,10 @@ const sizes = '(max-width: 640px) calc((100vw - 32px) * 0.64), 320px';
 
 <div class="stack">
   <a class="stack__item stack__item--vol-1" href={path('vol1', locale)}>
-    <Cover locale={locale} album={vol1} width={320} sizes={sizes} shadow="object" loading="eager" fetchpriority="auto" />
+    <Cover locale={locale} album={vol1} width={320} sizes={sizes} shadow="object" loading="eager" fetchpriority="high" />
   </a>
   <a class="stack__item stack__item--vol-2" href={path('vol2', locale)}>
-    <Cover locale={locale} album={vol2} width={320} sizes={sizes} shadow="object" loading="eager" fetchpriority="high" />
+    <Cover locale={locale} album={vol2} width={320} sizes={sizes} shadow="object" loading="eager" fetchpriority="auto" />
   </a>
 </div>
 
