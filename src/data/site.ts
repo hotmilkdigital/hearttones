@@ -96,6 +96,21 @@ export const rights = {
 
 export type RightsKey = keyof typeof rights;
 
+/**
+ * Datenschutz sections that appear only together with the feature they describe
+ * (../01_Brief/12_Datenschutz.md, 06.11.2026). Flip the flag in the same commit that adds the feature.
+ * - bandcampEmbed: section 6a „Bandcamp-Player (Zwei-Klick-Lösung)“ – check Bandcamp's address first.
+ * - contactForm: paragraph „Kontaktformular“ in section 8 – the site has no form (§10).
+ */
+export const bandcampEmbed: boolean = false;
+export const contactForm: boolean = false;
+
+/**
+ * „Stand der Datenschutzerklärung“ = the day the site goes live (Robert, 06.11.2026), e.g. '15.11.2026'.
+ * Robert sets it on launch day. null → [PLATZHALTER] on staging; a production build fails without it.
+ */
+export const privacyStand: string | null = null;
+
 /** Production build (PUBLIC_INDEXABLE=true). Staging and local dev are not indexable. */
 export const isIndexable = import.meta.env.PUBLIC_INDEXABLE === 'true';
 

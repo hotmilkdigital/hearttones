@@ -1,16 +1,17 @@
 ---
 /**
- * Datenschutzerklärung (CLAUDE.md §10) – final text by Robert,
- * ../01_Brief/hearttones_datenschutzerklaerung_final_2026-10-27 (27.10.2026), verbatim.
- * Sections marked „bestehender Text" in Robert's file keep the earlier wording (1, 2, 4, 5, 7 and the
- * technical part of 6, incl. the YouTube domains from privacy.ts), switched from „unser Server" to
- * „der Server dieser Website" to match Robert's first-person text. Not taken over: the paragraph on a
- * contact form – the site has none (§10; Robert, 27.10.2026). Typography only (§5.15).
+ * Datenschutzerklärung (CLAUDE.md §10) – final text, ../01_Brief/12_Datenschutz.md (snapshot
+ * 06.11.2026), verbatim. Sections marked „bestehender Text" there keep the earlier wording (1, 2, 4,
+ * 5, 7 and the technical part of 6, incl. the YouTube domains from privacy.ts – §11 24.10.2026).
+ * Behind flags in site.ts until the feature exists: section 6a Bandcamp (bandcampEmbed) and the
+ * „Kontaktformular" paragraph in 8 (contactForm). „Stand" = launch date (privacyStand).
+ * Typography only (§5.15).
  */
 import LegalPage from '../components/LegalPage.astro';
+import Placeholder from '../components/Placeholder.astro';
 import { externalLinkTargets, youtubeHosts, youtubeHostsCheckedOn } from '../data/privacy';
 import { path, type Locale } from '../data/routes';
-import { site } from '../data/site';
+import { bandcampEmbed, contactForm, isIndexable, privacyStand, site } from '../data/site';
 import { useT } from '../i18n/t';
 import ExternalLink from '../components/ExternalLink.astro';
 
@@ -21,6 +22,10 @@ interface Props {
 const { locale = 'de' } = Astro.props;
 const t = useT(locale);
 const email = site.contact.email;
+
+if (isIndexable && !privacyStand) {
+  throw new Error('privacyStand is not set in src/data/site.ts – set it to the launch date before a production build.');
+}
 ---
 
 <LegalPage
@@ -133,6 +138,31 @@ const email = site.contact.email;
     Der Link „Auf YouTube ansehen“ führt direkt zu youtube.com; dort gelten die Datenschutzbestimmungen von YouTube.
   </p>
 
+  {
+    bandcampEmbed && (
+      <>
+        <h2>6a. Bandcamp-Player (Zwei-Klick-Lösung)</h2>
+        <p>
+          Sofern ich Musik über einen eingebetteten Bandcamp-Player bereitstelle, wird dieser erst nach Ihrer ausdrücklichen
+          Einwilligung geladen (Klick auf „Player laden“). Vorher werden keine Daten an Bandcamp übertragen. Rechtsgrundlage für
+          das Speichern von bzw. den Zugriff auf Informationen auf Ihrem Endgerät ist §&nbsp;25 Abs.&nbsp;1 TDDDG; Rechtsgrundlage
+          für die anschließende Verarbeitung Ihrer Daten ist Ihre Einwilligung nach Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO. Die
+          Einwilligung gilt nur für den aktuellen Seitenaufruf; ich speichere sie nicht. Beim nächsten Aufruf der Seite ist der
+          Player wieder deaktiviert. Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie
+          die Seite neu laden oder verlassen.
+        </p>
+        <p>
+          Anbieter ist die Bandcamp Ventures LLC, USA <Placeholder text="Anschrift laut aktueller Bandcamp-Datenschutzerklärung prüfen" />.
+          Nach dem Laden des Players können Daten, auch Ihre IP-Adresse, an Bandcamp übermittelt und dabei in die USA übertragen
+          werden. Für dieses Unternehmen besteht kein Angemessenheitsbeschluss der EU-Kommission; die Übermittlung in die USA
+          erfolgt daher auf Grundlage Ihrer ausdrücklichen Einwilligung nach Art.&nbsp;49 Abs.&nbsp;1 lit.&nbsp;a DSGVO, die Sie mit dem
+          Laden des Players erteilen. Weitere Informationen finden Sie in der Datenschutzerklärung von Bandcamp:{' '}
+          <ExternalLink href="https://bandcamp.com/privacy">https://bandcamp.com/privacy</ExternalLink>
+        </p>
+      </>
+    )
+  }
+
   <h2>7. Links zu anderen Websites</h2>
   <p>
     Diese Website enthält einfache Links, unter anderem zu {externalLinkTargets.join(', ')}. Daten werden erst übertragen,
@@ -156,6 +186,17 @@ const email = site.contact.email;
     ALL-INKL.COM – Neue Medien Münnich, Hauptstraße&nbsp;68, 02742 Friedersdorf, Deutschland, gehostet. Hot Milk Digital ist
     insoweit mein Auftragsverarbeiter nach Art.&nbsp;28 DSGVO; ALL-INKL.COM ist als Unterauftragsverarbeiter eingebunden.
   </p>
+  {
+    contactForm && (
+      <p>
+        <strong>Kontaktformular:</strong> Auf meiner Website können Sie mich auch über ein Kontaktformular erreichen. Dabei
+        verarbeite ich die von Ihnen eingegebenen Daten, in der Regel Ihren Namen, Ihre E-Mail-Adresse und den Inhalt Ihrer
+        Nachricht. Die über das Formular abgesendete Nachricht erreicht mich als E-Mail und wird in meinem E-Mail-Postfach bei
+        ALL-INKL.COM verarbeitet (siehe oben). Zweck, Rechtsgrundlage (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b bzw. lit.&nbsp;f DSGVO) und
+        Speicherdauer entsprechen den vorstehenden Angaben für Anfragen per E-Mail. Das Formular setzt keine Tracking-Cookies.
+      </p>
+    )
+  }
   <p>
     <strong>Zahlung:</strong> Bei Zahlung per Überweisung erhält meine Bank die Zahlungsdaten. Wenn Sie per PayPal bezahlen,
     verarbeitet die PayPal (Europe) S.à r.l. et Cie, S.C.A., 22–24 Boulevard Royal, L-2449 Luxemburg, Ihre Zahlungsdaten in
@@ -210,5 +251,7 @@ const email = site.contact.email;
     <ExternalLink href="https://www.datenschutz-berlin.de/">www.datenschutz-berlin.de</ExternalLink>
   </p>
 
-  <p class="legal__date">Stand der Datenschutzerklärung: 27.10.2026</p>
+  <p class="legal__date">
+    Stand der Datenschutzerklärung: {privacyStand ?? <Placeholder text="Datum der Veröffentlichung (privacyStand in site.ts)" />}
+  </p>
 </LegalPage>

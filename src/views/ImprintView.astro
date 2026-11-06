@@ -1,14 +1,14 @@
 ---
 /**
- * Impressum (CLAUDE.md §10) – final text by Robert, ../01_Brief/hearttones_Impressum_final_2026-10-27
- * (27.10.2026), verbatim. The only page with Philipp's postal address besides the Widerruf
+ * Impressum (CLAUDE.md §10) – final text, ../01_Brief/11_Impressum.md (snapshot 06.11.2026),
+ * verbatim. The only page with Philipp's postal address besides the Widerruf
  * (§5.12). Robert's note „mit den bestehenden Pflichtangaben abgleichen" → the existing blocks
  * § 18 Abs. 2 MStV, Label and Bildnachweise (site.imageCredits, referred to under Urheberrecht)
  * stay. Typography only: § with non-breaking space, „…“ quotes (§5.15).
  */
 import LegalPage from '../components/LegalPage.astro';
 import Placeholder from '../components/Placeholder.astro';
-import { path, type Locale } from '../data/routes';
+import type { Locale } from '../data/routes';
 import { imageCredits, site } from '../data/site';
 import { useT } from '../i18n/t';
 
@@ -101,9 +101,5 @@ const { owner, address, contact } = site;
     Inhalte Dritter, insbesondere Pressezitate und Fotos, sind als solche gekennzeichnet. Sollten Sie dennoch auf eine
     Urheberrechtsverletzung aufmerksam werden, bitte ich um einen Hinweis an <a href={`mailto:${contact.email}`}>{contact.email}</a>.
     Sobald mir eine Rechtsverletzung bekannt wird, entferne ich den betreffenden Inhalt umgehend.
-  </p>
-
-  <p>
-    Informationen zum Datenschutz finden Sie in der <a href={path('privacy', locale)}>Datenschutzerklärung</a>.
   </p>
 </LegalPage>
