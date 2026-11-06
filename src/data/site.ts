@@ -72,7 +72,6 @@ export const imageCredits: { image: string; credit: string | null }[] = [
   { image: 'Philipp von Rothkirch am Flügel im Hot Milk Studio', credit: 'Robert Cummings' },
   { image: 'Cover Vol. 1', credit: 'André Wagner (Foto), Sylvia Puta (Bodypainting)' },
   { image: 'Cover Vol. 2', credit: 'Benedikt Stehle (Foto)' },
-  { image: 'Startseite: Foto vom Cover Vol. 2 ohne Schrift, freigestellt', credit: 'Benedikt Stehle' },
 ];
 
 /**

@@ -29,7 +29,8 @@ Audience: parents, families, educators, world-music listeners; musicians/singers
 | `../01_Brief/09_Albumtexte.md` | Approved album texts Vol. 1 and Vol. 2 (25.10.2026) | `story` in `src/data/albums.ts`, verbatim |
 | `../01_Brief/10_Texte-EN.md` | English texts (EN-GB), draft – Robert (native speaker, translator) approves before launch | `en` in `src/i18n/ui.ts` and the `{ de, en }` data fields, verbatim |
 | `../03_Design/Startseite-Artboard_v6.dc.html` | Approved desktop homepage artboard (Claude Design export) | **Reference** for layout, order and German copy of the homepage. Not code to copy (see §6.8) |
-| `../03_Design/hero-globus.svg` | Former hero illustration (globe as night light) | Replaced in the hero by the Vol. 2 cover photo on 06.11.2026 (§11); kept in `src/assets/illustrations/` |
+| `../03_Design/hero-d-cover-stapel.png` | Approved hero composition: the two album covers as a loose stack (06.11.2026) | **Reference** for `CoverStack.astro` (§6.5). Not code to copy |
+| `../03_Design/hero-globus.svg` | Former hero illustration (globe as night light) | Not used on the site since 06.11.2026 (§11); removed from `src/` |
 | `../03_Design/reise-weltkarte-platzhalter.svg` | Rough map placeholder from the artboard | Replace with the generated map (§8.5) |
 | `../02_Assets/` | Originals (covers, logos, photos, funding logos, audio later) | Copy only what is used into `src/assets/` (§7) |
 | `../01_Brief/01_Fragebogen-Antworten_2026-10.md`, `../01_Brief/06_Fragebogen-Antworten-2_2026-10.md` | Philipp's questionnaire answers, rounds 1 and 2 (transcribed) | Background for copy and data; §11 here wins |
@@ -49,7 +50,7 @@ The `.md` files in `../01_Brief` are **dated snapshots**; the masters live in Ro
 - **Astro**, current stable version, static output (`output: 'static'`), TypeScript strict. No UI framework; plain `.astro` components plus small vanilla `<script>` islands where needed (audio player, menu, consent video, map tooltips).
 - Styling: one `src/styles/global.css` with design tokens as CSS custom properties, plus scoped component styles. No Tailwind.
 - Fonts self-hosted via Fontsource: `@fontsource-variable/literata`, `@fontsource-variable/nunito` (latin + latin-ext + cyrillic subsets). **No Google Fonts requests.** Quicksand only inside the logo (outlined SVG, or a tiny self-hosted subset until Robert's SVGs arrive).
-- Images: `astro:assets` (`<Image>`/`<Picture>`), AVIF + WebP, explicit `width`/`height`. Hero image is the cut-out Vol. 2 cover photo as WebP, eager with `fetchpriority="high"` (it is the LCP element, §11 06.11.2026).
+- Images: `astro:assets` (`<Image>`/`<Picture>`), AVIF + WebP, explicit `width`/`height`. Hero art is the cover stack (`CoverStack.astro`, §6.5): both covers as `<Picture>` AVIF/WebP, eager; Vol. 1 with `fetchpriority="high"` (it is the LCP element).
 - Map: generated **at build time** from Natural Earth data (`world-atlas` TopoJSON + `topojson-client` + `d3-geo`) into static SVG. No map library or tiles at runtime.
 - Integrations: `@astrojs/sitemap`. Nothing else without asking.
 - Dev server: port **4323** with `strictPort: true` (4321/4322 are used by other client projects). One VS Code window per project.
@@ -157,7 +158,15 @@ Wordmark "heart" + glyph (heart with note stem) + "tones". Variants: on cream (w
 
 ### 6.5 Hero
 
-Taupe band. Left: "Demnächst" pill linking to the singles teaser, eyebrow "Lullabies from around the world", H1 „Schlaflieder aus aller Welt", intro, stats line, buttons „Reinhören" (→ player) and „Die Reise entdecken" (→ map). Right: **the Vol. 2 cover photo without lettering, cut out** (`src/assets/photos/heart-tones-vol2-ohne-schrift-freigestellt.png`, transparent PNG trimmed to 1254 × 844 px, soft edges via a subtle CSS mask on all four sides; `<Image>` WebP 360/560/720/1120 px, up to 560 px wide (≈ 550 px at 1440, two equal columns), full content width on phones; changed 06.11.2026, replaces the globe illustration of 23.10.2026, which stays in the repo).
+Taupe band. Left: "Demnächst" pill linking to the singles teaser, eyebrow "Lullabies from around the world", H1 „Schlaflieder aus aller Welt", intro, stats line, buttons „Reinhören" (→ player) and „Die Reise entdecken" (→ map). Right: **a loose stack of the two album covers** (`src/components/home/CoverStack.astro`, reference `../03_Design/hero-d-cover-stapel.png`; approved by Philipp 06.11.2026):
+
+- **Vol. 1 underneath**, rotated −7°, offset down-left, so its face and painted globe stay visible and its logo corner lies under Vol. 2. **Vol. 2 on top**, rotated +4.5°, offset up-right.
+- Desktop: 320 px per cover in a 500 × 460 px area; positions and sizes in % (cover = 64 % of the area width) so the proportions hold at every width. Side by side with the text from ~980 px (two columns, flex basis 440 px).
+- Phones (≤ 640 px): stack below the text, centred, full content width – covers ≈ 60 % of the viewport, same angles, no horizontal overflow.
+- Shadow token `--shadow-object` (layered, like objects on a table), radius `--radius-object` (2 px), via `Cover.astro` `shadow="object"`.
+- Each cover links to its album page (localised route) with its `coverAlt` (DE/EN). `<Picture>` AVIF/WebP 320/480/640 px, `sizes` `(max-width: 640px) calc((100vw - 32px) * 0.64), 320px`. Both eager; `fetchpriority="high"` on Vol. 1 – Lighthouse counts it as the LCP element (same size as Vol. 2, LCP ignores the overlap, first in the DOM wins).
+- Rights gates (§9) via `Cover.astro`: an uncleared cover renders the typographic placeholder in the same position.
+- No animation (§6.6).
 
 ### 6.6 Motion and effects
 
@@ -175,7 +184,7 @@ The artboard is a Claude Design file with inline styles and `{{…}}` template b
 
 - Originals stay in `../02_Assets/`. Copy only used files into `src/assets/<folder>/` with kebab-case names. Check file size after copying.
 - Covers are the final JPEG masters (24.10.2026: Vol. 1 1468 px, Vol. 2 2400 px, sRGB, no metadata) in `src/assets/covers/`. Still **interim**: family photo 1280×1599 WebP; piano photo 1600×1200 WebP; funding logos as raster (vector versions to be fetched from Initiative Musik). Build so masters can be swapped by replacing the file.
-- `vol-2-kinder-ohne-schrift.jpg`: Vol. 2 cover photo with the logo/lettering retouched out (23.10.). Reserve; a cut-out version (`heart-tones-vol2-ohne-schrift-freigestellt.png`) is the hero image since 06.11.2026. **Same consent condition as the Vol. 2 cover (§9)** – cleared 03.11.2026.
+- `vol-2-kinder-ohne-schrift.jpg` (in `../02_Assets/photos/`, not in `src/`): Vol. 2 cover photo with the logo/lettering retouched out (23.10.). Reserve, like its cut-out version `heart-tones-vol2-ohne-schrift-freigestellt.png` (hero 06.11.2026 until replaced by the cover stack the same day). **Same consent condition as the Vol. 2 cover (§9)** – cleared 03.11.2026.
 - Audio: all 26 MP3s are delivered in `../02_Assets/audio/` (192 kbps, ~111 MB). Copy to `public/audio/vol-1/01-dodo.mp3` etc. (kebab-case, ASCII) and **commit them to git** (decided 23.10.2026). **Track durations come from the MP3s, not the booklets** (e.g. Vol. 1 "Sov sødt barnlille" 3:43, "Dream of Mikael" 4:20, "Dans les étoiles" 2:28); album totals are the sum of the MP3 durations.
 - Strip metadata (EXIF/GPS) from any new image before committing.
 
@@ -281,6 +290,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 06.11.2026 | Hero image changed at Philipp's request (deliberate; overrides the globe decision of 23.10.2026 and the „not for the hero“ note on the Vol. 2 photo): cut-out Vol. 2 cover photo without lettering (`src/assets/photos/heart-tones-vol2-ohne-schrift-freigestellt.png`, 1254 px transparent PNG, unchanged copy from `02_Assets/photos/`; written consent of the parents on file). `<Image>` WebP, widths 300/440/600/880, `sizes` 300 px on phones / 440 px otherwise, eager, `fetchpriority="high"`; alt text DE/EN (`hero.photoAlt`, children not named). The globe SVG stays in `src/assets/illustrations/`. Impressum image credits: „Startseite: Foto vom Cover Vol. 2 ohne Schrift, freigestellt – Benedikt Stehle“. |
 | 06.11.2026 | Hero photo (Robert): empty transparent top third trimmed in the `src/` copy (1254 × 844 px, full-colour PNG; master in `02_Assets` unchanged), so the photo sits centred beside the text and without a gap on phones. Soft edges: CSS mask in `Hero.astro` (two linear gradients intersected – fade 12 % left/right, 14 % top, 18 % bottom), not baked into the file. |
 | 06.11.2026 | Hero photo larger, fade subtler (Robert, trial): max 560 px (≈ 550 px at 1440, text and photo as two equal columns with a 440 px flex basis, side by side from ~980 px), full content width on phones (358 px at 390); `<Image>` widths 360/560/720/1120, `sizes` `(max-width: 640px) calc(100vw - 32px), 560px`. Mask fade 5 % left/right, 6 % top, 8 % bottom (was 12/14/18 %). |
+| 06.11.2026 | **Hero = cover stack** (approved by Philipp; Robert): the homepage hero shows the two album covers as a loose stack – Vol. 2 on top (+4.5°), Vol. 1 below (−7°) – per `../03_Design/hero-d-cover-stapel.png`, details in §6.5. Replaces the hero with the cut-out Vol. 2 cover photo (rows above of 06.11.2026) and, finally, the globe of 23.10.2026. Layered shadow token `--shadow-object` (0 1px 2px / 0 10px 18px / 0 28px 50px, rgb 20 14 10 at .35/.25/.22), radius 2 px. Both covers eager, `fetchpriority="high"` on Vol. 1 (Lighthouse LCP element). Merged from branch `hero-cover-stack` (no rebase). Removed from `src/`: `assets/illustrations/hero-globus.svg`, `assets/photos/heart-tones-vol2-ohne-schrift-freigestellt.png`, the `hero.photoAlt` strings and the Impressum credit „Startseite: Foto vom Cover Vol. 2 ohne Schrift, freigestellt“; originals stay in `../03_Design/` and `../02_Assets/photos/`. `../01_Brief/00_Projektstatus.md` decision 21 to be updated in the snapshot. |
 
 ## 12. Open items (build around them with placeholders)
 

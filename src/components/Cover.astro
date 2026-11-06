@@ -17,12 +17,15 @@ interface Props {
   /** Rendered width in CSS px at the largest layout; used for srcset widths. */
   width: number;
   sizes: string;
-  shadow?: 'dark' | 'light';
+  /** object = physical CD on a table (hero cover stack): layered shadow, 2px radius. */
+  shadow?: 'dark' | 'light' | 'object';
   loading?: 'lazy' | 'eager';
+  /** Defaults to high for eager covers; the hero stack sets it per cover (only the LCP cover is high). */
+  fetchpriority?: 'high' | 'low' | 'auto';
   class?: string;
 }
 
-const { locale = 'de', album, width, sizes, shadow = 'dark', loading = 'lazy', class: className } = Astro.props;
+const { locale = 'de', album, width, sizes, shadow = 'dark', loading = 'lazy', fetchpriority, class: className } = Astro.props;
 const t = useT(locale);
 const image = clearedCover(album);
 // 1×, ~1.5× and 2× of the layout width so phones (≈1.75 DPR) get a close match.
@@ -41,7 +44,7 @@ const widths = image ? [width, Math.round(width * 1.5), width * 2].filter((w) =>
       formats={['avif', 'webp']}
       fallbackFormat="webp"
       loading={loading}
-      fetchpriority={loading === 'eager' ? 'high' : 'auto'}
+      fetchpriority={fetchpriority ?? (loading === 'eager' ? 'high' : 'auto')}
       class:list={['cover', `cover--${shadow}`, className]}
     />
   ) : (
@@ -68,6 +71,11 @@ const widths = image ? [width, Math.round(width * 1.5), width * 2].filter((w) =>
 
   .cover--light {
     box-shadow: var(--shadow-cover-light);
+  }
+
+  .cover--object {
+    border-radius: var(--radius-object);
+    box-shadow: var(--shadow-object);
   }
 
   .cover--placeholder {

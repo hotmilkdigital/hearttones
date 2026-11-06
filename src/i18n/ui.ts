@@ -106,7 +106,6 @@ const de = {
   'hero.intro':
     'Zwei Alben mit Wiegenliedern, gesungen und gespielt von Musiker:innen aus aller Welt. Zum Einschlafen für Kinder – und zum Zuhören für Eltern.',
   'hero.journey': 'Die Reise entdecken',
-  'hero.photoAlt': 'Vier Kinder schlafen eng aneinandergekuschelt unter einer bunt gestreiften Decke, zwischen ihnen ein Plüschkätzchen – das Foto vom Cover von Vol. 2',
   'home.albums': 'Die Alben',
   'newMusic.heading': 'Neue Musik',
   'newMusic.intro':
@@ -381,7 +380,6 @@ const en: Record<UiKey, string | null> = {
   'hero.h1': 'Lullabies from around the world',
   'hero.intro': 'Two albums of lullabies, sung and played by musicians from around the world. For children to fall asleep to – and for parents to enjoy listening to.',
   'hero.journey': 'Explore the journey',
-  'hero.photoAlt': 'Four children asleep, snuggled up under a brightly striped blanket with a toy cat between them – the photo from the Vol. 2 cover',
   'home.albums': 'The albums',
   'newMusic.heading': 'New music',
   'newMusic.intro': 'Two new pieces by {artist} – composition and keyboards: {fullName}, mixed and mastered at Hot Milk Studio. Release to follow.',
