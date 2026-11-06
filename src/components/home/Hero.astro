@@ -132,10 +132,20 @@ const nextSingle = singles[0]!;
     min-width: 0;
   }
 
+  /* Soft edges: the photo fades into the taupe band on all four sides (two gradients, intersected).
+     The master stays untouched, so it can be swapped by replacing the file. */
   .hero__photo {
     width: 100%;
     max-width: 440px;
     height: auto;
+    -webkit-mask-image:
+      linear-gradient(to right, transparent, black 12%, black 88%, transparent),
+      linear-gradient(to bottom, transparent, black 14%, black 82%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, transparent, black 12%, black 88%, transparent),
+      linear-gradient(to bottom, transparent, black 14%, black 82%, transparent);
+    mask-composite: intersect;
   }
 
   @media (max-width: 640px) {
