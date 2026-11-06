@@ -1,13 +1,12 @@
 ---
 /**
  * Homepage hero (CLAUDE.md §6.5): taupe band, "Demnächst" pill to the singles teaser,
- * eyebrow, H1, intro, stats line, two buttons, the Vol. 2 cover photo without lettering, cut out
- * (Philipp, 06.11.2026 – replaces the globe illustration, which stays in src/assets/illustrations/).
+ * eyebrow, H1, intro, stats line, two buttons, and a loose stack of the two album covers (CoverStack,
+ * branch hero-cover-stack; the globe SVG and the cut-out Vol. 2 photo stay in src/assets/).
  * Copy from the approved artboard (Startseite-Artboard_v6).
  */
 import Section from '../Section.astro';
-import { Image } from 'astro:assets';
-import heroPhoto from '../../assets/photos/heart-tones-vol2-ohne-schrift-freigestellt.png';
+import CoverStack from './CoverStack.astro';
 import { albums } from '../../data/albums';
 import { countries } from '../../data/countries';
 import { path, type Locale } from '../../data/routes';
@@ -51,16 +50,7 @@ const nextSingle = singles[0]!;
       </div>
     </div>
     <div class="hero__art">
-      <Image
-        src={heroPhoto}
-        alt={t('hero.photoAlt')}
-        format="webp"
-        widths={[360, 560, 720, 1120]}
-        sizes="(max-width: 640px) calc(100vw - 32px), 560px"
-        loading="eager"
-        fetchpriority="high"
-        class="hero__photo"
-      />
+      <CoverStack locale={locale} />
     </div>
   </div>
 </Section>
@@ -133,22 +123,6 @@ const nextSingle = singles[0]!;
     min-width: 0;
   }
 
-  /* Soft edges: the photo fades into the taupe band on all four sides (two gradients, intersected).
-     The master stays untouched, so it can be swapped by replacing the file. */
-  .hero__photo {
-    width: 100%;
-    max-width: 560px;
-    height: auto;
-    -webkit-mask-image:
-      linear-gradient(to right, transparent, black 5%, black 95%, transparent),
-      linear-gradient(to bottom, transparent, black 6%, black 92%, transparent);
-    -webkit-mask-composite: source-in;
-    mask-image:
-      linear-gradient(to right, transparent, black 5%, black 95%, transparent),
-      linear-gradient(to bottom, transparent, black 6%, black 92%, transparent);
-    mask-composite: intersect;
-  }
-
   @media (max-width: 640px) {
     .section.hero {
       padding-top: 40px;
@@ -157,10 +131,6 @@ const nextSingle = singles[0]!;
     .hero__text,
     .hero__art {
       flex-basis: 100%;
-    }
-
-    .hero__photo {
-      max-width: 100%;
     }
   }
 </style>

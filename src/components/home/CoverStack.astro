@@ -1,0 +1,63 @@
+---
+/**
+ * Hero cover stack (reference: 03_Design/hero-d-cover-stapel.png): the two album covers lying
+ * loosely on top of each other. Vol. 1 underneath (−7°, down-left) so its face and painted globe
+ * stay visible and its logo corner sits under Vol. 2; Vol. 2 on top (+4.5°, up-right) – the LCP
+ * element, hence fetchpriority="high". Each cover links to its album page. Rights gates (§9) come
+ * from Cover.astro: an uncleared cover renders the typographic placeholder in the same position.
+ * No animation (§6.6).
+ */
+import Cover from '../Cover.astro';
+import { albums } from '../../data/albums';
+import { path, type Locale } from '../../data/routes';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'de' } = Astro.props;
+const vol1 = albums.find((a) => a.id === 'vol-1')!;
+const vol2 = albums.find((a) => a.id === 'vol-2')!;
+
+// Cover = 64 % of the stack width (320 of 500 px on desktop). Phones: the stack fills the content width.
+const sizes = '(max-width: 640px) calc((100vw - 32px) * 0.64), 320px';
+---
+
+<div class="stack">
+  <a class="stack__item stack__item--vol-1" href={path('vol1', locale)}>
+    <Cover locale={locale} album={vol1} width={320} sizes={sizes} shadow="object" loading="eager" fetchpriority="auto" />
+  </a>
+  <a class="stack__item stack__item--vol-2" href={path('vol2', locale)}>
+    <Cover locale={locale} album={vol2} width={320} sizes={sizes} shadow="object" loading="eager" fetchpriority="high" />
+  </a>
+</div>
+
+<style>
+  /* 500 × 460 px area on desktop; all positions in % so the proportions hold at every width. */
+  .stack {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 500 / 460;
+  }
+
+  .stack__item {
+    position: absolute;
+    display: block;
+    width: 64%;
+    border-radius: var(--radius-object);
+  }
+
+  /* Rotated corners stick out ~18 px (Vol. 1) and ~12 px (Vol. 2); the offsets keep them inside the area. */
+  .stack__item--vol-1 {
+    left: 4%;
+    top: 23.9%;
+    transform: rotate(-7deg);
+  }
+
+  .stack__item--vol-2 {
+    left: 32%;
+    top: 4.3%;
+    transform: rotate(4.5deg);
+  }
+</style>
