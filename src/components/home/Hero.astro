@@ -1,11 +1,13 @@
 ---
 /**
  * Homepage hero (CLAUDE.md §6.5): taupe band, "Demnächst" pill to the singles teaser,
- * eyebrow, H1, intro, stats line, two buttons, the approved globe illustration.
+ * eyebrow, H1, intro, stats line, two buttons, the Vol. 2 cover photo without lettering, cut out
+ * (Philipp, 06.11.2026 – replaces the globe illustration, which stays in src/assets/illustrations/).
  * Copy from the approved artboard (Startseite-Artboard_v6).
  */
 import Section from '../Section.astro';
-import HeroGlobe from '../../assets/illustrations/hero-globus.svg';
+import { Image } from 'astro:assets';
+import heroPhoto from '../../assets/photos/heart-tones-vol2-ohne-schrift-freigestellt.png';
 import { albums } from '../../data/albums';
 import { countries } from '../../data/countries';
 import { path, type Locale } from '../../data/routes';
@@ -49,7 +51,16 @@ const nextSingle = singles[0]!;
       </div>
     </div>
     <div class="hero__art">
-      <HeroGlobe class="hero__globe" aria-label={t('hero.globeLabel')} />
+      <Image
+        src={heroPhoto}
+        alt={t('hero.photoAlt')}
+        format="webp"
+        widths={[300, 440, 600, 880]}
+        sizes="(max-width: 640px) 300px, 440px"
+        loading="eager"
+        fetchpriority="high"
+        class="hero__photo"
+      />
     </div>
   </div>
 </Section>
@@ -121,7 +132,7 @@ const nextSingle = singles[0]!;
     min-width: 0;
   }
 
-  .hero__globe {
+  .hero__photo {
     width: 100%;
     max-width: 440px;
     height: auto;
@@ -137,7 +148,7 @@ const nextSingle = singles[0]!;
       flex-basis: 100%;
     }
 
-    .hero__globe {
+    .hero__photo {
       max-width: 300px;
     }
   }

@@ -29,7 +29,7 @@ Audience: parents, families, educators, world-music listeners; musicians/singers
 | `../01_Brief/09_Albumtexte.md` | Approved album texts Vol. 1 and Vol. 2 (25.10.2026) | `story` in `src/data/albums.ts`, verbatim |
 | `../01_Brief/10_Texte-EN.md` | English texts (EN-GB), draft – Robert (native speaker, translator) approves before launch | `en` in `src/i18n/ui.ts` and the `{ de, en }` data fields, verbatim |
 | `../03_Design/Startseite-Artboard_v6.dc.html` | Approved desktop homepage artboard (Claude Design export) | **Reference** for layout, order and German copy of the homepage. Not code to copy (see §6.8) |
-| `../03_Design/hero-globus.svg` | Approved hero illustration (globe as night light) | Use as-is in the hero |
+| `../03_Design/hero-globus.svg` | Former hero illustration (globe as night light) | Replaced in the hero by the Vol. 2 cover photo on 06.11.2026 (§11); kept in `src/assets/illustrations/` |
 | `../03_Design/reise-weltkarte-platzhalter.svg` | Rough map placeholder from the artboard | Replace with the generated map (§8.5) |
 | `../02_Assets/` | Originals (covers, logos, photos, funding logos, audio later) | Copy only what is used into `src/assets/` (§7) |
 | `../01_Brief/01_Fragebogen-Antworten_2026-10.md`, `../01_Brief/06_Fragebogen-Antworten-2_2026-10.md` | Philipp's questionnaire answers, rounds 1 and 2 (transcribed) | Background for copy and data; §11 here wins |
@@ -49,7 +49,7 @@ The `.md` files in `../01_Brief` are **dated snapshots**; the masters live in Ro
 - **Astro**, current stable version, static output (`output: 'static'`), TypeScript strict. No UI framework; plain `.astro` components plus small vanilla `<script>` islands where needed (audio player, menu, consent video, map tooltips).
 - Styling: one `src/styles/global.css` with design tokens as CSS custom properties, plus scoped component styles. No Tailwind.
 - Fonts self-hosted via Fontsource: `@fontsource-variable/literata`, `@fontsource-variable/nunito` (latin + latin-ext + cyrillic subsets). **No Google Fonts requests.** Quicksand only inside the logo (outlined SVG, or a tiny self-hosted subset until Robert's SVGs arrive).
-- Images: `astro:assets` (`<Image>`/`<Picture>`), AVIF + WebP, explicit `width`/`height`. Hero illustration is inline SVG (no LCP image).
+- Images: `astro:assets` (`<Image>`/`<Picture>`), AVIF + WebP, explicit `width`/`height`. Hero image is the cut-out Vol. 2 cover photo as WebP, eager with `fetchpriority="high"` (it is the LCP element, §11 06.11.2026).
 - Map: generated **at build time** from Natural Earth data (`world-atlas` TopoJSON + `topojson-client` + `d3-geo`) into static SVG. No map library or tiles at runtime.
 - Integrations: `@astrojs/sitemap`. Nothing else without asking.
 - Dev server: port **4323** with `strictPort: true` (4321/4322 are used by other client projects). One VS Code window per project.
@@ -157,7 +157,7 @@ Wordmark "heart" + glyph (heart with note stem) + "tones". Variants: on cream (w
 
 ### 6.5 Hero
 
-Taupe band. Left: "Demnächst" pill linking to the singles teaser, eyebrow "Lullabies from around the world", H1 „Schlaflieder aus aller Welt", intro, stats line, buttons „Reinhören" (→ player) and „Die Reise entdecken" (→ map). Right: **the original globe illustration** (`hero-globus.svg`, decided 23.10.2026). The globe may get a very slow, subtle glow pulse – only with `prefers-reduced-motion: no-preference`, and only if Robert asks.
+Taupe band. Left: "Demnächst" pill linking to the singles teaser, eyebrow "Lullabies from around the world", H1 „Schlaflieder aus aller Welt", intro, stats line, buttons „Reinhören" (→ player) and „Die Reise entdecken" (→ map). Right: **the Vol. 2 cover photo without lettering, cut out** (`src/assets/photos/heart-tones-vol2-ohne-schrift-freigestellt.png`, transparent PNG; `<Image>` WebP 300/440/600/880 px, 440 px wide on desktop, 300 px on phones; changed 06.11.2026, replaces the globe illustration of 23.10.2026, which stays in the repo).
 
 ### 6.6 Motion and effects
 
@@ -175,7 +175,7 @@ The artboard is a Claude Design file with inline styles and `{{…}}` template b
 
 - Originals stay in `../02_Assets/`. Copy only used files into `src/assets/<folder>/` with kebab-case names. Check file size after copying.
 - Covers are the final JPEG masters (24.10.2026: Vol. 1 1468 px, Vol. 2 2400 px, sRGB, no metadata) in `src/assets/covers/`. Still **interim**: family photo 1280×1599 WebP; piano photo 1600×1200 WebP; funding logos as raster (vector versions to be fetched from Initiative Musik). Build so masters can be swapped by replacing the file.
-- `vol-2-kinder-ohne-schrift.jpg`: Vol. 2 cover photo with the logo/lettering retouched out (23.10.). Not for the hero. Possible later use as a wide section image (e.g. Vol. 2 page). **Same consent condition as the Vol. 2 cover (§9).**
+- `vol-2-kinder-ohne-schrift.jpg`: Vol. 2 cover photo with the logo/lettering retouched out (23.10.). Reserve; a cut-out version (`heart-tones-vol2-ohne-schrift-freigestellt.png`) is the hero image since 06.11.2026. **Same consent condition as the Vol. 2 cover (§9)** – cleared 03.11.2026.
 - Audio: all 26 MP3s are delivered in `../02_Assets/audio/` (192 kbps, ~111 MB). Copy to `public/audio/vol-1/01-dodo.mp3` etc. (kebab-case, ASCII) and **commit them to git** (decided 23.10.2026). **Track durations come from the MP3s, not the booklets** (e.g. Vol. 1 "Sov sødt barnlille" 3:43, "Dream of Mikael" 4:20, "Dans les étoiles" 2:28); album totals are the sum of the MP3 durations.
 - Strip metadata (EXIF/GPS) from any new image before committing.
 
@@ -278,6 +278,7 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 | 05.11.2026 | Browser QA (Robert): `npm run qa:browser` (`scripts/qa-browser.ts`, dev dependency `puppeteer-core`, drives the installed Chrome – `CHROME_PATH` to override; local only, not needed on Coolify). Starts `astro preview` on port 4330; checks every built page at 390/1440 px (overflow, script errors, failed or external requests), skip link, mobile menu, audio player (mouse, keyboard, EN), map markers, consent video without YouTube requests, HTTP 404 for a missing DE/EN URL. `--shots` writes screenshots to `qa-shots/` (gitignored). |
 | 05.11.2026 | Album pages, „Produktion und Gestaltung“: names linked to their websites (Robert) – Robert Cummings → https://www.hotmilkstudio.de/, Peter Sund → https://www.thefarm-music.com/, André Wagner → https://andrewagner.com/, Benedikt Stehle → https://www.benediktstehle.com/ (`creditWebsites` in `albums.ts`). The name is the link text, linked at its first mention per list only (Robert Cummings appears in several rows). |
 | 05.11.2026 | (Robert) External links open in a new tab: `ExternalLink.astro` sets `target="_blank"`, `rel="noopener"` and a visually hidden „(öffnet in neuem Tab)“ / "(opens in a new tab)" (on the SVG map pin in its aria-label); internal, mailto and tel links stay in the same tab; `qa:dist` fails on an external link without it. Spelling „André Wagner“ (as on his website) everywhere on the site. Peter Sund’s credit addition „the farm“ in the page’s quote marks (`note` in `albums.ts`). Photo credit „Benedikt Stehle“ linked to benediktstehle.com under the family photo (homepage, Über Philipp) and on the Vol. 2 page, **not** in the Impressum. |
+| 06.11.2026 | Hero image changed at Philipp's request (deliberate; overrides the globe decision of 23.10.2026 and the „not for the hero“ note on the Vol. 2 photo): cut-out Vol. 2 cover photo without lettering (`src/assets/photos/heart-tones-vol2-ohne-schrift-freigestellt.png`, 1254 px transparent PNG, unchanged copy from `02_Assets/photos/`; written consent of the parents on file). `<Image>` WebP, widths 300/440/600/880, `sizes` 300 px on phones / 440 px otherwise, eager, `fetchpriority="high"`; alt text DE/EN (`hero.photoAlt`, children not named). The globe SVG stays in `src/assets/illustrations/`. Impressum image credits: „Startseite: Foto vom Cover Vol. 2 ohne Schrift, freigestellt – Benedikt Stehle“. |
 
 ## 12. Open items (build around them with placeholders)
 
