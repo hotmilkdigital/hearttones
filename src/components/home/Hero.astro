@@ -55,8 +55,8 @@ const nextSingle = singles[0]!;
         src={heroPhoto}
         alt={t('hero.photoAlt')}
         format="webp"
-        widths={[300, 440, 600, 880]}
-        sizes="(max-width: 640px) 300px, 440px"
+        widths={[360, 560, 720, 1120]}
+        sizes="(max-width: 640px) calc(100vw - 32px), 560px"
         loading="eager"
         fetchpriority="high"
         class="hero__photo"
@@ -78,7 +78,7 @@ const nextSingle = singles[0]!;
   }
 
   .hero__text {
-    flex: 1 1 480px;
+    flex: 1 1 440px;
     min-width: 0;
   }
 
@@ -127,7 +127,8 @@ const nextSingle = singles[0]!;
 
   .hero__art {
     display: flex;
-    flex: 1 1 400px;
+    /* Same basis as the text: two equal columns (~550 px each at 1200 px content width). */
+    flex: 1 1 440px;
     justify-content: center;
     min-width: 0;
   }
@@ -136,15 +137,15 @@ const nextSingle = singles[0]!;
      The master stays untouched, so it can be swapped by replacing the file. */
   .hero__photo {
     width: 100%;
-    max-width: 440px;
+    max-width: 560px;
     height: auto;
     -webkit-mask-image:
-      linear-gradient(to right, transparent, black 12%, black 88%, transparent),
-      linear-gradient(to bottom, transparent, black 14%, black 82%, transparent);
+      linear-gradient(to right, transparent, black 5%, black 95%, transparent),
+      linear-gradient(to bottom, transparent, black 6%, black 92%, transparent);
     -webkit-mask-composite: source-in;
     mask-image:
-      linear-gradient(to right, transparent, black 12%, black 88%, transparent),
-      linear-gradient(to bottom, transparent, black 14%, black 82%, transparent);
+      linear-gradient(to right, transparent, black 5%, black 95%, transparent),
+      linear-gradient(to bottom, transparent, black 6%, black 92%, transparent);
     mask-composite: intersect;
   }
 
@@ -159,7 +160,7 @@ const nextSingle = singles[0]!;
     }
 
     .hero__photo {
-      max-width: 300px;
+      max-width: 100%;
     }
   }
 </style>
