@@ -109,7 +109,7 @@ export const contactForm: boolean = false;
  * „Stand der Datenschutzerklärung“ = the day the site goes live (Robert, 06.11.2026), e.g. '15.11.2026'.
  * Robert sets it on launch day. null → [PLATZHALTER] on staging; a production build fails without it.
  */
-export const privacyStand: string | null = null;
+export const privacyStand: string | null = '16.11.2026';
 
 /** Production build (PUBLIC_INDEXABLE=true). Staging and local dev are not indexable. */
 export const isIndexable = import.meta.env.PUBLIC_INDEXABLE === 'true';
