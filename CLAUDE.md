@@ -312,4 +312,5 @@ Unique title + description per page; canonical; `hreflang` (de, en, x-default) o
 - Ask (multiple choice is fine) when the brief is silent or conflicts with this file.
 - Before saying a step is done: `npm run build` passes without warnings, check 390px and 1440px in the browser, keyboard pass on new interactive parts.
 - New decisions get a row in §11 in the same commit.
+- If a decision changes the project status (`../01_Brief/00_Projektstatus.md`), also add an entry to `docs/rueckfluss.md` in the same commit (rule 5 in `../01_Brief/README.md`); Robert carries it into the master.
 - Never commit secrets, `.env`, or client personal data beyond what the Impressum requires.
