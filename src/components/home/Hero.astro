@@ -30,14 +30,21 @@ const nextSingle = singles[0]!;
 ---
 
 <Section tone="taupe" class="hero" aria-labelledby={titleId(ids.hero)}>
+  {/* Source order = phone order (Philipp, 18.11.2026): headline, covers, then intro and buttons.
+      From 980 px a grid puts the covers in the right-hand column, beside the whole text block. */}
   <div class="hero__grid">
-    <div class="hero__text">
+    <div class="hero__head">
       <a class="hero__pill" href={hash(ids.newMusic)}>
         <span class="badge-soon">{t('common.soon')}</span>
         <span>{t('hero.pill', { single: nextSingle.title, artist: singlesArtist })}&nbsp;<span aria-hidden="true">→</span></span>
       </a>
       <p class="eyebrow">{t('hero.eyebrow')}</p>
       <h1 id={titleId(ids.hero)}>{t('hero.h1')}</h1>
+    </div>
+    <div class="hero__art">
+      <CoverStack locale={locale} />
+    </div>
+    <div class="hero__body">
       <p class="lead hero__intro">
         {t('hero.intro')}
       </p>
@@ -49,9 +56,6 @@ const nextSingle = singles[0]!;
         <a class="btn btn--outline" href={path('journey', locale)}>{t('hero.journey')}</a>
       </div>
     </div>
-    <div class="hero__art">
-      <CoverStack locale={locale} />
-    </div>
   </div>
 </Section>
 
@@ -60,16 +64,10 @@ const nextSingle = singles[0]!;
     padding-block: 72px var(--section-pad);
   }
 
+  /* One column below 980 px: head, covers, body (source order). */
   .hero__grid {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 48px;
-  }
-
-  .hero__text {
-    flex: 1 1 440px;
-    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hero__pill {
@@ -117,20 +115,44 @@ const nextSingle = singles[0]!;
 
   .hero__art {
     display: flex;
-    /* Same basis as the text: two equal columns (~550 px each at 1200 px content width). */
-    flex: 1 1 440px;
     justify-content: center;
     min-width: 0;
+    margin-block: 32px 8px;
+  }
+
+  /* Two equal columns (~550 px each at 1200 px content width), text left, covers right. The 1fr rows
+     above and below take the extra height of the cover stack, so head and body stay together and the
+     text block is centred vertically beside the covers. */
+  @media (min-width: 980px) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: 1fr auto auto 1fr;
+      grid-template-areas:
+        '. art'
+        'head art'
+        'body art'
+        '. art';
+      column-gap: 48px;
+    }
+
+    .hero__head {
+      grid-area: head;
+    }
+
+    .hero__body {
+      grid-area: body;
+    }
+
+    .hero__art {
+      grid-area: art;
+      align-self: center;
+      margin-block: 0;
+    }
   }
 
   @media (max-width: 640px) {
     .section.hero {
       padding-top: 40px;
-    }
-
-    .hero__text,
-    .hero__art {
-      flex-basis: 100%;
     }
   }
 </style>
