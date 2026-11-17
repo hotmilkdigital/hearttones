@@ -7,11 +7,12 @@ const SITE = 'https://hearttones.net';
 
 // hreflang pairs for the sitemap from routes.ts – DE and EN slugs differ (/musik/ ↔ /en/music/), so the
 // plugin's own i18n option (same path after the locale prefix) cannot pair them. Only once EN is published.
+// Codes "de", "en", "x-default" (= German) – the same as the hreflang links in the page <head>.
 const alternates = new Map(
   Object.values(routes).flatMap((r) => {
     const links = [
-      { lang: 'de-DE', url: new URL(r.de, SITE).href },
-      { lang: 'en-GB', url: new URL(r.en, SITE).href },
+      { lang: 'de', url: new URL(r.de, SITE).href },
+      { lang: 'en', url: new URL(r.en, SITE).href },
       { lang: 'x-default', url: new URL(r.de, SITE).href },
     ];
     return [
@@ -20,6 +21,11 @@ const alternates = new Map(
     ];
   }),
 );
+
+// Legal pages (Impressum, Datenschutz, Widerruf – DE and EN) stay online and indexable but are left out of
+// the sitemap. Matched on the path, so it works for any site URL.
+/** @type {Set<string>} */
+const sitemapExcluded = new Set([routes.imprint, routes.privacy, routes.withdrawal].flatMap((r) => [r.de, r.en]));
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
@@ -36,6 +42,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
+      filter: (page) => !sitemapExcluded.has(new URL(page).pathname),
       serialize(item) {
         const links = enPublished ? alternates.get(item.url) : undefined;
         return links ? { ...item, links } : item;
